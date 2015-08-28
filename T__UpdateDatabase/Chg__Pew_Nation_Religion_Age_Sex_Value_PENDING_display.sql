@@ -1,0 +1,246 @@
+--/**********************************************************************************************************************************************************************************/
+--USE       [forum]
+--GO
+--/**********************************************************************************************************************************************************************************/
+--/*****                                                                          BackUp current Table                                                                          *****/
+--/**********************************************************************************************************************************************************************************/
+--/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+--  DECLARE @CrDt    varchar( 8)
+--  DECLARE                          --  declare variable
+--          @TofI                    --  variable name
+--                   varchar(50)     --  data type of the variable
+--  SET     @CrDt = (CONVERT(VARCHAR(8),GETDATE(),112))
+--/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+--EXEC ( ' SELECT *
+--                INTO  [_bk_forum].[dbo].[Pew_Nation_Religion_Age_Sex_Value_' + @CrDt + ']
+--                FROM      [forum].[dbo].[Pew_Nation_Religion_Age_Sex_Value]' )
+--/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+--/**********************************************************************************************************************************************************************************/
+
+--/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+----
+--/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+
+--/**********************************************************************************************************************************************************************************/
+--/*****                                                                                STEP 001                                                                                *****/
+--/**********************************************************************************************************************************************************************************/
+--/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+---- TEMPORARY LOOKUP TABLES
+--/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+--SELECT 
+--       [Nk] = [Nation_pk]
+--     , [N]  = [Ctry_EditorialName]
+--INTO   [#N]
+--FROM   [Pew_Nation]
+--/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+--GO
+--/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+--SELECT 
+--       [Rk] = [Religion_group_pk]
+--     , [R]  = [Pew_Religion]
+--INTO   [#R]
+--FROM   [Pew_Religion_Group]
+--WHERE  [Religion_group_pk] in ( 23, 26, 27, 28, 51, 53, 55, 57 ) 
+--/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+--GO
+--/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+--/**********************************************************************************************************************************************************************************/
+
+--/**********************************************************************************************************************************************************************************/
+--/*****                                                                                STEP 002                                                                                *****/
+--/**********************************************************************************************************************************************************************************/
+--/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+---- VALUE UPDATING
+--/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+--UPDATE
+--      [forum].[dbo].[Pew_Nation_Religion_Age_Sex_Value]
+--SET
+--      [Display_AgeStr_15Yrs]     = 0
+--    , [Display_MedianAge]        = 0
+--/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+----  SELECT * FROM [forum].[dbo].[Pew_Nation_Religion_Age_Sex_Value]
+--WHERE
+
+--       [Age_fk]      != 0
+--AND
+--  (
+--      ([Scenario_id]  = 4 AND Field_fk IN ( 76, 77, 78, 79, 80, 81, 82, 83, 84 ) )
+--   OR
+--      ([Scenario_id]  = 8 AND Field_fk IN ( 76                                 ) ))
+--AND
+--  (
+--      ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Aruba'                           AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Aruba'                           AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Austria'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Buddhists'       ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Austria'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Hindus'          ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Austria'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Austria'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Other Religions' ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Bahamas'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Muslims'         ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Bahamas'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Bahrain'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Buddhists'       ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Belize'                          AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Hindus'          ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Belize'                          AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Burundi'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Cape Verde'                      AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Central African Republic'        AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Chile'                           AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Chile'                           AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Muslims'         ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Croatia'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Czech Republic'                  AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Buddhists'       ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Czech Republic'                  AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Hindus'          ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Czech Republic'                  AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Czech Republic'                  AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Muslims'         ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Estonia'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Muslims'         ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Finland'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Buddhists'       ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Finland'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Finland'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Muslims'         ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Georgia'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Georgia'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Guyana'                          AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Muslims'         ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Hungary'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Buddhists'       ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Hungary'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Folk Religions'  ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Hungary'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Hindus'          ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Hungary'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Hungary'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Muslims'         ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Hungary'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Other Religions' ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Ireland'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Muslims'         ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Liberia'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Folk Religions'  ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Lithuania'                       AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Buddhists'       ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Lithuania'                       AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Folk Religions'  ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Lithuania'                       AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Hindus'          ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Lithuania'                       AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Lithuania'                       AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Muslims'         ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Mexico'                          AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Buddhists'       ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Federated States of Micronesia'  AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Moldova'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Montenegro'                      AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Namibia'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Nepal'                           AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Other Religions' ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'New Zealand'                     AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Folk Religions'  ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'New Zealand'                     AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'New Zealand'                     AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Other Religions' ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Nicaragua'                       AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Muslims'         ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Oman'                            AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Buddhists'       ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Paraguay'                        AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Buddhists'       ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Paraguay'                        AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Portugal'                        AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Muslims'         ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Romania'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Romania'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'St. Lucia'                       AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Hindus'          ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'St. Lucia'                       AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Sao Tome and Principe'           AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Serbia'                          AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Sierra Leone'                    AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Folk Religions'  ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Sierra Leone'                    AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Slovakia'                        AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Buddhists'       ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Slovakia'                        AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Hindus'          ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Slovakia'                        AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Slovakia'                        AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Muslims'         ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Suriname'                        AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Folk Religions'  ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Suriname'                        AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Switzerland'                     AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Buddhists'       ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Switzerland'                     AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Hindus'          ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Switzerland'                     AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Trinidad and Tobago'             AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Uruguay'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Folk Religions'  ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Uruguay'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Vanuatu'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Folk Religions'  ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Vanuatu'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'South Africa'                    AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--  )
+--/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+--GO
+--/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+--/**********************************************************************************************************************************************************************************/
+
+--/**********************************************************************************************************************************************************************************/
+--/*****                                                                                STEP 003                                                                                *****/
+--/**********************************************************************************************************************************************************************************/
+---- check results
+--SELECT 
+--        DISTINCT
+--       [Display_AgeStr_15Yrs]
+--      ,[Display_MedianAge]
+--FROM   [forum].[dbo].[Pew_Nation_Religion_Age_Sex_Value]
+--WHERE
+--      ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Aruba'                           AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Aruba'                           AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Austria'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Buddhists'       ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Austria'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Hindus'          ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Austria'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Austria'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Other Religions' ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Bahamas'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Muslims'         ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Bahamas'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Bahrain'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Buddhists'       ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Belize'                          AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Hindus'          ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Belize'                          AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Burundi'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Cape Verde'                      AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Central African Republic'        AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Chile'                           AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Chile'                           AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Muslims'         ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Croatia'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Czech Republic'                  AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Buddhists'       ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Czech Republic'                  AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Hindus'          ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Czech Republic'                  AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Czech Republic'                  AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Muslims'         ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Estonia'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Muslims'         ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Finland'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Buddhists'       ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Finland'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Finland'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Muslims'         ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Georgia'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Georgia'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Guyana'                          AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Muslims'         ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Hungary'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Buddhists'       ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Hungary'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Folk Religions'  ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Hungary'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Hindus'          ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Hungary'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Hungary'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Muslims'         ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Hungary'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Other Religions' ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Ireland'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Muslims'         ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Liberia'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Folk Religions'  ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Lithuania'                       AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Buddhists'       ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Lithuania'                       AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Folk Religions'  ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Lithuania'                       AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Hindus'          ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Lithuania'                       AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Lithuania'                       AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Muslims'         ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Mexico'                          AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Buddhists'       ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Federated States of Micronesia'  AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Moldova'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Montenegro'                      AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Namibia'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Nepal'                           AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Other Religions' ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'New Zealand'                     AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Folk Religions'  ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'New Zealand'                     AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'New Zealand'                     AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Other Religions' ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Nicaragua'                       AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Muslims'         ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Oman'                            AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Buddhists'       ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Paraguay'                        AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Buddhists'       ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Paraguay'                        AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Portugal'                        AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Muslims'         ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Romania'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Romania'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'St. Lucia'                       AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Hindus'          ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'St. Lucia'                       AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Sao Tome and Principe'           AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Serbia'                          AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Sierra Leone'                    AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Folk Religions'  ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Sierra Leone'                    AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Slovakia'                        AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Buddhists'       ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Slovakia'                        AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Hindus'          ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Slovakia'                        AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Slovakia'                        AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Muslims'         ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Suriname'                        AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Folk Religions'  ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Suriname'                        AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Switzerland'                     AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Buddhists'       ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Switzerland'                     AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Hindus'          ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Switzerland'                     AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Trinidad and Tobago'             AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Uruguay'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Folk Religions'  ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Uruguay'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Vanuatu'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Folk Religions'  ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'Vanuatu'                         AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Unaffiliated'    ) ))
+--   OR ([Nation_fk] = (SELECT [Nk] FROM [#N] WHERE [N] = 'South Africa'                    AND [Religion_Group_fk] = (SELECT [Rk] FROM [#R] WHERE [R] = 'Jews'            ) ))
+--/**********************************************************************************************************************************************************************************/
+
