@@ -1,0 +1,185 @@
+/***********************************************************************************************************************************************/
+/***                                                                                                                                         ***/
+/***     >>>>>   This is the script used to retach tables to upgraded databases in new engine                                      <<<<<     ***/
+/***                                                                                                                                         ***/
+/***********************************************************************************************************************************************/
+USE [master]
+GO
+/***********************************************************************************************************************************************/
+
+
+--																 --   DB:01    r0
+--	create database  _Admin                                      --   DB:01    r1
+--	on  (filename = 'C:\SQLD\data\_Admin.mdf')                   --   DB:01    r2
+--	  , (filename = 'C:\SQLD\data\_Admin_log.LDF')               --   DB:01    r3
+--	for attach;                                                  --   DB:01    r4
+--	go                                                           --   DB:01    r5
+--																 --   DB:01    r6
+--																 --   DB:02    r0
+--	create database  for_test                                    --   DB:02    r1
+--	on  (filename = 'C:\SQLD\data\for_test.mdf')                 --   DB:02    r2
+--	  , (filename = 'C:\SQLD\data\for_test_log.ldf')             --   DB:02    r3
+--	for attach;                                                  --   DB:02    r4
+--	go                                                           --   DB:02    r5
+--																 --   DB:02    r6
+--																 --   DB:03    r0
+--	create database  for_x                                       --   DB:03    r1
+--	on  (filename = 'C:\SQLD\data\for_x.mdf')                    --   DB:03    r2
+--	  , (filename = 'C:\SQLD\data\for_x_log.LDF')                --   DB:03    r3
+--	for attach;                                                  --   DB:03    r4
+--	go                                                           --   DB:03    r5
+--																 --   DB:03    r6
+--																 --   DB:04    r0
+--	create database  forum                                       --   DB:04    r1
+--	on  (filename = 'C:\SQLD\data\forum.mdf')                    --   DB:04    r2
+--	  , (filename = 'C:\SQLD\data\forum_log.ldf')                --   DB:04    r3
+--	for attach;                                                  --   DB:04    r4
+--	go                                                           --   DB:04    r5
+--																 --   DB:04    r6
+--																 --   DB:05    r0
+--	create database  forum_ResAnal                               --   DB:05    r1
+--	on  (filename = 'C:\SQLD\data\forum_ResAnal.mdf')            --   DB:05    r2
+--	  , (filename = 'C:\SQLD\data\forum_ResAnal_log.ldf')        --   DB:05    r3
+--	for attach;                                                  --   DB:05    r4
+--	go                                                           --   DB:05    r5
+--																 --   DB:05    r6
+--																 --   DB:06    r0
+--	create database  GRSHR                                       --   DB:06    r1
+--	on  (filename = 'C:\SQLD\data\GRSHR.mdf')                    --   DB:06    r2
+--	  , (filename = 'C:\SQLD\data\GRSHR_log.ldf')                --   DB:06    r3
+--	for attach;                                                  --   DB:06    r4
+--	go                                                           --   DB:06    r5
+--																 --   DB:06    r6
+--																 --   DB:07    r0
+--	create database  GRSHR_admin                                 --   DB:07    r1
+--	on  (filename = 'C:\SQLD\data\GRSHR_admin.mdf')              --   DB:07    r2
+--	  , (filename = 'C:\SQLD\data\GRSHR_admin_log.ldf')          --   DB:07    r3
+--	for attach;                                                  --   DB:07    r4
+--	go                                                           --   DB:07    r5
+--																 --   DB:07    r6
+--																 --   DB:08    r0
+--	create database  GRSHR_bk                                    --   DB:08    r1
+--	on  (filename = 'C:\SQLD\data\GRSHR_bk.mdf')                 --   DB:08    r2
+--	  , (filename = 'C:\SQLD\data\GRSHR_bk_log.LDF')             --   DB:08    r3
+--	for attach;                                                  --   DB:08    r4
+--	go                                                           --   DB:08    r5
+--																 --   DB:08    r6
+--																 --   DB:09    r0
+--	create database  GRSHR2014                                   --   DB:09    r1
+--	on  (filename = 'C:\SQLD\data\GRSHR2014.mdf')                --   DB:09    r2
+--	  , (filename = 'C:\SQLD\data\GRSHR2014_log.ldf')            --   DB:09    r3
+--	for attach;                                                  --   DB:09    r4
+--	go                                                           --   DB:09    r5
+--																 --   DB:09    r6
+--																 --   DB:10    r0
+--	create database  GRSHR2015                                   --   DB:10    r1
+--	on  (filename = 'C:\SQLD\data\GRSHR2015.mdf')                --   DB:10    r2
+--	  , (filename = 'C:\SQLD\data\GRSHR2015_log.ldf')            --   DB:10    r3
+--	for attach;                                                  --   DB:10    r4
+--	go                                                           --   DB:10    r5
+--																 --   DB:10    r6
+--																 --   DB:11    r0
+--	create database  GRSHRcode                                   --   DB:11    r1
+--	on  (filename = 'C:\SQLD\data\GRSHRcode.mdf')                --   DB:11    r2
+--	  , (filename = 'C:\SQLD\data\GRSHRcode_log.LDF')            --   DB:11    r3
+--	for attach;                                                  --   DB:11    r4
+--	go                                                           --   DB:11    r5
+--																 --   DB:11    r6
+--																 --   DB:12    r0
+--	create database  JProcoCopy                                  --   DB:12    r1
+--	on  (filename = 'C:\SQLD\data\JProcoCopy.mdf')               --   DB:12    r2
+--	  , (filename = 'C:\SQLD\data\JProcoCopy_log.LDF')           --   DB:12    r3
+--	for attach;                                                  --   DB:12    r4
+--	go                                                           --   DB:12    r5
+--																 --   DB:12    r6
+--																 --   DB:13    r0
+--	create database  limesurvey                                  --   DB:13    r1
+--	on  (filename = 'C:\SQLD\data\limesurvey.mdf')               --   DB:13    r2
+--	  , (filename = 'C:\SQLD\data\limesurvey_log.ldf')           --   DB:13    r3
+--	for attach;                                                  --   DB:13    r4
+--	go                                                           --   DB:13    r5
+--																 --   DB:13    r6
+--																 --   DB:14    r0
+--	create database  LoadRLS1cUS                                 --   DB:14    r1
+--	on  (filename = 'C:\SQLD\data\LoadRLS1cUS.mdf')              --   DB:14    r2
+--	  , (filename = 'C:\SQLD\data\LoadRLS1cUS_log.ldf')          --   DB:14    r3
+--	for attach;                                                  --   DB:14    r4
+--	go                                                           --   DB:14    r5
+--																 --   DB:14    r6
+--																 --   DB:15    r0
+--	create database  LRLS2                                       --   DB:15    r1
+--	on  (filename = 'C:\SQLD\data\LRLS2.mdf')                    --   DB:15    r2
+--	  , (filename = 'C:\SQLD\data\LRLS2_log.ldf')                --   DB:15    r3
+--	for attach;                                                  --   DB:15    r4
+--	go                                                           --   DB:15    r5
+--																 --   DB:15    r6
+--																 --   DB:16    r0
+--	create database  MyTest                                      --   DB:16    r1
+--	on  (filename = 'C:\SQLD\data\MyTest.mdf')                   --   DB:16    r2
+--	  , (filename = 'C:\SQLD\data\MyTest_log.ldf')               --   DB:16    r3
+--	for attach;                                                  --   DB:16    r4
+--	go                                                           --   DB:16    r5
+--																 --   DB:16    r6
+--																 --   DB:17    r0
+--	create database  NCheck                                      --   DB:17    r1
+--	on  (filename = 'C:\SQLD\data\NCheck.mdf')                   --   DB:17    r2
+--	  , (filename = 'C:\SQLD\data\NCheck_log.ldf')               --   DB:17    r3
+--	for attach;                                                  --   DB:17    r4
+--	go                                                           --   DB:17    r5
+--																 --   DB:17    r6
+--																 --   DB:18    r0
+--	create database  PREC                                        --   DB:18    r1
+--	on  (filename = 'C:\SQLD\data\PREC.mdf')                     --   DB:18    r2
+--	  , (filename = 'C:\SQLD\data\PREC_log.ldf')                 --   DB:18    r3
+--	for attach;                                                  --   DB:18    r4
+--	go                                                           --   DB:18    r5
+--																 --   DB:18    r6
+--																 --   DB:19    r0
+--	create database  PRGI                                        --   DB:19    r1
+--	on  (filename = 'C:\SQLD\data\PRGI.mdf')                     --   DB:19    r2
+--	  , (filename = 'C:\SQLD\data\PRGI_log.LDF')                 --   DB:19    r3
+--	for attach;                                                  --   DB:19    r4
+--	go                                                           --   DB:19    r5
+--																 --   DB:19    r6
+--																 --   DB:20    r0
+--	create database  ReportServer                                --   DB:20    r1
+--	on  (filename = 'C:\SQLD\data\ReportServer.mdf')             --   DB:20    r2
+--	  , (filename = 'C:\SQLD\data\ReportServer_log.ldf')         --   DB:20    r3
+--	for attach;                                                  --   DB:20    r4
+--	go                                                           --   DB:20    r5
+--																 --   DB:20    r6
+--																 --   DB:21    r0
+--	create database  ReportServerTempDB                          --   DB:21    r1
+--	on  (filename = 'C:\SQLD\data\ReportServerTempDB.mdf')       --   DB:21    r2
+--	  , (filename = 'C:\SQLD\data\ReportServerTempDB_log.ldf')   --   DB:21    r3
+--	for attach;                                                  --   DB:21    r4
+--	go                                                           --   DB:21    r5
+--																 --   DB:21    r6
+--																 --   DB:22    r0
+--	create database  RHRNK                                       --   DB:22    r1
+--	on  (filename = 'C:\SQLD\data\RHRNK.mdf')                    --   DB:22    r2
+--	  , (filename = 'C:\SQLD\data\RHRNK_log.LDF')                --   DB:22    r3
+--	for attach;                                                  --   DB:22    r4
+--	go                                                           --   DB:22    r5
+--																 --   DB:22    r6
+--																 --   DB:23    r0
+--	create database  stdaq                                       --   DB:23    r1
+--	on  (filename = 'C:\SQLD\data\stdaq.mdf')                    --   DB:23    r2
+--	  , (filename = 'C:\SQLD\data\stdaq_log.ldf')                --   DB:23    r3
+--	for attach;                                                  --   DB:23    r4
+--	go                                                           --   DB:23    r5
+--																 --   DB:23    r6
+--																 --   DB:24    r0
+--	create database  TranslatQs                                  --   DB:24    r1
+--	on  (filename = 'C:\SQLD\data\TranslatQs.mdf')               --   DB:24    r2
+--	  , (filename = 'C:\SQLD\data\TranslatQs_log.ldf')           --   DB:24    r3
+--	for attach;                                                  --   DB:24    r4
+--	go                                                           --   DB:24    r5
+--																 --   DB:24    r6
+--																 --   DB:25    r0
+--	create database  x_DataLoaded                                --   DB:25    r1
+--	on  (filename = 'C:\SQLD\data\x_DataLoaded.mdf')             --   DB:25    r2
+--	  , (filename = 'C:\SQLD\data\x_DataLoaded_log.ldf')         --   DB:25    r3
+--	for attach;                                                  --   DB:25    r4
+--	go                                                           --   DB:25    r5
+--																 --   DB:25    r6
