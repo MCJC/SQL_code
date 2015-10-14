@@ -72,12 +72,12 @@ GO
 
 
 
-/* in new*/
+--/* in new*/
 
-CREATE DATABASE RLS
-    ON (FILENAME = 'E:\Microsoft SQL Server\MSSQL12.MSSQLSERVER\MSSQL\DATA\RLS.mdf')
-      ,(FILENAME = 'E:\Microsoft SQL Server\MSSQL12.MSSQLSERVER\MSSQL\DATA\RLS_Log.ldf') 
-    FOR ATTACH; 
+--CREATE DATABASE RLS
+--    ON (FILENAME = 'E:\Microsoft SQL Server\MSSQL12.MSSQLSERVER\MSSQL\DATA\RLS.mdf')
+--      ,(FILENAME = 'E:\Microsoft SQL Server\MSSQL12.MSSQLSERVER\MSSQL\DATA\RLS_Log.ldf') 
+--    FOR ATTACH; 
 
 
 
