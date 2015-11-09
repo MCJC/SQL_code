@@ -1,7 +1,7 @@
-/**************************************************************************************************************************************************/
+/***************************************************************************************************************************************************************/
 Print 
-'--- ' + CONVERT (VARCHAR(19), SYSDATETIME()) + ' ==>  script 003    ----------------------------------------------------------------------------- '
-/**************************************************************************************************************************************************/
+'--- ' + CONVERT (VARCHAR(19), SYSDATETIME()) + ' ==>  script 003    ------------------------------------------------------------------------------------------ '
+/***************************************************************************************************************************************************************/
 /***                                                                                                                                            ***/
 /***     >>>>>         This script creates long set of data from the 'Global Restriction on Religion Study'                           <<<<<     ***/
 /***                   The long set of data includes numeric values and descriptive wordings for GR&SH R                                        ***/
@@ -10,8 +10,8 @@ Print
 USE [forum_ResAnal]
 GO
 /**************************************************************************************************************************************************/
-IF OBJECT_ID  (N'[forum_ResAnal].[dbo].[vrc_01_DB_Long_NoAggregated]', N'U') IS NOT NULL
-DROP TABLE       [forum_ResAnal].[dbo].[vrc_01_DB_Long_NoAggregated]
+IF OBJECT_ID  (N'[forum_ResAnal].[dbo].[vr___01_cDB_Long__NoAggregated]', N'U') IS NOT NULL
+DROP TABLE       [forum_ResAnal].[dbo].[vr___01_cDB_Long__NoAggregated]
 GO
 IF OBJECT_ID  (N'[forum_ResAnal].[dbo].[NewTempTab1]'                , N'U') IS NOT NULL
 DROP TABLE       [forum_ResAnal].[dbo].[NewTempTab1]
@@ -30,7 +30,7 @@ GO
 /**************************************************************************************************************************************************/
 /*------------------------------------------------------------------------------------------------------------------------------------------------*/
 SELECT *
- INTO                   [vrc_01_DB_Long_NoAggregated]
+ INTO                   [vr___01_cDB_Long__NoAggregated]
  FROM
        (
           SELECT * FROM [NewTempTab1]
@@ -44,6 +44,8 @@ WHERE
 Ctry_EditorialName                                 != 'North Korea'        /* Excluded from the analysis                                          */
 AND
 Ctry_EditorialName +'_/_'+ STR(Question_Year, 4,0) != 'South Sudan_/_2010' /* although data are not aggregated for the other part of former Sudan */
+AND
+QA_std                                 NOT LIKE       '%_d'+ '[a,b]'       /* exclude all da/db counts from 2010                                  */
 /*  <   filters  ---------------------------------------------------------------------------------------------------------------------------------*/
 /**************************************************************************************************************************************************/
 GO
