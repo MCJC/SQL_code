@@ -25,10 +25,77 @@ FROM
 /*** main select statement *************************************************************************************************************************************/
 /*** table including numeric values + Step-3 calculated variables **********************************************************************************************/
 SELECT
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* NOTE: scaled GRI_19_ b to f requested by Peter Henne in 2015 */
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* GRI_19_b, scaled (0 = None, .2 = 1-9 cases, .4 = 10-200 cases, .6 = 201 - 1000 cases, .8 = 1001 - 9999 cases, 1 = 10000+ cases) */
+                   GRI_19_b_scaled
+       = CAST ((
+         CASE 
+              WHEN GRI_19_b   >  10000 THEN 1     -- (1   = 10000+      cases)
+              WHEN GRI_19_b   >   1000 THEN 0.8   -- ( .8 =  1001 - 9999 cases)
+              WHEN GRI_19_b   >    200 THEN 0.6   -- ( .6 =   201 - 1000 cases)
+              WHEN GRI_19_b   >     10 THEN 0.4   -- ( .4 =    10 -  200 cases)
+              WHEN GRI_19_b   >      0 THEN 0.2   -- ( .2 =     1 -    9 cases)
+              WHEN GRI_19_b   =      0 THEN 0.0   -- (0   =  None             )
+         END
+                                                               ) AS DECIMAL (38,2))
+/* GRI_19_c, scaled (0 = None, .2 = 1-9 cases, .4 = 10-200 cases, .6 = 201 - 1000 cases, .8 = 1001 - 9999 cases, 1 = 10000+ cases) */
+       ,           GRI_19_c_scaled
+       = CAST ((
+         CASE 
+              WHEN GRI_19_c   >  10000 THEN 1     -- (1   = 10000+      cases)
+              WHEN GRI_19_c   >   1000 THEN 0.8   -- ( .8 =  1001 - 9999 cases)
+              WHEN GRI_19_c   >    200 THEN 0.6   -- ( .6 =   201 - 1000 cases)
+              WHEN GRI_19_c   >     10 THEN 0.4   -- ( .4 =    10 -  200 cases)
+              WHEN GRI_19_c   >      0 THEN 0.2   -- ( .2 =     1 -    9 cases)
+              WHEN GRI_19_c   =      0 THEN 0.0   -- (0   =  None             )
+         END
+                                                               ) AS DECIMAL (38,2))
+/* GRI_19_d, scaled (0 = None, .2 = 1-9 cases, .4 = 10-200 cases, .6 = 201 - 1000 cases, .8 = 1001 - 9999 cases, 1 = 10000+ cases) */
+       ,           GRI_19_d_scaled
+       = CAST ((
+         CASE 
+              WHEN GRI_19_d   >  10000 THEN 1     -- (1   = 10000+      cases)
+              WHEN GRI_19_d   >   1000 THEN 0.8   -- ( .8 =  1001 - 9999 cases)
+              WHEN GRI_19_d   >    200 THEN 0.6   -- ( .6 =   201 - 1000 cases)
+              WHEN GRI_19_d   >     10 THEN 0.4   -- ( .4 =    10 -  200 cases)
+              WHEN GRI_19_d   >      0 THEN 0.2   -- ( .2 =     1 -    9 cases)
+              WHEN GRI_19_d   =      0 THEN 0.0   -- (0   =  None             )
+         END
+                                                               ) AS DECIMAL (38,2))
+/* GRI_19_e, scaled (0 = None, .2 = 1-9 cases, .4 = 10-200 cases, .6 = 201 - 1000 cases, .8 = 1001 - 9999 cases, 1 = 10000+ cases) */
+       ,           GRI_19_e_scaled
+       = CAST ((
+         CASE 
+              WHEN GRI_19_e   >  10000 THEN 1     -- (1   = 10000+      cases)
+              WHEN GRI_19_e   >   1000 THEN 0.8   -- ( .8 =  1001 - 9999 cases)
+              WHEN GRI_19_e   >    200 THEN 0.6   -- ( .6 =   201 - 1000 cases)
+              WHEN GRI_19_e   >     10 THEN 0.4   -- ( .4 =    10 -  200 cases)
+              WHEN GRI_19_e   >      0 THEN 0.2   -- ( .2 =     1 -    9 cases)
+              WHEN GRI_19_e   =      0 THEN 0.0   -- (0   =  None             )
+         END
+                                                               ) AS DECIMAL (38,2))
+/* GRI_19_f, scaled (0 = None, .2 = 1-9 cases, .4 = 10-200 cases, .6 = 201 - 1000 cases, .8 = 1001 - 9999 cases, 1 = 10000+ cases) */
+       ,           GRI_19_f_scaled
+       = CAST ((
+         CASE 
+              WHEN GRI_19_f   >  10000 THEN 1     -- (1   = 10000+      cases)
+              WHEN GRI_19_f   >   1000 THEN 0.8   -- ( .8 =  1001 - 9999 cases)
+              WHEN GRI_19_f   >    200 THEN 0.6   -- ( .6 =   201 - 1000 cases)
+              WHEN GRI_19_f   >     10 THEN 0.4   -- ( .4 =    10 -  200 cases)
+              WHEN GRI_19_f   >      0 THEN 0.2   -- ( .2 =     1 -    9 cases)
+              WHEN GRI_19_f   =      0 THEN 0.0   -- (0   =  None             )
+         END
+                                                               ) AS DECIMAL (38,2))
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* NOTE: scaled GRI_19_ b to f requested by Peter Henne in 2015 ends here */
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 /* NOTE: scaled index values based in year 2007 */
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 /* GRI_scaled index */
-         GRI_scaled 
+      ,  GRI_scaled 
          =        CAST ((
                   CASE
                   WHEN GRI <= ( SELECT [CutPoint] FROM [forum].[dbo].[Pew_Field]
