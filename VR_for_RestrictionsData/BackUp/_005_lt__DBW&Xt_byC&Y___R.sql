@@ -242,9 +242,12 @@ SELECT
                                   GFI
                                                                ) AS DECIMAL (38,1))
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------------------------------
-       , *
 
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+       ,
+ *
 FROM
 /***************************************************************************************************************************************************************/
 (
@@ -384,7 +387,7 @@ SELECT
                                                                ) AS DECIMAL (38,2))
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*                 SHI_01_summary_a_ny           for toplines */
-       ,           SHI_01_summary_a_ny
+       ,           SHI_01_summary_a_ny0
        = CAST ((
          CASE 
               WHEN SHI_01     =  0.00
@@ -393,42 +396,42 @@ SELECT
               THEN               0.01
          END
                                                                ) AS DECIMAL (38,2))
-       ,           SHI_01_summary_a_nya
+       ,           SHI_01_summary_a_ny1
        = CAST ((
          CASE 
               WHEN SHI_01_a   >  0.00
               THEN               1.01
          END
                                                                ) AS DECIMAL (38,2))
-       ,           SHI_01_summary_a_nyb
+       ,           SHI_01_summary_a_ny2
        = CAST ((
          CASE 
               WHEN SHI_01_b   >  0.00
               THEN               1.02
          END
                                                                ) AS DECIMAL (38,2))
-       ,           SHI_01_summary_a_nyc
+       ,           SHI_01_summary_a_ny3
        = CAST ((
          CASE 
               WHEN SHI_01_c   >  0.00
               THEN               1.03
          END
                                                                ) AS DECIMAL (38,2))
-       ,           SHI_01_summary_a_nyd
+       ,           SHI_01_summary_a_ny4
        = CAST ((
          CASE 
               WHEN SHI_01_d   >  0.00
               THEN               1.04
          END
                                                                ) AS DECIMAL (38,2))
-       ,           SHI_01_summary_a_nye
+       ,           SHI_01_summary_a_ny5
        = CAST ((
          CASE 
               WHEN SHI_01_e   >  0.00
               THEN               1.05
          END
                                                                ) AS DECIMAL (38,2))
-       ,           SHI_01_summary_a_nyf
+       ,           SHI_01_summary_a_ny6
        = CAST ((
          CASE 
               WHEN SHI_01_f   >  0.00
@@ -437,24 +440,12 @@ SELECT
                                                                ) AS DECIMAL (38,2))
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*                 XSG_242526_ny           for toplines */
-       ,           XSG_242526_ny
+       ,           XSG_242526_ny0
        = CAST ((
          CASE WHEN GRX_24     = 0.00
                AND SHX_25     = 0.00
                AND SHX_26     = 0.00
               THEN              0.00
-              WHEN GRX_24     > 0.00
-                OR SHX_25     > 0.00
-                OR SHX_26     > 0.00
-              THEN              0.01
-              END
-                                                               ) AS DECIMAL (38,2))
-       ,           XSG_242526_ny1
-       = CAST ((
-         CASE WHEN GRX_24     = 0.00
-               AND SHX_25     = 0.00
-               AND SHX_26     = 0.00
-              THEN              NULL
               WHEN GRX_24     = 1.00
                 OR SHX_25     = 1.00
                 OR SHX_26     = 1.00
@@ -469,15 +460,23 @@ SELECT
               THEN              0.33
               END
                                                                ) AS DECIMAL (38,2))
+       ,           XSG_242526_ny1
+       = CAST ((
+         CASE WHEN GRX_24     > 0.00
+                OR SHX_25     > 0.00
+                OR SHX_26     > 0.00
+              THEN              0.01
+              END
+                                                               ) AS DECIMAL (38,2))
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*                 XSG_25n27_ny           for toplines */
-       ,           XSG_25n27_ny
+       ,           XSG_25n27_ny1
        = CAST ((
-         CASE WHEN GRX_25_ny  = 0.00
-               AND SHX_27_ny  = 0.00
+         CASE WHEN GRX_25_ny1 = 0.00
+               AND SHX_27_ny1 = 0.00
               THEN              0.00
-              WHEN GRX_25_ny  = 0.01
-                OR SHX_27_ny  = 0.01
+              WHEN GRX_25_ny1 = 0.01
+                OR SHX_27_ny1 = 0.01
               THEN              0.01
               END
                                                                ) AS DECIMAL (38,2))
@@ -622,6 +621,32 @@ SELECT
                                                                ) AS DECIMAL (38,2))
                                                                                     / 6 )
                                                                ) AS DECIMAL (38,2))
+         --=        CAST ((
+         --           ( CASE
+         --             WHEN SHI_01_a > 0 THEN 1
+         --             ELSE                   0
+         --              END                     )
+         --         + ( CASE
+         --             WHEN SHI_01_b > 0 THEN 1
+         --             ELSE                   0                                 
+         --              END                     )
+         --         + ( CASE
+         --             WHEN SHI_01_c > 0 THEN 1
+         --             ELSE                   0
+         --              END                     )
+         --         + ( CASE
+         --             WHEN SHI_01_d > 0 THEN 1
+         --             ELSE                   0
+         --              END                     )
+         --         + ( CASE
+         --             WHEN SHI_01_e > 0 THEN 1
+         --             ELSE                   0
+         --              END                     )
+         --         + ( CASE
+         --             WHEN SHI_01_f > 0 THEN 1
+         --             ELSE                   0
+         --              END                     )
+         --                                                      ) AS DECIMAL (38,2))
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*                 SHI_01_[a,b,c,d,e,f]_dummy for tables of question answers by country */
@@ -869,47 +894,27 @@ SELECT
                                                                ) AS DECIMAL (38,2))
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*                 GRI_16               for toplines */
-       ,           GRI_16_ny
-       = CAST ((
-         CASE 
-              WHEN GRI_16     =  0.00
-              THEN               0.00
-              WHEN GRI_16     >  0.00
-              THEN               0.01
-         END
-                                                               ) AS DECIMAL (38,2))
        ,           GRI_16_ny1
+       =           GRI_16
+       ,           GRI_16_ny2
        = CAST ((
-         CASE 
-              WHEN GRI_16     =  0.00
-              THEN               NULL
-              WHEN GRI_16     >  0.00
-              THEN               GRI_16
-         END
+         CASE WHEN GRI_16  > 0
+                  THEN           0.01
+                  END
                                                                ) AS DECIMAL (38,2))
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*                 GRI_19               for toplines */
-       ,           GRI_19_ny
-       = CAST ((
-         CASE 
-              WHEN GRI_19     =  0.00
-              THEN               0.00
-              WHEN GRI_19     >  0.00
-              THEN               0.01
-         END
-                                                               ) AS DECIMAL (38,2))
        ,           GRI_19_ny1
+       =           GRI_19
+       ,           GRI_19_ny2
        = CAST ((
-         CASE 
-              WHEN GRI_19     =  0.00
-              THEN               NULL
-              WHEN GRI_19     >  0.00
-              THEN               GRI_19
-         END
+         CASE WHEN GRI_19  > 0
+              THEN           0.01
+              END
                                                                ) AS DECIMAL (38,2))
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*                 GRI_19_summ_ny          for toplines */
-       ,           GRI_19_summ_ny
+       ,           GRI_19_summ_ny1
        = CAST ((
          CASE 
               WHEN GRI_19     =  0.00
@@ -918,35 +923,35 @@ SELECT
               THEN               0.01
          END
                                                                ) AS DECIMAL (38,2))
-       ,           GRI_19_summ_nyb
+       ,           GRI_19_summ_ny2
        = CAST ((
          CASE 
               WHEN GRI_19_b   >  0.00
               THEN               1.02
          END
                                                                ) AS DECIMAL (38,2))
-       ,           GRI_19_summ_nyc
+       ,           GRI_19_summ_ny3
        = CAST ((
          CASE 
               WHEN GRI_19_c   >  0.00
               THEN               1.03
          END
                                                                ) AS DECIMAL (38,2))
-       ,           GRI_19_summ_nyd
+       ,           GRI_19_summ_ny4
        = CAST ((
          CASE 
               WHEN GRI_19_d   >  0.00
               THEN               1.04
          END
                                                                ) AS DECIMAL (38,2))
-       ,           GRI_19_summ_nye
+       ,           GRI_19_summ_ny5
        = CAST ((
          CASE 
               WHEN GRI_19_e   >  0.00
               THEN               1.05
          END
                                                                ) AS DECIMAL (38,2))
-       ,           GRI_19_summ_nyf
+       ,           GRI_19_summ_ny6
        = CAST ((
          CASE 
               WHEN GRI_19_f   >  0.00
@@ -963,215 +968,150 @@ SELECT
                  + ISNULL(GRI_19_f, 0)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*                 SHI_04_ny          for toplines */
-       ,           SHI_04_ny
-       = CAST ((
-         CASE 
-              WHEN SHI_04     =  0.00
-              THEN               0.00
-              WHEN SHI_04     >  0.00
-              THEN               0.01
-         END
-                                                               ) AS DECIMAL (38,2))
+       ,           SHI_04_ny0
+       =           SHI_04
+
        ,           SHI_04_ny1
        = CAST ((
          CASE 
-              WHEN SHI_04     =  0.00
-              THEN               NULL
               WHEN SHI_04     >  0.00
-              THEN               SHI_04
+              THEN               0.01
          END
                                                                ) AS DECIMAL (38,2))
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*                 SHI_05_ny          for toplines */
-       ,           SHI_05_ny
-       = CAST ((
-         CASE 
-              WHEN SHI_05     =  0.00
-              THEN               0.00
-              WHEN SHI_05     >  0.00
-              THEN               0.01
-         END
-                                                               ) AS DECIMAL (38,2))
+       ,           SHI_05_ny0
+       =           SHI_05
        ,           SHI_05_ny1
        = CAST ((
          CASE 
-              WHEN SHI_05     =  0.00
-              THEN               NULL
               WHEN SHI_05     >  0.00
-              THEN               SHI_05
+              THEN               0.01
          END
                                                                ) AS DECIMAL (38,2))
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*                 SHI_07_ny          for toplines */
-       ,           SHI_07_ny
+       ,           SHI_07_ny0
+       =           SHI_07
+       ,           SHI_07_ny1
        = CAST ((
          CASE 
-              WHEN SHI_07     =  0.00
-              THEN               0.00
               WHEN SHI_07     >  0.00
               THEN               0.01
          END
                                                                ) AS DECIMAL (38,2))
-       ,           SHI_07_ny1
-       = CAST ((
-         CASE 
-              WHEN SHI_07     =  0.00
-              THEN               NULL
-              WHEN SHI_07     >  0.00
-              THEN               SHI_07
-         END
-                                                               ) AS DECIMAL (38,2))
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*                 SHI_01_x              for toplines??? - added on Dec2015  */
-       ,           SHI_01_x
-       =           ISNULL(SHI_01_b, 0)
-                 + ISNULL(SHI_01_c, 0)
-                 + ISNULL(SHI_01_d, 0)
-                 + ISNULL(SHI_01_e, 0)
-                 + ISNULL(SHI_01_f, 0)
+--/*                 SHI_01_x              for toplines shoul;d be added???*/
+--       ,           SHI_01_x
+--       =           ISNULL(SHI_01_b, 0)
+--                 + ISNULL(SHI_01_c, 0)
+--                 + ISNULL(SHI_01_d, 0)
+--                 + ISNULL(SHI_01_e, 0)
+--                 + ISNULL(SHI_01_f, 0)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*                 GRX_22               for toplines */
        ,           GRX_22_ny1
        = CAST ((
-         CASE WHEN ISNULL(GRX_22   , 9)  = 9
-               AND ISNULL(GRX_22_01, 9)  = 9
-               AND ISNULL(GRX_22_02, 9)  = 9
-               AND ISNULL(GRX_22_04, 9)  = 9
-              THEN               NULL
-              WHEN ISNULL(GRX_22   , 0)  < 0.66
+         CASE WHEN ISNULL(GRX_22   , 0)  < 0.66
                AND ISNULL(GRX_22_01, 0)  < 0.66
                AND ISNULL(GRX_22_02, 0)  < 0.66
                AND ISNULL(GRX_22_04, 0)  < 0.66
               THEN              0
-              WHEN ISNULL(GRX_22   , 0)  < 1.00
-               AND ISNULL(GRX_22_01, 0)  < 1.00
-               AND ISNULL(GRX_22_02, 0)  < 1.00
-               AND ISNULL(GRX_22_04, 0)  < 1.00
+              WHEN GRX_22     < 1.00
+               AND GRX_22_01  < 1.00
+               AND GRX_22_02  < 1.00
+               AND GRX_22_04  < 1.00
               THEN              0.67
               WHEN GRX_22     = 1.00
                 OR GRX_22_01  = 1.00
                 OR GRX_22_02  = 1.00
                 OR GRX_22_04  = 1.00
               THEN              1.00
---              ELSE 1000                       /*this for checking any value non-recoded*/
+              ELSE GRX_22_01                       /*this does not seem correct*/
               END
                                                                ) AS DECIMAL (38,2))
-/* current does not display "NO" -- this would be just a dummy but it has NOT BEEN TESTED: */
----------------------------------------------------------------------------------------------
---       ,           GRX_22_ny
+--       ,           GRX_22_ny2
 --       = CAST ((
---         CASE WHEN ISNULL(GRX_22   , 9)   = 9
---               AND ISNULL(GRX_22_01, 9)   = 9
---               AND ISNULL(GRX_22_02, 9)   = 9
---               AND ISNULL(GRX_22_04, 9)   = 9
---              THEN               NULL
---              WHEN ISNULL(GRX_22   , 0)   < 0.66
---               AND ISNULL(GRX_22_01, 0)   < 0.66
---               AND ISNULL(GRX_22_02, 0)   < 0.66
---               AND ISNULL(GRX_22_04, 0)   < 0.66
---              THEN              0
---              WHEN ISNULL(GRX_22   , 0)  >= 0.66
---               AND ISNULL(GRX_22_01, 0)  >= 0.66
---               AND ISNULL(GRX_22_02, 0)  >= 0.66
---               AND ISNULL(GRX_22_04, 0)  >= 0.66
+--         CASE WHEN GRX_22    >= 0.66
+--                OR GRX_22_01 >= 0.66
+--                OR GRX_22_02 >= 0.66
+--                OR GRX_22_04 >= 0.66
 --              THEN              0.01
 --              END
 --                                                               ) AS DECIMAL (38,2))
----------------------------------------------------------------------------------------------
-/*                                                         END of CODE -> NOT BEEN TESTED: */
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*                 GRX_22_01               for toplines */
-       ,           GRX_22_01_ny
-       = CAST ((
-         CASE WHEN GRX_22_01  < 0.66
-              THEN              0
-              WHEN GRX_22_01 >= 0.66
-              THEN              0.01
-         END
-                                                               ) AS DECIMAL (38,2))
        ,           GRX_22_01_ny1
        = CAST ((
          CASE WHEN GRX_22_01  < 0.66
-              THEN              NULL
-              WHEN GRX_22_01 >= 0.66
-              THEN              GRX_22_01
-         END
+              THEN              0
+              ELSE GRX_22_01
+              END
+                                                               ) AS DECIMAL (38,2))
+       ,           GRX_22_01_ny2
+       = CAST ((
+         CASE WHEN GRX_22_01 >= 0.66
+              THEN              0.01
+              END
                                                                ) AS DECIMAL (38,2))
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*                 GRX_22_02               for toplines */
-       ,           GRX_22_02_ny
-       = CAST ((
-         CASE WHEN GRX_22_02  < 0.66
-              THEN              0
-              WHEN GRX_22_02 >= 0.66
-              THEN              0.01
-         END
-                                                               ) AS DECIMAL (38,2))
        ,           GRX_22_02_ny1
        = CAST ((
          CASE WHEN GRX_22_02  < 0.66
-              THEN              NULL
-              WHEN GRX_22_02 >= 0.66
-              THEN              GRX_22_02
-         END
+              THEN              0
+              ELSE GRX_22_02
+              END
+                                                               ) AS DECIMAL (38,2))
+       ,           GRX_22_02_ny2
+       = CAST ((
+         CASE WHEN GRX_22_02 >= 0.66
+              THEN              0.01
+              END
                                                                ) AS DECIMAL (38,2))
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*                 GRX_22_03               for toplines */
-       ,           GRX_22_03_ny
-       = CAST ((
-         CASE WHEN GRX_22_03  <  0.66
-              THEN               0
-              WHEN GRX_22_03 >=  0.66
-              THEN               0.01
-         END
-                                                               ) AS DECIMAL (38,2))
        ,           GRX_22_03_ny1
        = CAST ((
-         CASE WHEN GRX_22_03  <  0.66
-              THEN               NULL
-              WHEN GRX_22_03 >=  0.66
-              THEN               GRX_22_03
-        END
+         CASE WHEN GRX_22_03  < 0.66
+              THEN              0
+              ELSE GRX_22_03
+              END
+                                                               ) AS DECIMAL (38,2))
+       ,           GRX_22_03_ny2
+       = CAST ((
+         CASE WHEN GRX_22_03 >= 0.66
+              THEN              0.01
+              END
                                                                ) AS DECIMAL (38,2))
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*                 GRX_22_04               for toplines */
-       ,           GRX_22_04_ny
-       = CAST ((
-         CASE WHEN GRX_22_04  <  0.66
-              THEN               0
-              WHEN GRX_22_04 >=  0.66
-              THEN               0.01
-         END
-                                                               ) AS DECIMAL (38,2))
        ,           GRX_22_04_ny1
        = CAST ((
-         CASE WHEN GRX_22_04  <  0.66
-              THEN               NULL
-              WHEN GRX_22_04 >=  0.66
-              THEN               GRX_22_04
-         END
+         CASE WHEN GRX_22_04  < 0.66
+              THEN              0
+              ELSE GRX_22_04
+              END
+                                                               ) AS DECIMAL (38,2))
+       ,           GRX_22_04_ny2
+       = CAST ((
+         CASE WHEN GRX_22_04 >= 0.66
+              THEN              0.01
+              END
                                                                ) AS DECIMAL (38,2))
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*                 GRX_24               for toplines */
-       ,           GRX_24_ny
-       = CAST ((
-         CASE WHEN GRX_24     =  0
-              THEN               0
-              WHEN GRX_24     >  0
-              THEN               0.01
-         END
-                                                               ) AS DECIMAL (38,2))
        ,           GRX_24_ny1
+       =           GRX_24
+       ,           GRX_24_ny2
        = CAST ((
-         CASE WHEN GRX_24     =  0
-              THEN               NULL
-              WHEN GRX_24     >  0
-              THEN               GRX_24
-         END
+         CASE WHEN GRX_24  > 0
+                  THEN           0.01
+                  END
                                                                ) AS DECIMAL (38,2))
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*                 GRX_25               for toplines */
-       ,           GRX_25_ny
+       ,           GRX_25_ny1
        = CAST ((
          CASE 
               WHEN GRX_25_01  =  0.00
@@ -1196,43 +1136,27 @@ SELECT
                                                                ) AS DECIMAL (38,2))
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*                 SHX_25               for toplines */
-       ,           SHX_25_ny
-       = CAST ((
-         CASE WHEN SHX_25     =  0
-              THEN               0
-              WHEN SHX_25     >  0
-              THEN               0.01
-         END
-                                                               ) AS DECIMAL (38,2))
        ,           SHX_25_ny1
+       =           SHX_25
+       ,           SHX_25_ny2
        = CAST ((
-         CASE WHEN SHX_25     =  0
-              THEN               NULL
-              WHEN SHX_25     >  0
-              THEN               SHX_25
-         END
+         CASE WHEN SHX_25  > 0
+                  THEN           0.01
+                  END
                                                                ) AS DECIMAL (38,2))
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*                 SHX_26               for toplines */
-       ,           SHX_26_ny
-       = CAST ((
-         CASE WHEN SHX_26     =  0
-              THEN               0
-              WHEN SHX_26     >  0
-              THEN               0.01
-         END
-                                                               ) AS DECIMAL (38,2))
        ,           SHX_26_ny1
+       =           SHX_26
+       ,           SHX_26_ny2
        = CAST ((
-         CASE WHEN SHX_26     =  0
-              THEN               NULL
-              WHEN SHX_26     >  0
-              THEN               SHX_26
-         END
+         CASE WHEN SHX_26  > 0
+                  THEN           0.01
+                  END
                                                                ) AS DECIMAL (38,2))
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*                 SHX_27               for toplines */
-       ,           SHX_27_ny
+       ,           SHX_27_ny1
        = CAST ((
          CASE 
               WHEN SHX_27_01  =  0.00

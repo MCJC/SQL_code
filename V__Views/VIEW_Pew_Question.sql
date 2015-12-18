@@ -43,6 +43,7 @@ SELECT
       ,[Question_abbreviation]
       ,[Question_wording_std]
       ,[Question_short_wording_std]
+      ,[Question_Label_80Chars]          --  added Dec2015
       ,[Question_wording]
       ,[Question_Year]
       ,[Notes]
@@ -51,6 +52,7 @@ SELECT
       ,[Editorially_Checked]
       ,[Display]                             = QS.[Display]
       ,[Display_NoStd]                       = QU.[Display]
+
   FROM 
            [forum].[dbo].[Pew_Question_NoStd]  QU
   FULL

@@ -1,6 +1,11 @@
 /***************************************************************************************************************************************************************/
 Print 
 '--- ' + CONVERT (VARCHAR(19), SYSDATETIME()) + ' ==>  script 00_    ------------------------------------------------------------------------------------------ '
+
+
+--- can be recoded using metacode
+
+
 /***************************************************************************************************************************************************************/
 /***                                                                                                                                                         ***/
 /***     >>>>>   This is the script used to create the lookup table [forum_ResAnal].[dbo].[vrp__01_cDB_SelDataBYCtry&Year]                         <<<<<     ***/
@@ -50,11 +55,11 @@ FROM
          ,[GRI_Q_13]                       = [GRI_13]
          ,[GRI_Q_14]                       = [GRI_14]
          ,[GRI_Q_15]                       = [GRI_15]
-         ,[GRI_Q_16]                       = [GRI_16_ny1] * 100
+         ,[GRI_Q_16]                       = [GRI_16_ny]       * 100  --   fromerly rescaled [GRI_16_ny1]
          ,[GRI_Q_16_reasons]               = [GRI_16]
          ,[GRI_Q_17]                       = [GRI_17]
          ,[GRI_Q_18]                       = [GRI_18]
-         ,[GRI_Q_19]                       = [GRI_19_ny1] * 100
+         ,[GRI_Q_19]                       = [GRI_19_ny]       * 100  --   fromerly rescaled [GRI_19_ny1]
          ,[GRI_Q_19_extent]                = [GRI_19]
          ,[GRI_Q_19_Abuse]                 = [GRI_19_e_scaled]
          ,[GRI_Q_19_Deaths]                = [GRI_19_f_scaled]
@@ -85,9 +90,9 @@ FROM
          ,[SHI_Q_1_harass_Other_Religions] = [SHI_01_xG6]
          ,[SHI_Q_2]                        = [SHI_02]
          ,[SHI_Q_3]                        = [SHI_03]
-         ,[SHI_Q_4]                        = [SHI_04_ny0] * 100
+         ,[SHI_Q_4]                        = [SHI_04_ny]       * 100  --   fromerly rescaled [SHI_04_ny0]
          ,[SHI_Q_4_extent]                 = [SHI_04]
-         ,[SHI_Q_5]                        = [SHI_05_ny0] * 100
+         ,[SHI_Q_5]                        = [SHI_05_ny]       * 100  --   fromerly rescaled [SHI_05_ny0]
          ,[SHI_Q_5_extent]                 = [SHI_05]
          ,[SHI_Q_6]                        = [SHI_06]
          ,[SHI_Q_7]                        = [SHI_07]
@@ -97,10 +102,10 @@ FROM
          ,[SHI_Q_11]                       = [SHI_11_for_index]
          ,[SHI_Q_12]                       = [SHI_12]
          ,[SHI_Q_13]                       = [SHI_13]
-         ,[GRX_22_blasphemy]               = [GRX_22_01_ny1] * 100
-         ,[GRX_22_apostasy]                = [GRX_22_02_ny1] * 100
-         ,[GRX_22_hate_speech]             = [GRX_22_03_ny1] * 100
-         ,[GRX_22_criticism_of_religion]   = [GRX_22_04_ny1] * 100
+         ,[GRX_22_blasphemy]               = [GRX_22_01_ny]    * 100  --   fromerly rescaled [GRX_22_01_ny1]
+         ,[GRX_22_apostasy]                = [GRX_22_02_ny]    * 100  --   fromerly rescaled [GRX_22_02_ny1]
+         ,[GRX_22_hate_speech]             = [GRX_22_03_ny]    * 100  --   fromerly rescaled [GRX_22_03_ny1]
+         ,[GRX_22_criticism_of_religion]   = [GRX_22_04_ny]    * 100  --   fromerly rescaled [GRX_22_04_ny1]
          ,[GRX_30]                         = [GRX_30]
 /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 FROM
