@@ -25,13 +25,17 @@ SELECT
       ,[Answer_Wording_std]
       ,[Display]
       ,[AnswerSet_num]
-      ,[Editorially_Checked]
+      ,[Editorially_Checked]   =     'Q:'
+                                +     Q.[Editorially_Checked]
+                                +     A.[Editorially_Checked]
+                                + ' / A:'
+                                +     A.[Editorially_Checked]
       ,[Full_set_of_Answers]
       ,[NA_by_set_of_Answers]
   FROM
 /*********************************************************************************************************/
-       [Pew_Question_Std]
-     , [Pew_Answer_Std]
+       [Pew_Question_Std]      Q
+     , [Pew_Answer_Std]        A
 /*********************************************************************************************************/
 WHERE
        [AnswerSet_num]

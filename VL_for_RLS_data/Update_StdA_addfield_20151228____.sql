@@ -1,0 +1,342 @@
+USE [RLS]
+GO
+/****************************************************************************************************************************************************/
+/*****                                                              Pew_Answer_Std                                                              *****/
+/*****                                                           BackUp current Table                                                           *****/
+/****************************************************************************************************************************************************/
+--  DECLARE @CrDt    varchar( 8)                                                            /* declare variable to store current date                 */
+--  SET     @CrDt = (CONVERT(VARCHAR(8),GETDATE(),112))                                     /* store date in format YYYYMMDD                          */
+--/*--------------------------------------------------------------------------------------------------------------------------------------------------*/
+--EXEC                                                                                      /* exec statement to run strings script                   */
+--     ( ' SELECT * INTO [_bk_forum].[dbo].[Pew_Answer_Std_' + @CrDt + 'RLS]'               /* select into backup                                     */
+--         + '      FROM                   [Pew_Answer_Std]'               )                /* select into backup from current table                  */
+/****************************************************************************************************************************************************/
+
+
+/****************************************************************************************************************************************************/
+/*****                                                              -> U P D A T E                                                              *****/
+/*****                                             notice:  this UPDATES questions previously added                                             *****/
+/****************************************************************************************************************************************************/
+
+/****************************************************************************************************************************************************/
+/*** add field for edtorialy checked or not-checked *************************************************************************************************/
+/*--------------------------------------------------------------------------------------------------------------------------------------------------*/
+--ALTER TABLE                                                                               /*                                                        */
+--                               [RLS].[dbo].[Pew_Answer_Std]                               /*                                                        */
+--ADD                                                                                       /*                                                        */
+--                                           [Editorially_Checked]  [VARCHAR](5) NULL       /*                                                        */
+--GO
+/*--------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------------------------------------*/
+--UPDATE                                                                                    /*                                                        */
+--                               [RLS].[dbo].[Pew_Answer_Std]                               /*                                                        */
+--SET                                                                                       /*                                                        */
+--                                           [Editorially_Checked] = 'No!'                  /*                                                        */
+--GO
+/*--------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------------------------------------*/
+--UPDATE                                                                                    /*                                                        */
+--                               [RLS].[dbo].[Pew_Answer_Std]                               /*                                                        */
+--SET                                                                                       /*                                                        */
+--                                           [Editorially_Checked] = 'Yes'                  /*                                                        */
+--                                     WHERE [Answer_Std_pk]                                /*                                                        */
+--                                                                 IN (                     /*                                                        */
+--                                                                              10053       /* modify row in selecteded table                         */
+--                                                                             ,10054       /* modify row in selecteded table                         */
+--                                                                             ,10055       /* modify row in selecteded table                         */
+--                                                                             ,10056       /* modify row in selecteded table                         */
+--                                                                             ,10310       /* modify row in selecteded table                         */
+--                                                                             ,10311       /* modify row in selecteded table                         */
+--                                                                             ,10312       /* modify row in selecteded table                         */
+--                                                                             ,10313       /* modify row in selecteded table                         */
+--                                                                             ,10314       /* modify row in selecteded table                         */
+--                                                                             ,10315       /* modify row in selecteded table                         */
+--                                                                             ,10316       /* modify row in selecteded table                         */
+--                                                                             ,10317       /* modify row in selecteded table                         */
+--                                                                             ,10318       /* modify row in selecteded table                         */
+--                                                                             ,10319       /* modify row in selecteded table                         */
+--                                                                             ,10320       /* modify row in selecteded table                         */
+--                                                                             ,10321       /* modify row in selecteded table                         */
+--                                                                             ,10322       /* modify row in selecteded table                         */
+--                                                                             ,10323       /* modify row in selecteded table                         */
+--                                                                             ,10324       /* modify row in selecteded table                         */
+--                                                                             ,10325       /* modify row in selecteded table                         */
+--                                                                             ,10326       /* modify row in selecteded table                         */
+--                                                                             ,10327       /* modify row in selecteded table                         */
+--                                                                             ,10328       /* modify row in selecteded table                         */
+--                                                                             ,10329       /* modify row in selecteded table                         */
+--                                                                             ,10330       /* modify row in selecteded table                         */
+--                                                                             ,10331       /* modify row in selecteded table                         */
+--                                                                             ,10332       /* modify row in selecteded table                         */
+--                                                                             ,10333       /* modify row in selecteded table                         */
+--                                                                             ,10334       /* modify row in selecteded table                         */
+--                                                                             ,10335       /* modify row in selecteded table                         */
+--                                                                             ,10336       /* modify row in selecteded table                         */
+--                                                                             ,10337       /* modify row in selecteded table                         */
+--                                                                             ,10338       /* modify row in selecteded table                         */
+--                                                                             ,10339       /* modify row in selecteded table                         */
+--                                                                             ,10340       /* modify row in selecteded table                         */
+--                                                                             ,10341       /* modify row in selecteded table                         */
+--                                                                             ,10342       /* modify row in selecteded table                         */
+--                                                                             ,10343       /* modify row in selecteded table                         */
+--                                                                             ,10344       /* modify row in selecteded table                         */
+--                                                                             ,10345       /* modify row in selecteded table                         */
+--                                                                             ,10346       /* modify row in selecteded table                         */
+--                                                                             ,10347       /* modify row in selecteded table                         */
+--                                                                             ,10348       /* modify row in selecteded table                         */
+--                                                                             ,10349       /* modify row in selecteded table                         */
+--                                                                             ,10350       /* modify row in selecteded table                         */
+--                                                                             ,10351       /* modify row in selecteded table                         */
+--                                                                             ,10352       /* modify row in selecteded table                         */
+--                                                                             ,10353       /* modify row in selecteded table                         */
+--                                                                             ,10354       /* modify row in selecteded table                         */
+--                                                                             ,10355       /* modify row in selecteded table                         */
+--                                                                             ,10356       /* modify row in selecteded table                         */
+--                                                                             ,10357       /* modify row in selecteded table                         */
+--                                                                             ,10358       /* modify row in selecteded table                         */
+--                                                                             ,10359       /* modify row in selecteded table                         */
+--                                                                             ,10360       /* modify row in selecteded table                         */
+--                                                                             ,10113       /* modify row in selecteded table                         */
+--                                                                             ,10114       /* modify row in selecteded table                         */
+--                                                                             ,10115       /* modify row in selecteded table                         */
+--                                                                             ,10116       /* modify row in selecteded table                         */
+--                                                                             ,10117       /* modify row in selecteded table                         */
+--                                                                             ,10361       /* modify row in selecteded table                         */
+--                                                                             ,10362       /* modify row in selecteded table                         */
+--                                                                             ,10363       /* modify row in selecteded table                         */
+--                                                                             ,10364       /* modify row in selecteded table                         */
+--                                                                             ,10365       /* modify row in selecteded table                         */
+--                                                                             ,10366       /* modify row in selecteded table                         */
+--                                                                             ,10367       /* modify row in selecteded table                         */
+--                                                                             ,10368       /* modify row in selecteded table                         */
+--                                                                             ,10369       /* modify row in selecteded table                         */
+--                                                                             ,10370       /* modify row in selecteded table                         */
+--                                                                             ,10371       /* modify row in selecteded table                         */
+--                                                                             ,10372       /* modify row in selecteded table                         */
+--                                                                             ,10373       /* modify row in selecteded table                         */
+--                                                                             ,10374       /* modify row in selecteded table                         */
+--                                                                             ,10375       /* modify row in selecteded table                         */
+--                                                                             ,10376       /* modify row in selecteded table                         */
+--                                                                             ,10377       /* modify row in selecteded table                         */
+--                                                                             ,10378       /* modify row in selecteded table                         */
+--                                                                             ,10379       /* modify row in selecteded table                         */
+--                                                                             ,10380       /* modify row in selecteded table                         */
+--                                                                             ,10381       /* modify row in selecteded table                         */
+--                                                                             ,10382       /* modify row in selecteded table                         */
+--                                                                             ,10383       /* modify row in selecteded table                         */
+--                                                                             ,10384       /* modify row in selecteded table                         */
+--                                                                             ,10385       /* modify row in selecteded table                         */
+--                                                                             ,10386       /* modify row in selecteded table                         */
+--                                                                             ,10387       /* modify row in selecteded table                         */
+--                                                                             ,10388       /* modify row in selecteded table                         */
+--                                                                             ,10389       /* modify row in selecteded table                         */
+--                                                                             ,10390       /* modify row in selecteded table                         */
+--                                                                             ,10391       /* modify row in selecteded table                         */
+--                                                                             ,10392       /* modify row in selecteded table                         */
+--                                                                             ,10393       /* modify row in selecteded table                         */
+--                                                                             ,10394       /* modify row in selecteded table                         */
+--                                                                             ,10395       /* modify row in selecteded table                         */
+--                                                                             ,10396       /* modify row in selecteded table                         */
+--                                                                             ,10397       /* modify row in selecteded table                         */
+--                                                                             ,10398       /* modify row in selecteded table                         */
+--                                                                             ,10399       /* modify row in selecteded table                         */
+--                                                                             ,10400       /* modify row in selecteded table                         */
+--                                                                             ,10401       /* modify row in selecteded table                         */
+--                                                                             ,10402       /* modify row in selecteded table                         */
+--                                                                             ,10403       /* modify row in selecteded table                         */
+--                                                                             ,10404       /* modify row in selecteded table                         */
+--                                                                             ,10405       /* modify row in selecteded table                         */
+--                                                                             ,10406       /* modify row in selecteded table                         */
+--                                                                             ,10407       /* modify row in selecteded table                         */
+--                                                                             ,10408       /* modify row in selecteded table                         */
+--                                                                             ,10409       /* modify row in selecteded table                         */
+--                                                                             ,10410       /* modify row in selecteded table                         */
+--                                                                             ,10411       /* modify row in selecteded table                         */
+--                                                                             ,10412       /* modify row in selecteded table                         */
+--                                                                             ,10413       /* modify row in selecteded table                         */
+--                                                                             ,10414       /* modify row in selecteded table                         */
+--                                                                             ,10415       /* modify row in selecteded table                         */
+--                                                                             ,10416       /* modify row in selecteded table                         */
+--                                                                             ,10417       /* modify row in selecteded table                         */
+--                                                                             ,10418       /* modify row in selecteded table                         */
+--                                                                             ,10419       /* modify row in selecteded table                         */
+--                                                                             ,10420       /* modify row in selecteded table                         */
+--                                                                             ,10421       /* modify row in selecteded table                         */
+--                                                                             ,10422       /* modify row in selecteded table                         */
+--                                                                             ,10423       /* modify row in selecteded table                         */
+--                                                                             ,10424       /* modify row in selecteded table                         */
+--                                                                             ,10425       /* modify row in selecteded table                         */
+--                                                                             ,10426       /* modify row in selecteded table                         */
+--                                                                             ,10427       /* modify row in selecteded table                         */
+--                                                                             ,10428       /* modify row in selecteded table                         */
+--                                                                             ,10429       /* modify row in selecteded table                         */
+--                                                                             ,10430       /* modify row in selecteded table                         */
+--                                                                             ,10431       /* modify row in selecteded table                         */
+--                                                                             ,10432       /* modify row in selecteded table                         */
+--                                                                             ,10433       /* modify row in selecteded table                         */
+--                                                                             ,10434       /* modify row in selecteded table                         */
+--                                                                             ,10435       /* modify row in selecteded table                         */
+--                                                                             ,10436       /* modify row in selecteded table                         */
+--                                                                             ,10437       /* modify row in selecteded table                         */
+--                                                                             ,10438       /* modify row in selecteded table                         */
+--                                                                             ,10439       /* modify row in selecteded table                         */
+--                                                                             ,10440       /* modify row in selecteded table                         */
+--                                                                             ,10441       /* modify row in selecteded table                         */
+--                                                                             ,10045       /* modify row in selecteded table                         */
+--                                                                             ,10046       /* modify row in selecteded table                         */
+--                                                                             ,10047       /* modify row in selecteded table                         */
+--                                                                             ,10048       /* modify row in selecteded table                         */
+--                                                                             ,10005       /* modify row in selecteded table                         */
+--                                                                             ,10006       /* modify row in selecteded table                         */
+--                                                                             ,10138       /* modify row in selecteded table                         */
+--                                                                             ,10139       /* modify row in selecteded table                         */
+--                                                                             ,10140       /* modify row in selecteded table                         */
+--                                                                             ,10141       /* modify row in selecteded table                         */
+--                                                                             ,10142       /* modify row in selecteded table                         */
+--                                                                             ,10041       /* modify row in selecteded table                         */
+--                                                                             ,10042       /* modify row in selecteded table                         */
+--                                                                             ,10043       /* modify row in selecteded table                         */
+--                                                                             ,10044       /* modify row in selecteded table                         */
+--                                                                             ,10224       /* modify row in selecteded table                         */
+--                                                                             ,10225       /* modify row in selecteded table                         */
+--                                                                             ,10226       /* modify row in selecteded table                         */
+--                                                                             ,10227       /* modify row in selecteded table                         */
+--                                                                             ,10228       /* modify row in selecteded table                         */
+--                                                                             ,10229       /* modify row in selecteded table                         */
+--                                                                             ,10230       /* modify row in selecteded table                         */
+--                                                                             ,10231       /* modify row in selecteded table                         */
+--                                                                             ,10232       /* modify row in selecteded table                         */
+--                                                                             ,10233       /* modify row in selecteded table                         */
+--                                                                             ,10234       /* modify row in selecteded table                         */
+--                                                                             ,10235       /* modify row in selecteded table                         */
+--                                                                             ,10236       /* modify row in selecteded table                         */
+--                                                                             ,10237       /* modify row in selecteded table                         */
+--                                                                             ,10238       /* modify row in selecteded table                         */
+--                                                                             ,10239       /* modify row in selecteded table                         */
+--                                                                             ,10240       /* modify row in selecteded table                         */
+--                                                                             ,10554       /* modify row in selecteded table                         */
+--                                                                             ,10555       /* modify row in selecteded table                         */
+--                                                                             ,10556       /* modify row in selecteded table                         */
+--                                                                             ,10557       /* modify row in selecteded table                         */
+--                                                                             ,10558       /* modify row in selecteded table                         */
+--                                                                             ,10442       /* modify row in selecteded table                         */
+--                                                                             ,10443       /* modify row in selecteded table                         */
+--                                                                             ,10444       /* modify row in selecteded table                         */
+--                                                                             ,10445       /* modify row in selecteded table                         */
+--                                                                             ,10446       /* modify row in selecteded table                         */
+--                                                                             ,10447       /* modify row in selecteded table                         */
+--                                                                             ,10448       /* modify row in selecteded table                         */
+--                                                                             ,10449       /* modify row in selecteded table                         */
+--                                                                             ,10450       /* modify row in selecteded table                         */
+--                                                                             ,10451       /* modify row in selecteded table                         */
+--                                                                             ,10452       /* modify row in selecteded table                         */
+--                                                                             ,10453       /* modify row in selecteded table                         */
+--                                                                             ,10454       /* modify row in selecteded table                         */
+--                                                                             ,10455       /* modify row in selecteded table                         */
+--                                                                             ,10456       /* modify row in selecteded table                         */
+--                                                                             ,10457       /* modify row in selecteded table                         */
+--                                                                             ,10458       /* modify row in selecteded table                         */
+--                                                                             ,10459       /* modify row in selecteded table                         */
+--                                                                             ,10460       /* modify row in selecteded table                         */
+--                                                                             ,10461       /* modify row in selecteded table                         */
+--                                                                             ,10462       /* modify row in selecteded table                         */
+--                                                                             ,10463       /* modify row in selecteded table                         */
+--                                                                             ,10464       /* modify row in selecteded table                         */
+--                                                                             ,10465       /* modify row in selecteded table                         */
+--                                                                             ,10466       /* modify row in selecteded table                         */
+--                                                                             ,10467       /* modify row in selecteded table                         */
+--                                                                             ,10468       /* modify row in selecteded table                         */
+--                                                                             ,10469       /* modify row in selecteded table                         */
+--                                                                             ,10470       /* modify row in selecteded table                         */
+--                                                                             ,10471       /* modify row in selecteded table                         */
+--                                                                             ,10472       /* modify row in selecteded table                         */
+--                                                                             ,10473       /* modify row in selecteded table                         */
+--                                                                             ,10474       /* modify row in selecteded table                         */
+--                                                                             ,10475       /* modify row in selecteded table                         */
+--                                                                             ,10476       /* modify row in selecteded table                         */
+--                                                                             ,10477       /* modify row in selecteded table                         */
+--                                                                             ,10478       /* modify row in selecteded table                         */
+--                                                                             ,10479       /* modify row in selecteded table                         */
+--                                                                             ,10480       /* modify row in selecteded table                         */
+--                                                                             ,10481       /* modify row in selecteded table                         */
+--                                                                             ,10482       /* modify row in selecteded table                         */
+--                                                                             ,10483       /* modify row in selecteded table                         */
+--                                                                             ,10484       /* modify row in selecteded table                         */
+--                                                                             ,10485       /* modify row in selecteded table                         */
+--                                                                             ,10486       /* modify row in selecteded table                         */
+--                                                                             ,10487       /* modify row in selecteded table                         */
+--                                                                             ,10488       /* modify row in selecteded table                         */
+--                                                                             ,10489       /* modify row in selecteded table                         */
+--                                                                             ,10490       /* modify row in selecteded table                         */
+--                                                                             ,10491       /* modify row in selecteded table                         */
+--                                                                             ,10492       /* modify row in selecteded table                         */
+--                                                                             ,10493       /* modify row in selecteded table                         */
+--                                                                             ,10494       /* modify row in selecteded table                         */
+--                                                                             ,10495       /* modify row in selecteded table                         */
+--                                                                             ,10496       /* modify row in selecteded table                         */
+--                                                                             ,10497       /* modify row in selecteded table                         */
+--                                                                             ,10498       /* modify row in selecteded table                         */
+--                                                                             ,10499       /* modify row in selecteded table                         */
+--                                                                             ,10500       /* modify row in selecteded table                         */
+--                                                                             ,10501       /* modify row in selecteded table                         */
+--                                                                             ,10502       /* modify row in selecteded table                         */
+--                                                                             ,10503       /* modify row in selecteded table                         */
+--                                                                             ,10504       /* modify row in selecteded table                         */
+--                                                                             ,10505       /* modify row in selecteded table                         */
+--                                                                             ,10506       /* modify row in selecteded table                         */
+--                                                                             ,10507       /* modify row in selecteded table                         */
+--                                                                             ,10508       /* modify row in selecteded table                         */
+--                                                                             ,10509       /* modify row in selecteded table                         */
+--                                                                             ,10510       /* modify row in selecteded table                         */
+--                                                                             ,10511       /* modify row in selecteded table                         */
+--                                                                             ,10512       /* modify row in selecteded table                         */
+--                                                                             ,10513       /* modify row in selecteded table                         */
+--                                                                             ,10514       /* modify row in selecteded table                         */
+--                                                                             ,10515       /* modify row in selecteded table                         */
+--                                                                             ,10516       /* modify row in selecteded table                         */
+--                                                                             ,10517       /* modify row in selecteded table                         */
+--                                                                             ,10518       /* modify row in selecteded table                         */
+--                                                                             ,10519       /* modify row in selecteded table                         */
+--                                                                             ,10520       /* modify row in selecteded table                         */
+--                                                                             ,10521       /* modify row in selecteded table                         */
+--                                                                             ,10522       /* modify row in selecteded table                         */
+--                                                                             ,10523       /* modify row in selecteded table                         */
+--                                                                             ,10524       /* modify row in selecteded table                         */
+--                                                                             ,10525       /* modify row in selecteded table                         */
+--                                                                             ,10526       /* modify row in selecteded table                         */
+--                                                                             ,10527       /* modify row in selecteded table                         */
+--                                                                             ,10528       /* modify row in selecteded table                         */
+--                                                                             ,10529       /* modify row in selecteded table                         */
+--                                                                             ,10530       /* modify row in selecteded table                         */
+--                                                                             ,10531       /* modify row in selecteded table                         */
+--                                                                             ,10532       /* modify row in selecteded table                         */
+--                                                                             ,10533       /* modify row in selecteded table                         */
+--                                                                             ,10534       /* modify row in selecteded table                         */
+--                                                                             ,10535       /* modify row in selecteded table                         */
+--                                                                             ,10536       /* modify row in selecteded table                         */
+--                                                                             ,10537       /* modify row in selecteded table                         */
+--                                                                             ,10538       /* modify row in selecteded table                         */
+--                                                                             ,10539       /* modify row in selecteded table                         */
+--                                                                             ,10540       /* modify row in selecteded table                         */
+--                                                                             ,10541       /* modify row in selecteded table                         */
+--                                                                             ,10542       /* modify row in selecteded table                         */
+--                                                                             ,10543       /* modify row in selecteded table                         */
+--                                                                             ,10544       /* modify row in selecteded table                         */
+--                                                                             ,10545       /* modify row in selecteded table                         */
+--                                                                             ,10546       /* modify row in selecteded table                         */
+--                                                                             ,10547       /* modify row in selecteded table                         */
+--                                                                             ,10548       /* modify row in selecteded table                         */
+--                                                                             ,10549       /* modify row in selecteded table                         */
+--                                                                             ,10550       /* modify row in selecteded table                         */
+--                                                                             ,10551       /* modify row in selecteded table                         */
+--                                                                             ,10552       /* modify row in selecteded table                         */
+--                                                                             ,10553       /* modify row in selecteded table                         */
+--                                                                    )                     /*                                                        */
+--/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/****************************************************************************************************************************************************************************/
+--SELECT * FROM                  [RLS].[dbo].[Pew_Answer_Std]                               /*                                                        */
+--ORDER BY                                   [Editorially_Checked]                          /*                                                        */
+/****************************************************************************************************************************************************************************/
+/****************************************************************************************************************************************************************************/
+
+
