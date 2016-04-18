@@ -38,20 +38,14 @@ SELECT * 	INTO [forum_ResAnal].[dbo].[vr___01_cDB_Long__NoAggregated]
             FROM                 [dbo].[vr___01_]
 GO
 /***************************************************************************************************************************************************************/
-Print 
-'--- ' + CONVERT (VARCHAR(19), SYSDATETIME()) + ' ==>  script 004    ------------------------------------------------------------------------------------------ '
-IF OBJECT_ID  (N'[forum_ResAnal].[dbo].[vr___02_cDB_Wide__by_Ctry&Year]', N'U') IS NOT NULL
-DROP TABLE       [forum_ResAnal].[dbo].[vr___02_cDB_Wide__by_Ctry&Year]
-SELECT * INTO    [forum_ResAnal].[dbo].[vr___02_cDB_Wide__by_Ctry&Year]
-            FROM                 [dbo].[vr___02_]
-GO
-/***************************************************************************************************************************************************************/
 
 
 
 
 
-
+-- * 001 Script all views
+-- * 002 Backup all tables
+ 
 
 
 
@@ -66,14 +60,6 @@ GO
 /***                     This is a SQLCMD script which requires SQLCMD scripting mode to be enabled (from the toolbar icon or the Query menu)                ***/
 /***                     Once SQLCMD scripting mode is enabled, check that actual SQL scripts listed in folder are coinsistent to the script                 ***/
 /***                     We can also check first if all tables and views are working, before recreating anything!!!                                          ***/
-
-
---BEFORE RECREATING ALL 
--- * 001 Script all views
--- * 002 Backup all tables
- 
-
-
 /***                                                                                                                                                         ***/
 /***************************************************************************************************************************************************************/
 /***************************************************************************************************************************************************************/

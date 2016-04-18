@@ -15,8 +15,8 @@
 USE [forum_ResAnal]
 GO
 /******************************************************************************************************************************/
-IF OBJECT_ID  (N'[forum_ResAnal].[dbo].[vr_04w_R&H_Index_by_CtryRegion&Yr]', N'U') IS NOT NULL
-DROP TABLE       [forum_ResAnal].[dbo].[vr_04w_R&H_Index_by_CtryRegion&Yr]
+IF OBJECT_ID  (N'[forum_ResAnal].[dbo].[vr___05_cDB_Index_byCtryReg&Yr]', N'U') IS NOT NULL
+DROP TABLE       [forum_ResAnal].[dbo].[vr___05_cDB_Index_byCtryReg&Yr]
 GO
 /******************************************************************************************************************************/
 WITH PREv4
@@ -26,23 +26,8 @@ WITH PREv4
         SELECT
 /*----------------------------------------------------------------------------------------------------------------------------*/
                 [Nation_fk]
-              , [Region5_code]   
-                 =   CASE
-                          WHEN [Region5] = 'Americas'                  THEN 1000
-                          WHEN [Region5] = 'Europe'                    THEN 1003
-                          WHEN [Region5] = 'Middle East-North Africa'  THEN 1004
-                          WHEN [Region5] = 'Sub-Saharan Africa'        THEN 1005
-                          WHEN [Region5] = 'Asia-Pacific'              THEN 1006
-                          END
+              , [Region5_code]
               , [Region6_code]
-                 =   CASE
-                          WHEN [Region6] = 'North America'             THEN 1001
-                          WHEN [Region6] = 'Latin America-Caribbean'   THEN 1002
-                          WHEN [Region6] = 'Europe'                    THEN 1003
-                          WHEN [Region6] = 'Middle East-North Africa'  THEN 1004
-                          WHEN [Region6] = 'Sub-Saharan Africa'        THEN 1005
-                          WHEN [Region6] = 'Asia-Pacific'              THEN 1006
-                          END
               , [Region5]
               , [Region6]
               , [Ctry_EditorialName]
@@ -143,64 +128,53 @@ WITH PREv4
         AND       [Y3]        = [Question_Year]
         AND       [I3]        = [Index_Abbreviation]
 /******************************************************************************************************************************/
-
-
         JOIN
-(
-/****** Script for SelectTopNRows command from SSMS  ******/
-SELECT 
-       [QAS] = [Question_abbreviation_std]
-      ,[Question_short_wording_std]
-  FROM [forum].[dbo].[Pew_Question_Std]
-) q
+/******************************************************************************************************************************/
+        (
+/******************************************************************************************************************************/
+        SELECT 
+                  [QAS]       = [Question_abbreviation_std]
+              ,                 [Question_short_wording_std]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+          FROM    [forum].[dbo].[Pew_Question_Std]
+/******************************************************************************************************************************/
+        )                                                         Q
 /******************************************************************************************************************************/
         ON        [QAS]       = [Index_Abbreviation]
 /******************************************************************************************************************************/
-
-
-
-/****** Script for SelectTopNRows command from SSMS  ******/
-SELECT
-       [Region_pk]
-      ,[Region_EditorialName]
-  FROM [forum].[dbo].[Pew_Region]
-Region_pk	Region_EditorialName
-1000	Americas
-1001	North America
-1002	Latin America-Caribbean
-1003	Europe
-1004	Middle East-North Africa
-1005	Sub-Saharan Africa
-1006	Asia-Pacific
-10000	World
-
-
-
+        JOIN
+/******************************************************************************************************************************/
+        (
+/******************************************************************************************************************************/
+        SELECT 
+                  [Region5_code]  = [Region_pk]
+              ,   [Region5_]      = [Region_EditorialName]
+          FROM    [forum].[dbo].[Pew_Region]
+/******************************************************************************************************************************/
+        )                                                         R5
+/******************************************************************************************************************************/
+        ON        [Region5_]  = [Region5]
+/******************************************************************************************************************************/
+        JOIN
+/******************************************************************************************************************************/
+        (
+/******************************************************************************************************************************/
+        SELECT 
+                  [Region6_code]  = [Region_pk]
+              ,   [Region6_]      = [Region_EditorialName]
+          FROM    [forum].[dbo].[Pew_Region]
+/******************************************************************************************************************************/
+        )                                                         R6
+/******************************************************************************************************************************/
+        ON        [Region6_]  = [Region6]
+/******************************************************************************************************************************/
       )
 /******************************************************************************************************************************/
 /******************************************************************************************************************************/
 
+
 /******************************************************************************************************************************/
-SELECT * INTO    [forum_ResAnal].[dbo].[vr_04w_R&H_Index_by_CtryRegion&Yr]
+SELECT * INTO    [forum_ResAnal].[dbo].[vr___05_cDB_Index_byCtryReg&Yr]
 FROM
 --------------------------------------------------------------------------------------------------------------------------------
 (
@@ -287,18 +261,10 @@ SELECT
 --------------------------------------------------------------------------------------------------------------------------------
          [Index_Year]
        , [level]                 =  2
-       , [Region5_code]          =  CASE
-                                        WHEN [Region6_code] = 1001                   THEN 1000
-                                        WHEN [Region6_code] = 1002                   THEN 1000
-                                        ELSE [Region6_code]
-                                    END
+       , [Region5_code]          =  NULL
        , [Region6_code]
        , [Nation_fk]             =           [Region6_code]
-       , [Region5]               =  CASE
-                                        WHEN [Region6] = 'North America'             THEN 'Americas'
-                                        WHEN [Region6] = 'Latin America-Caribbean'   THEN 'Americas'
-                                        ELSE [Region6]
-                                    END
+       , [Region5]               =  ''
        , [Region6]
        , [Ctry_EditorialName]    =  'All countires in ' + [Region6]
        , [Index_abbreviation]
@@ -383,16 +349,10 @@ SELECT
          [Index_Year]
        , [level]                 =  2.5
        , [Region5_code]
-       , [Region6_code]          =  CASE
-                                        WHEN [Region5_code] = 1000                   THEN NULL
-                                        ELSE [Region5_code]
-                                    END
+       , [Region6_code]          =  NULL
        , [Nation_fk]             =           [Region5_code]
        , [Region5]
-       , [Region6]               =  CASE
-                                        WHEN [Region5] = 'Americas'                  THEN 'N.A. & L.A.-C.'
-                                        ELSE [Region5]
-                                    END
+       , [Region6]               =  ''
        , [Ctry_EditorialName]    =  'All countires in ' + [Region5]
        , [Index_abbreviation]
        , [Index_name]
