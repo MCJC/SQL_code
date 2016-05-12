@@ -1,0 +1,265 @@
+-------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  S:\Forum\Database\MANAGEMENT\SQL_code\VR_for_RestrictionsData\Extraction_of_PublicData.log
+  log type:  text
+ opened on:   4 May 2016, 14:33:05
+. * context:
+. clear all
+. version 14
+. set more off
+.   pause off
+. * pause on
+.   set trace off
+. * set trace on
+. * Save & Display date & time to check how long the program takes to run:
+. scalar cxd=(c(current_date))
+. scalar cxt=(c(current_time))
+. di cxd "   " cxt
+ 4 May 2016   14:33:05
+. *******************************************************************************************************************
+. }
+
+. *******************************************************************************************************************
+. {  //   Step 1:  Create labeling script                                                                          **
+. *******************************************************************************************************************
+. #delimit ;
+delimiter now ;
+. odbc load, exec 
+> ("
+> /**********************************************************************************************/
+> SELECT *
+>   FROM [forum_ResAnal].[dbo].[vrp__01v_labSelDataBYCtry&Year]
+> /**********************************************************************************************/
+> ")
+> connectionstring("DRIVER={SQL Server};SERVER=ForumDB;DATABASE=forum_ResAnal; ")
+> clear ;
+. #delimit cr
+delimiter now cr
+. * wait 15 seonds for data retreiving
+.  sleep 15000
+.         * Compress data:
+.         qui: compress
+.         * count and store number of rows for iteration 
+.         qui count
+.         local n = r(N)
+.         * Create .do file for labeling variables
+. file open                 handle using PubDS_VarLabels.do, write text replace
+(note: file PubDS_VarLabels.do not found)
+. ******************************************************************************************************************
+.                file write handle "***   Script created from [forum_ResAnal]..[vrp__02_lab_SelDataBYCtry&Year] " _n
+.                file write handle "***   on `= c(current_date)' at `= c(current_time)'. "                        _n
+.                file write handle                                                                                _n
+.                file write handle                                                                                _n
+. ******************************************************************************************************************
+.   forvalues ///
+>     x = 1/`n' {
+  2.                file write handle (rowforlabel[`x']) _n
+  3.               }
+. ******************************************************************************************************************
+. file close                handle
+. ******************************************************************************************************************
+. }
+
+. *******************************************************************************************************************
+. {  //   Step 2:  Retreive, label and save dataset as a .DTA file                                                 **
+. *******************************************************************************************************************
+. clear
+. #delimit ;
+delimiter now ;
+. odbc load, exec 
+> ("
+> SELECT *
+>   FROM [forum_ResAnal].[dbo].[vrp__01_cDB_SelDataBYCtry&Year]
+> ")
+> connectionstring("DRIVER={SQL Server};SERVER=ForumDB;DATABASE=forum_ResAnal; ")
+> clear ;
+. #delimit cr
+delimiter now cr
+. * wait 15 seonds for data retreiving
+.  sleep 15000
+. * Compress data:
+. qui: compress
+. * label variables using the script
+. do PubDS_VarLabels.do
+
+. ***   Script created from [forum_ResAnal]..[vrp__02_lab_SelDataBYCtry&Year] 
+. ***   on  4 May 2016 at 14:33:20. 
+. 
+. 
+. label var  GRI_Q_1                         "Does the constitution protect freedom of religion?"  
+
+. label var  GRI_Q_2                         "Are there limits to the constitution's protection of freedom of religion?"  
+
+. label var  GRI_Q_3                         "How do the country's constitution, laws and policies affect religious freedom?"  
+
+. label var  GRI_Q_4                         "Does the government interfere with religious worship?"  
+
+. label var  GRI_Q_5                         "Does the government limit public preaching?"  
+
+. label var  GRI_Q_6                         "Does the government limit proselytizing?"  
+
+. label var  GRI_Q_7                         "Does the government limit conversion from one religion to another?"  
+
+. label var  GRI_Q_8                         "Does the government limit religious literature or broadcasting? (scaled 0/1)"  
+
+. label var  GRI_Q_9                         "Are foreign missionaries allowed to operate?"  
+
+. label var  GRI_Q_10                        "Does the government regulate wearing religious clothing or symbols?"  
+
+. label var  GRI_Q_11                        "Did the government harass or intimidate religious groups?"  
+
+. label var  GRI_Q_11_Christianity           "Government harassment of Christianity"  
+
+. label var  GRI_Q_11_Islam                  "Government harassment of Islam"  
+
+. label var  GRI_Q_11_Buddhism               "Government harassment of Buddhism"  
+
+. label var  GRI_Q_11_Hinduism               "Government harassment of Hinduism"  
+
+. label var  GRI_Q_11_Judaism                "Government harassment of Judaism"  
+
+. label var  GRI_Q_11_Other_Religions        "Government harassment of Other (New or Ancient Rels/Sikhs/Zoroastrians)"  
+
+. label var  GRI_Q_11_Folk_Religions         "Government harassment of Ethnic or Tribal Religions"  
+
+. label var  GRI_Q_12                        "Did the government use physical violence against minority religious groups?"  
+
+. label var  GRI_Q_13                        "Did the Gov fail to protect RelGps from discrimination or abuse?"  
+
+. label var  GRI_Q_14                        "Does the national government have an organization to manage religious affairs?"  
+
+. label var  GRI_Q_15                        "Did the government denounce any religious groups as 'cults' or 'sects'?"  
+
+. label var  GRI_Q_16_reasons                "Does the government formally ban any religious group?"  
+
+. label var  GRI_Q_16                        "Does the government formally ban any religious group? (N/Y options)"  
+
+. label var  GRI_Q_17                        "Did the government attempt to remove a religious group from the country?"  
+
+. label var  GRI_Q_18                        "Are religious groups asked to register with the government?"  
+
+. label var  GRI_Q_19_extent                 "Did Gov action or policy result Deaths/PhysAbuse/Detent/Displac/PropDamg for R?" 
+>  
+
+. label var  GRI_Q_19_Property_Damage        "Did  government action or policy result in damaged property due to religion?"  
+
+. label var  GRI_Q_19_Detentions             "Did Gov action or policy result in detentions or abductions due to religion?"  
+
+. label var  GRI_Q_19_Displacements          "Did Gov action or policy displace people from their homes due to religion?"  
+
+. label var  GRI_Q_19_Abuse                  "Did government action or policy result in physical assaults due to religion?"  
+
+. label var  GRI_Q_19_Deaths                 "Did government action or policy result in death due to religion?"  
+
+. label var  GRI_Q_19                        "Gov causing Deaths/PhysAbuse/Detent/Displac/PropDamg for R? (N/Y optns)"  
+
+. label var  GRI_Q_20_1                      "Does the governement recognize a favored religion or religions?"  
+
+. label var  GRI_Q_20_2                      "Do all RelGps receive the same level of Gov access and privileges?"  
+
+. label var  GRI_Q_20_3_a                    "Does the Gov provide funds for religious education or religious schools?"  
+
+. label var  GRI_Q_20_3_b                    "Does the government provide funds or resources for religious property?"  
+
+. label var  GRI_Q_20_3_c                    "Does the Gov provide funds for religious activities (no education/property)?"  
+
+. label var  GRI_Q_20_3                      "Does Gov provide funds or other resources to religious groups? (scaled 0/.5/1)"  
+
+. label var  GRI_Q_20_4                      "Is religious education required in public schools?"  
+
+. label var  GRI_Q_20_5                      "Does the Nat Gov defer to religious authorities/texts/doctrines on legal issues?"
+>   
+
+. label var  GRX_22_blasphemy                "Does the government penalize blasphemy? (N/Y options)"  
+
+. label var  GRX_22_apostasy                 "Does the government penalize apostasy? (N/Y options)"  
+
+. label var  GRX_22_hate_speech              "Does Gov penalize hate speech about religion/religions? (N/Y options)"  
+
+. label var  GRX_22_criticism_of_religion    "Does Gov penalize criticism of a religion or religions? (N/Y options)"  
+
+. label var  GRX_30                          "Is there a police force that enforces religious norms?"  
+
+. label var  SHI_Q_1_Extent                  "Were there crimes/malicious acts/violence for Rel hatred/bias?"  
+
+. label var  SHI_Q_1_Harassment              "Have social groups harassed religious groups? (Y or N)"  
+
+. label var  SHI_Q_1_PropertyDamage          "Was property damaged as a result of religious bias? (Y or N)"  
+
+. label var  SHI_Q_1_Detentions              "Were there detentions or abductions motivated by religious bias? (Y or N)"  
+
+. label var  SHI_Q_1_Displacements           "Were individuals displaced from their homes because of religious bias? (Y or N)" 
+>  
+
+. label var  SHI_Q_1_Assaults                "Were there physical assaults motivated by religious bias? (Y or N)"  
+
+. label var  SHI_Q_1_Deaths                  "Were there deaths motivated by religious bias? (Y or N)"  
+
+. label var  SHI_Q_1_harass_Christianity     "Social harassment of Christianity"  
+
+. label var  SHI_Q_1_harass_Islam            "Social harassment of Islam"  
+
+. label var  SHI_Q_1_harass_Buddhism         "Social harassment of Buddhism"  
+
+. label var  SHI_Q_1_harass_Hinduism         "Social harassment of Hinduism"  
+
+. label var  SHI_Q_1_harass_Judaism          "Social harassment of Judaism"  
+
+. label var  SHI_Q_1_harass_Other_Religions  "Social harassment of Other (New or Ancient Rels/Sikhs/Zoroastrians)"  
+
+. label var  SHI_Q_1_harass_Folk_Religions   "Social harassment of Ethnic or Tribal Religions"  
+
+. label var  SHI_Q_2                         "Was there mob violence related to religion?"  
+
+. label var  SHI_Q_3                         "Was there sectarian violence between religious groups?"  
+
+. label var  SHI_Q_4_extent                  "Were religion-related terrorist groups active in the country?"  
+
+. label var  SHI_Q_4                         "Were Rel-related terrorist groups active in the country? (N/Y options)"  
+
+. label var  SHI_Q_5_extent                  "Was there a religion-related war or armed conflict in the country?"  
+
+. label var  SHI_Q_5                         "Was there Rel-related war/armed conflict in the country? (N/Y options)"  
+
+. label var  SHI_Q_6                         "Did violence result from tensions between religious groups?"  
+
+. label var  SHI_Q_7                         "Did groups attempt to dominate public life with their perspective on religion?"  
+
+. label var  SHI_Q_8                         "Did religious groups try to prevent other religious groups from operating?"  
+
+. label var  SHI_Q_9                         "Did violence/threat of violence (as 'honor killings') enforce religious norms?"  
+
+. label var  SHI_Q_10                        "Were any assaulted/displaced for religious activities offensive to maj faith?"  
+
+. label var  SHI_Q_11                        "Were women harassed for violating religious dress codes? (scaled 0/1)"  
+
+. label var  SHI_Q_12                        "Were there incidents of hostility over proselytizing?"  
+
+. label var  SHI_Q_13                        "Were there incidents of hostility over conversions from one religion to another?"
+>   
+
+. 
+end of do-file
+. *******************************************************************************************************************
+. * save dataset
+. save  S:\Forum\Database\RestrictionsDataSets\PublicDataSet.dta, replace
+(note: file S:\Forum\Database\RestrictionsDataSets\PublicDataSet.dta not found)
+file S:\Forum\Database\RestrictionsDataSets\PublicDataSet.dta saved
+. * clear 
+. clear
+. *******************************************************************************************************************
+. * delete labeling do file
+. erase "S:\Forum\Database\MANAGEMENT\SQL_code\VR_for_RestrictionsData\PubDS_VarLabels.do"
+. *******************************************************************************************************************
+. }
+
+. *******************************************************************************************************************
+. {  //   Step 3:  Display final message                                                                           **
+. *******************************************************************************************************************
+. *close log file
+. log close
+      name:  <unnamed>
+       log:  S:\Forum\Database\MANAGEMENT\SQL_code\VR_for_RestrictionsData\Extraction_of_PublicData.log
+  log type:  text
+ closed on:   4 May 2016, 14:33:35
+-------------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,715 @@
+-------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  S:\Forum\Database\MANAGEMENT\SQL_code\VR_for_RestrictionsData\Extraction_of_WorkingData.log
+  log type:  text
+ opened on:   4 May 2016, 14:22:31
+. * context:
+. clear all
+. version 14
+. set more off
+.   pause off
+. * pause on
+.   set trace off
+. * set trace on
+. * Save & Display date & time to check how long the program takes to run:
+. scalar cxd=(c(current_date))
+. scalar cxt=(c(current_time))
+. di cxd "   " cxt
+ 4 May 2016   14:22:31
+. *******************************************************************************************************************
+. }
+
+. *******************************************************************************************************************
+. {  //   Step 1:  Create labeling script                                                                          **
+. *******************************************************************************************************************
+. #delimit ;
+delimiter now ;
+. odbc load, exec 
+> ("
+> /**********************************************************************************************/
+> SELECT *
+>   FROM [forum_ResAnal].[dbo].[vr___04v_labSemiWide_byCtry&Yr]
+> /**********************************************************************************************/
+> ")
+> connectionstring("DRIVER={SQL Server};SERVER=ForumDB;DATABASE=forum_ResAnal; ")
+> clear ;
+. #delimit cr
+delimiter now cr
+. * wait 15 seonds for data retreiving
+. sleep 15000
+. * Compress data:
+. qui: compress
+. * count and store number of rows for iteration 
+. qui count
+. local n = r(N)
+. * Create .do file for labeling variables
+. *
+. ******************************************************************************************************************
+. capture ///
+> file close                handle
+. file open                 handle using VarWorkingLabels.do, write text replace
+(note: file VarWorkingLabels.do not found)
+. * - -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - - *
+.                file write handle "***   Script created from the database (forum_ResAnal)                   ***" _n
+.                file write handle "***   on `= c(current_date)' at `= c(current_time)' "       _column(87) "***" _n
+.                file write handle                                                                                _n
+.                file write handle                                                                                _n
+. * - -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - - *
+.   forvalues ///
+>     x = 1/`n' {
+  2.                file write handle " label var " (VarName[`x']) " " (VarLabel[`x'])  _n
+  3.               }
+. ******************************************************************************************************************
+. file close                handle
+. ******************************************************************************************************************
+. }
+
+. *******************************************************************************************************************
+. {  //   Step 2:  Retreive, label and save dataset as a .DTA file                                                 **
+. *******************************************************************************************************************
+. clear
+. #delimit ;
+delimiter now ;
+. odbc load, exec 
+> ("
+> SELECT *
+>   FROM [forum_ResAnal].[dbo].[vr___04_cDB_SemiWide_byCtry&Yr]
+> ")
+> connectionstring("DRIVER={SQL Server};SERVER=ForumDB;DATABASE=forum_ResAnal; ")
+> clear ;
+. #delimit cr
+delimiter now cr
+. * wait 15 seonds for data retreiving
+.  sleep 15000
+. * Compress data:
+. qui: compress
+. * label variables using the script
+. do VarWorkingLabels.do
+
+. ***   Script created from the database (forum_ResAnal)                   ***
+. ***   on  4 May 2016 at 14:22:46                                                      ***
+. 
+. 
+.  label var GFI                        "Government Favoritism Index" 
+
+.  label var GFI_rd_1d                  "Government Favoritism Index (rounded to one decimal)" 
+
+.  label var GFI_scaled                 "Government Favoritism Index (scaled 1 to 4)" 
+
+.  label var GRI                        "Government Restrictions Index" 
+
+.  label var GRI_01                     "Does the constitution protect freedom of religion?" 
+
+.  label var GRI_01_x                   "Has the constitution changed since the previous coding period?" 
+
+.  label var GRI_01_x2                  "Did the constitution change make a change in either GRI_01 and GRI_02?" 
+
+.  label var GRI_02                     "Are there limits to the constitution's protection of freedom of religion?" 
+
+.  label var GRI_03                     "How do the country's constitution, laws and policies affect religious freedom?" 
+
+.  label var GRI_04                     "Does the government interfere with religious worship?" 
+
+.  label var GRI_05                     "Does the government limit public preaching?" 
+
+.  label var GRI_06                     "Does the government limit proselytizing?" 
+
+.  label var GRI_07                     "Does the government limit conversion from one religion to another?" 
+
+.  label var GRI_08                     "Does the government limit religious literature or broadcasting?" 
+
+.  label var GRI_08_a                   "Is religious literature/broadcasting limitation specifically targeting internet?" 
+
+.  label var GRI_08_for_index           "Does the government limit religious literature or broadcasting? (scaled 0/1)" 
+
+.  label var GRI_09                     "Are foreign missionaries allowed to operate?" 
+
+.  label var GRI_10                     "Does the government regulate wearing religious clothing or symbols?" 
+
+.  label var GRI_10_01                  "Does the government regulate wearing scarves or head coverings for women?" 
+
+.  label var GRI_10_02                  "Does the government regulate wearing beards or facial hair for men?" 
+
+.  label var GRI_10_03                  "Does the government regulate wearing religious symbols?" 
+
+.  label var GRI_11                     "Did the government harass or intimidate religious groups?" 
+
+.  label var GRI_11_01a                 "Did the government harass or intimidate Orthodox Christians?" 
+
+.  label var GRI_11_01b                 "Did the government harass or intimidate Catholics?" 
+
+.  label var GRI_11_02                  "Did the government harass or intimidate Protestants or Anglicans?" 
+
+.  label var GRI_11_03                  "Did the government harass or intimidate Christians (unspecified)?" 
+
+.  label var GRI_11_04                  "Did the government harass or intimidate Sunni Muslims?" 
+
+.  label var GRI_11_05                  "Did the government harass or intimidate Shia Muslims?" 
+
+.  label var GRI_11_06                  "Did the government harass or intimidate Muslims (unspecified)?" 
+
+.  label var GRI_11_07                  "Did the government harass or intimidate Buddhists?" 
+
+.  label var GRI_11_08                  "Did the government harass or intimidate Hindus?" 
+
+.  label var GRI_11_09                  "Did the government harass or intimidate Jews?" 
+
+.  label var GRI_11_10                  "Did the Gov harass or intimidate Scientologists/Baha'is/'new' religions?" 
+
+.  label var GRI_11_11                  "Did the Gov harass or intimidate Mormons/JWitnesses/other schismatic ChristiaNs?" 
+
+.  label var GRI_11_12                  "Did the Gov harass or intimidate Ahmadiyya/Druze/other schismatic Muslim sects?" 
+
+.  label var GRI_11_13                  "Did the government harass or intimidate followers of ethnic or tribal religions?" 
+
+.  label var GRI_11_14                  "Did the Gov harass or intimidate Sikhs/Zoroastrians/ancient religions?" 
+
+.  label var GRI_11_15                  "Did the government harass or intimidate Sikhs?" 
+
+.  label var GRI_11_16                  "Did the government harass or intimidate Zoroastrians?" 
+
+.  label var GRI_11_17                  "Did the government harass or intimidate atheists?" 
+
+.  label var GRI_11_xG1                 "Government harassment of Christianity" 
+
+.  label var GRI_11_xG2                 "Government harassment of Islam" 
+
+.  label var GRI_11_xG3                 "Government harassment of Buddhism" 
+
+.  label var GRI_11_xG4                 "Government harassment of Hinduism" 
+
+.  label var GRI_11_xG5                 "Government harassment of Judaism" 
+
+.  label var GRI_11_xG6                 "Government harassment of Other (New or Ancient Rels/Sikhs/Zoroastrians)" 
+
+.  label var GRI_11_xG7                 "Government harassment of Ethnic or Tribal Religions" 
+
+.  label var GRI_12                     "Did the government use physical violence against minority religious groups?" 
+
+.  label var GRI_13                     "Did the Gov fail to protect RelGps from discrimination or abuse?" 
+
+.  label var GRI_14                     "Does the national government have an organization to manage religious affairs?" 
+
+.  label var GRI_15                     "Did the government denounce any religious groups as 'cults' or 'sects'?" 
+
+.  label var GRI_16                     "Does the government formally ban any religious group?" 
+
+.  label var GRI_16_01                  "List group(s) banned by the government." 
+
+.  label var GRI_16_ny                  "Does the government formally ban any religious group? (N/Y options)" 
+
+.  label var GRI_17                     "Did the government attempt to remove a religious group from the country?" 
+
+.  label var GRI_18                     "Are religious groups asked to register with the government?" 
+
+.  label var GRI_19                     "Did Gov action or policy result Deaths/PhysAbuse/Detent/Displac/PropDamg for R?" 
+
+.  label var GRI_19_b                   "Did  government action or policy result in damaged property due to religion?" 
+
+.  label var GRI_19_b_scaled            "Did  government action or policy result in damaged property due to religion?" 
+
+.  label var GRI_19_c                   "Did Gov action or policy result in detentions or abductions due to religion?" 
+
+.  label var GRI_19_c_scaled            "Did Gov action or policy result in detentions or abductions due to religion?" 
+
+.  label var GRI_19_d                   "Did Gov action or policy displace people from their homes due to religion?" 
+
+.  label var GRI_19_d_scaled            "Did Gov action or policy displace people from their homes due to religion?" 
+
+.  label var GRI_19_e                   "Did government action or policy result in physical assaults due to religion?" 
+
+.  label var GRI_19_e_scaled            "Did government action or policy result in physical assaults due to religion?" 
+
+.  label var GRI_19_f                   "Did government action or policy result in death due to religion?" 
+
+.  label var GRI_19_f_scaled            "Did government action or policy result in death due to religion?" 
+
+.  label var GRI_19_ny                  "Gov causing Deaths/PhysAbuse/Detent/Displac/PropDamg for R? (N/Y optns)" 
+
+.  label var GRI_19_summ_ny             "Gov causing Deaths/PhysAbuse/Detent/Displac/PropDamg for R" 
+
+.  label var GRI_19_x                   "Number of cases of Gov causing Deaths/PhysAbuse/Detent/Displac/PropDamg for rel" 
+
+.  label var GRI_20                     "Do some Rel Gps receive Gov support/favors (funding/offic recogn/spec access)?" 
+
+.  label var GRI_20_01                  "Does the governement recognize a favored religion or religions?" 
+
+.  label var GRI_20_01x_01a             "Does the government recognize Orthodox Christianity as a favored religion?" 
+
+.  label var GRI_20_01x_01b             "Does the government recognize Catholicism as a favored religion?" 
+
+.  label var GRI_20_01x_02              "Does the Gov recognize Protestant/Anglican Christianity as a favored religion?" 
+
+.  label var GRI_20_01x_03              "Does the government recognize Christianity (unspecified) as a favored religion?" 
+
+.  label var GRI_20_01x_04              "Does the government recognize Sunni Islam as a favored religion?" 
+
+.  label var GRI_20_01x_05              "Does the government recognize Shia Islam as a favored religion?" 
+
+.  label var GRI_20_01x_06              "Does the government recognize Islam (unspecified) as a favored religion?" 
+
+.  label var GRI_20_01x_07              "Does the government recognize Buddhism as a favored religion?" 
+
+.  label var GRI_20_01x_08              "Does the government recognize Hinduism as a favored religion?" 
+
+.  label var GRI_20_01x_09              "Does the government recognize Judaism as a favored religion?" 
+
+.  label var GRI_20_01x_10              "Does the government recognize any other faith as a favored religion?" 
+
+.  label var GRI_20_02                  "Do all RelGps receive the same level of Gov access and privileges?" 
+
+.  label var GRI_20_03_a                "Does the Gov provide funds for religious education or religious schools?" 
+
+.  label var GRI_20_03_b                "Does the government provide funds or resources for religious property?" 
+
+.  label var GRI_20_03_c                "Does the Gov provide funds for religious activities (no education/property)?" 
+
+.  label var GRI_20_03_top              "Does Gov provide funds or other resources to religious groups? (scaled 0/.5/1)" 
+
+.  label var GRI_20_04                  "Is religious education required in public schools?" 
+
+.  label var GRI_20_04_x                "Is religious education offered in public schools?" 
+
+.  label var GRI_20_05                  "Does the Nat Gov defer to religious authorities/texts/doctrines on legal issues?" 
+
+.  label var GRI_20_05_x                "Have provisions of sharia law been adopted in the country?" 
+
+.  label var GRI_20_05_x1               "Have provisions of sharia law been adopted in provinces of the country?" 
+
+.  label var GRI_20_top                 "Do some Rel Gps receive Gov support/favors? (scaled 0/.5/1)" 
+
+.  label var GRI_rd_1d                  "Government Restrictions Index (rounded to one decimal)" 
+
+.  label var GRI_scaled                 "Government Restrictions Index (scaled 1 to 4)" 
+
+.  label var GRX_21_01                  "Did religious issues trigger Gov force toward religious individuals/groups?" 
+
+.  label var GRX_21_02                  "Did political issues trigger Gov force toward religious individuals/groups?" 
+
+.  label var GRX_21_03                  "Did other socio-economic trigger Gov force toward religious individuals/groups?" 
+
+.  label var GRX_22                     "Does the Gov penalize the defamation of religion (ex. blasphemy or apostasy)?" 
+
+.  label var GRX_22_01                  "Does the government penalize blasphemy?" 
+
+.  label var GRX_22_01_ny               "Does the government penalize blasphemy? (N/Y options)" 
+
+.  label var GRX_22_02                  "Does the government penalize apostasy?" 
+
+.  label var GRX_22_02_ny               "Does the government penalize apostasy? (N/Y options)" 
+
+.  label var GRX_22_03                  "Does the government penalize hate speech about a religion or religions?" 
+
+.  label var GRX_22_03_ny               "Does Gov penalize hate speech about religion/religions? (N/Y options)" 
+
+.  label var GRX_22_04                  "Does the government penalize criticism of a religion or religions?" 
+
+.  label var GRX_22_04_ny               "Does Gov penalize criticism of a religion or religions? (N/Y options)" 
+
+.  label var GRX_22_aggreg              "Does Gov penalize the defamation of religion? (N/Y options)" 
+
+.  label var GRX_23                     "Does the government restrict expressions of faith or religion-related speech?" 
+
+.  label var GRX_24                     "Did the Gov discriminate against or harass immigrants because of their religion?" 
+
+.  label var GRX_24_ny                  "Did Gov discriminate/harass immigr because of their Rel? (N/Y options)" 
+
+.  label var GRX_25_01                  "Did foreign events, groups or individuals contribute to Gov Restr on religion?" 
+
+.  label var GRX_25_02                  "Did events/groups/indivs entirely outside country contribute to Gov Restr Rel?" 
+
+.  label var GRX_25_03                  "Did foreign events/groups/individuals entering Ctry contribute Gov Restr on Rel?" 
+
+.  label var GRX_25_ny                  "Did events/gps/indivs from outside contrib to GovRstr R?  (N/Y options)" 
+
+.  label var GRX_26_01                  "Did religion-related war cross-border contribute to Gov Restr Rel in the Ctry?" 
+
+.  label var GRX_26_02                  "Did religion-related terrorism cross-border contribute to Gov Restr Rel in Ctry?" 
+
+.  label var GRX_26_03                  "Did influence of foreign Govs contribute to Gov Restr Rel in the country?" 
+
+.  label var GRX_26_04                  "Did problems involving intern immigrants contribute to Gov Restr Rel in Ctry?" 
+
+.  label var GRX_26_05                  "Did extremist influences (alleged or real) contribute to Gov Restr Rel in Ctry?" 
+
+.  label var GRX_26_06                  "Did hostile reactions to foreign preachers contribute to Gov Restr Rel in Ctry?" 
+
+.  label var GRX_26_07                  "Did reactions to incidents in other countries contribute to Gov Restr in Ctry?" 
+
+.  label var GRX_26_08                  "Did other events/groups/indivs from outside contribute to Gov Restr Rel in Ctry?" 
+
+.  label var GRX_27_01                  "There is no reported initiative to improve respect for religious freedom in Ctry" 
+
+.  label var GRX_27_02                  "Were there local level initiatives to improve respect religious freedom in Ctry?" 
+
+.  label var GRX_27_03                  "Were there Natnl level initiatives to improve respect religious freedom in Ctry?" 
+
+.  label var GRX_28_01                  "There is no reported initiative to improve respect for religious freedom by Gov." 
+
+.  label var GRX_28_02                  "Was there local improvement in respect for religious freedom by any level Gov?" 
+
+.  label var GRX_28_03                  "Was there Natnl improvement in respect for religious freedom by any level Gov?" 
+
+.  label var GRX_29_01                  "Were there initiatives/actions to reduce Rel Restr or Host in the country?" 
+
+.  label var GRX_29_02                  "Were there interfaith dialogues to reduce Rel Restr or Host in the country?" 
+
+.  label var GRX_29_03                  "Were there antidiscrimination policies/actions to reduce Rel Restr/Host in Ctry?" 
+
+.  label var GRX_29_04                  "Were there educational initiatives to reduce Rel Restr or Host in the country?" 
+
+.  label var GRX_29_05                  "Were there land/property initiatives to reduce Rel Restr or Host in the country?" 
+
+.  label var GRX_30                     "Is there a police force that enforces religious norms?" 
+
+.  label var GRX_31                     "Does Gov restrict to profess atheistic/agnostic beliefs - reject organized Rel?" 
+
+.  label var GRX_32                     "Was there Gov harassment of individuals not adhering/participating in religion?" 
+
+.  label var GRX_33                     "Does Gov have policies/laws criminalizing homosexual behavior/discriminating?" 
+
+.  label var GRX_34_01                  "Government provides exemptions for religious groups from universal laws" 
+
+.  label var GRX_34_02_a                "Government provides exemptions for RG from work on religious holidays" 
+
+.  label var GRX_34_02_b                "Government provides exemptions for RG from anti-discrimination laws" 
+
+.  label var GRX_34_02_c                "Government provides exemptions for RG from military service" 
+
+.  label var GRX_34_02_d                "Government provides exemptions for RG from taxes" 
+
+.  label var GRX_34_02_e                "Government provides exemptions for RG from health care provision" 
+
+.  label var GRX_34_02_f                "Government provides exemptions for RG from education" 
+
+.  label var GRX_34_02_g                "Sources indicate religious groups are granted exemptions, but provide no details" 
+
+.  label var GRX_34_03                  "individuals challenged the lack of religious exemptions from universal laws" 
+
+.  label var GRX_35_01                  "The government restricts access to the internet through arrests for int activity" 
+
+.  label var GRX_35_02                  "The government restricts access to the internet through censoring of websites" 
+
+.  label var SHI                        "Social Hostilities Index" 
+
+.  label var SHI_01                     "Were there crimes/malicious acts/violence for Rel hatred/bias?" 
+
+.  label var SHI_01_a                   "Have social groups harassed religious groups?" 
+
+.  label var SHI_01_a_dummy             "Have social groups harassed religious groups? (Y or N)" 
+
+.  label var SHI_01_b                   "Was property damaged as a result of religious bias?" 
+
+.  label var SHI_01_b_dummy             "Was property damaged as a result of religious bias? (Y or N)" 
+
+.  label var SHI_01_c                   "Were there detentions or abductions motivated by religious bias?" 
+
+.  label var SHI_01_c_dummy             "Were there detentions or abductions motivated by religious bias? (Y or N)" 
+
+.  label var SHI_01_d                   "Were individuals displaced from their homes because of religious bias?" 
+
+.  label var SHI_01_d_dummy             "Were individuals displaced from their homes because of religious bias? (Y or N)" 
+
+.  label var SHI_01_e                   "Were there physical assaults motivated by religious bias?" 
+
+.  label var SHI_01_e_dummy             "Were there physical assaults motivated by religious bias? (Y or N)" 
+
+.  label var SHI_01_f                   "Were there deaths motivated by religious bias?" 
+
+.  label var SHI_01_f_dummy             "Were there deaths motivated by religious bias? (Y or N)" 
+
+.  label var SHI_01_summary_a_ny        "There were crimes/malicious acts/violence for Rel hatred/bias" 
+
+.  label var SHI_01_summary_b           "How many types of crimes/malicious acts/violence for Rel hatred/bias occured?" 
+
+.  label var SHI_01_x                   "Number of cases of Deaths/PhysAbuse/Detent/Displac/PropDamg for rel hatred/bias" 
+
+.  label var SHI_01_x_01a               "Were Orthodox Christians harassed by social groups?" 
+
+.  label var SHI_01_x_01b               "Were Catholics harassed by social groups?" 
+
+.  label var SHI_01_x_02                "Were Protestants or Anglicans harassed by social groups?" 
+
+.  label var SHI_01_x_03                "Were Christians (unspecified) harassed by social groups?" 
+
+.  label var SHI_01_x_04                "Were Sunni Muslims harassed by social groups?" 
+
+.  label var SHI_01_x_05                "Were Shia Muslims harassed by social groups?" 
+
+.  label var SHI_01_x_06                "Were Muslims (unspecified) harassed by social groups?" 
+
+.  label var SHI_01_x_07                "Were Buddhists harassed by social groups?" 
+
+.  label var SHI_01_x_08                "Were Hindus harassed by social groups?" 
+
+.  label var SHI_01_x_09                "Were Jews harassed by social groups?" 
+
+.  label var SHI_01_x_10                "Were Scientologists/Baha'is/'new' religions harassed by social groups?" 
+
+.  label var SHI_01_x_11                "Were Mormons/JWitnesses/other schismatic Christians harassed by social groups?" 
+
+.  label var SHI_01_x_12                "Were Ahmadiyya/Druze/other schismatic Muslim sects harassed by social groups?" 
+
+.  label var SHI_01_x_13                "Were followers of ethnic or tribal religions harassed by social groups?" 
+
+.  label var SHI_01_x_14                "Were Sikhs/Zoroastrians/other ancient religions harassed by social groups?" 
+
+.  label var SHI_01_x_15                "Were Sikhs harassed by social groups?" 
+
+.  label var SHI_01_x_16                "Were Zoroastrians harassed by social groups?" 
+
+.  label var SHI_01_x_17                "Were atheists harassed by social groups?" 
+
+.  label var SHI_01_xG1                 "Social harassment of Christianity" 
+
+.  label var SHI_01_xG2                 "Social harassment of Islam" 
+
+.  label var SHI_01_xG3                 "Social harassment of Buddhism" 
+
+.  label var SHI_01_xG4                 "Social harassment of Hinduism" 
+
+.  label var SHI_01_xG5                 "Social harassment of Judaism" 
+
+.  label var SHI_01_xG6                 "Social harassment of Other (New or Ancient Rels/Sikhs/Zoroastrians)" 
+
+.  label var SHI_01_xG7                 "Social harassment of Ethnic or Tribal Religions" 
+
+.  label var SHI_02                     "Was there mob violence related to religion?" 
+
+.  label var SHI_02_01                  "Was there ethnic cleansing or genocide related to religion?" 
+
+.  label var SHI_03                     "Was there sectarian violence between religious groups?" 
+
+.  label var SHI_04                     "Were religion-related terrorist groups active in the country?" 
+
+.  label var SHI_04_b                   "Was property damaged due to religion-related terrorism?" 
+
+.  label var SHI_04_c                   "Were there detentions or abductions due to religion-related terrorism?" 
+
+.  label var SHI_04_d                   "Were individuals displaced from their homes due to religion-related terrorism?" 
+
+.  label var SHI_04_e                   "Were there physical assaults due to religion-related terrorism?" 
+
+.  label var SHI_04_f                   "Were there deaths due to religion-related terrorism?" 
+
+.  label var SHI_04_ny                  "Were Rel-related terrorist groups active in the country? (N/Y options)" 
+
+.  label var SHI_04_x01                 "List the religion-related terrorist groups active in the country" 
+
+.  label var SHI_05                     "Was there a religion-related war or armed conflict in the country?" 
+
+.  label var SHI_05_b                   "Was there property damaged due to religion-related war/armed conflict?" 
+
+.  label var SHI_05_c                   "Were there detentions or abductions due to religion-related war/armed conflict?" 
+
+.  label var SHI_05_d                   "Were individuals displaced due to religion-related war or armed conflict?" 
+
+.  label var SHI_05_e                   "Were there physical assaults due to religion-related war or armed conflict?" 
+
+.  label var SHI_05_f                   "Were there deaths due to religion-related war or armed conflict?" 
+
+.  label var SHI_05_ny                  "Was there Rel-related war/armed conflict in the country? (N/Y options)" 
+
+.  label var SHI_06                     "Did violence result from tensions between religious groups?" 
+
+.  label var SHI_07                     "Did groups attempt to dominate public life with their perspective on religion?" 
+
+.  label var SHI_07_ny                  "Gps attempt to dominate pub life with perspective on R? (N/Y options)" 
+
+.  label var SHI_08                     "Did religious groups try to prevent other religious groups from operating?" 
+
+.  label var SHI_09                     "Did violence/threat of violence (as 'honor killings') enforce religious norms?" 
+
+.  label var SHI_09_n                   "Number of cases of violence against women to try to enforce religious norms" 
+
+.  label var SHI_10                     "Were any assaulted/displaced for religious activities offensive to maj faith?" 
+
+.  label var SHI_10_n                   "Number of cases of Assault/Displac of women for rel act offensive to maj faith" 
+
+.  label var SHI_11                     "Were women harassed for violating religious dress codes?" 
+
+.  label var SHI_11_a                   "Were religious women harassed for violating secular norms?" 
+
+.  label var SHI_11_a_n                 "Number of cases of women harassed for violating secular dress norms" 
+
+.  label var SHI_11_b                   "Were women harassed for violating religious dress codes?" 
+
+.  label var SHI_11_b_n                 "Number of cases of women harassed for violating religious dress codes" 
+
+.  label var SHI_11_for_index           "Were women harassed for violating religious dress codes? (scaled 0/1)" 
+
+.  label var SHI_11_x                   "Are women discriminated/harassed for violating religious norms (as dress codes)?" 
+
+.  label var SHI_12                     "Were there incidents of hostility over proselytizing?" 
+
+.  label var SHI_13                     "Were there incidents of hostility over conversions from one religion to another?" 
+
+.  label var SHI_rd_1d                  "Social Hostilities Index (rounded to one decimal)" 
+
+.  label var SHI_scaled                 "Social Hostilities Index (scaled 1 to 4)" 
+
+.  label var SHX_14_01                  "Did a reaction to religious issues trigger nonGov violence related to religion?" 
+
+.  label var SHX_14_02                  "Did a reaction to political issues trigger nonGov violence related to religion?" 
+
+.  label var SHX_14_03                  "Did reaction to other socio-economic iss trigger nonGoval violence related to R?" 
+
+.  label var SHX_14_04                  "Sources do not specify immediate cause of nonGoval violence related to religion" 
+
+.  label var SHX_15_01                  "Did Christians harass Christians?" 
+
+.  label var SHX_15_02                  "Did Christians harass Muslims?" 
+
+.  label var SHX_15_03                  "Did Christians harass followers of other religions?" 
+
+.  label var SHX_15_04                  "Did Muslims harass Muslims?" 
+
+.  label var SHX_15_05                  "Did Muslims harass Christians?" 
+
+.  label var SHX_15_06                  "Did Muslims harass followers of other religions?" 
+
+.  label var SHX_15_07                  "Did group(s) harass Christians?" 
+
+.  label var SHX_15_08                  "Did group(s) harass Muslims?" 
+
+.  label var SHX_15_09                  "Did group(s) harass followers of other religions?" 
+
+.  label var SHX_15_10                  "Did followers of other religions harass followers of other religions?" 
+
+.  label var SHX_25                     "Did ind/gps discriminate/harass/violence because of the immigrants’ religion?" 
+
+.  label var SHX_25_ny                  "Ind/gps discriminate/harass/violence b/c immigrants’ R? (N/Y options)" 
+
+.  label var SHX_26                     "Did immigrants engage in religion-related discrimination/harassment/violence?" 
+
+.  label var SHX_26_ny                  "Immigrants engage R-related discrim/harassment/violence? (N/Y options)" 
+
+.  label var SHX_27_01                  "Did foreign events, groups or individuals contribute to Soc Host Rel?" 
+
+.  label var SHX_27_02                  "Did events/groups/individuals entirely outside Ctry contribute to Soc Host Rel?" 
+
+.  label var SHX_27_03                  "Did foreign events/groups/individuals entering Ctry contribute to Soc Host Rel?" 
+
+.  label var SHX_27_ny                  "Foreign evts/gps/indivs entering Ctry contrib Soc Host R? (N/Y options)" 
+
+.  label var SHX_28_01                  "Did religion-related war cross-border contribute to Soc Host Rel in the country?" 
+
+.  label var SHX_28_02                  "Did religion-related terrorism cross-border contribute to Soc Host Rel in Ctry?" 
+
+.  label var SHX_28_03                  "Did influence of foreign Govs contribute to Soc Host Rel in the country?" 
+
+.  label var SHX_28_04                  "Did problems involving internat immigrants contribute to Soc Host Rel in Ctry?" 
+
+.  label var SHX_28_05                  "Did extremist influences (alleged or real) contribute to Soc Host Rel in Ctry?" 
+
+.  label var SHX_28_06                  "Did hostile reactions to foreign preachers contribute to Soc Host Rel in Ctry?" 
+
+.  label var SHX_28_07                  "Did reactions to incidents in other countries contribute to Soc Host in country?" 
+
+.  label var SHX_28_08                  "Did events/groups/indivs from outside country contribute to Soc Host in Ctry?" 
+
+.  label var XSG_01_xG1                 "Government & Social harassment of Christianity" 
+
+.  label var XSG_01_xG2                 "Government & Social harassment of Islam" 
+
+.  label var XSG_01_xG3                 "Government & Social harassment of Buddhism" 
+
+.  label var XSG_01_xG4                 "Government & Social harassment of Hinduism" 
+
+.  label var XSG_01_xG5                 "Government & Social harassment of Judaism" 
+
+.  label var XSG_01_xG6                 "Government & Social harassment of Other (New or Ancient Rels/Sikhs/Zoroastrians)" 
+
+.  label var XSG_01_xG7                 "Government & Social harassment of Ethnic or Tribal Religions" 
+
+.  label var XSG_24                     "Is there a police force that enforces religious norms?" 
+
+.  label var XSG_242526_ny              "Discrim/harassment/violence related to immigrants, b/c R? (N/Y options)" 
+
+.  label var XSG_25n27_ny               "Evts/gps/indivs from outside contribute to GRSHR in Ctry? (N/Y options)" 
+
+.  label var XSG_S_01                   "Was the country Constitution used for coding Gov Restr and Soc Host on religion?" 
+
+.  label var XSG_S_02                   "Was the IRF report [Y] used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_03                   "Was the IRF report [Y-1] used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_04                   "Was the IRF report [Y-2] used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_05                   "Was the IRF report [Y-3] used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_06                   "Was the USCIRF report used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_07                   "Was the UN Special Rapporteur used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_08                   "Was the FH report used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_09                   "Was the HRW report used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_10                   "Was the ICG report used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_11                   "Was the ICG Crisiswatch report used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_12                   "Was the UK FCO HR report used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_13                   "Was the Council of EU HR report used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_14                   "Was the AI report used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_15                   "Was the ENAR report used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_16                   "Was the UN Refugees report used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_17                   "Was the US State Terrorism report used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_18                   "Was the TBC source on terrorism used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_19                   "Was the ADL report used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_20                   "Was the US State HR report used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_21                   "Was the Uppsala report used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_22                   "Was Human Rights Without Frontiers used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_23                   "Was the Marshall report used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_99_01                "Was any other source [1] used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_99_02                "Was any other source [2] used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_99_03                "Was any other source [3] used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_99_04                "Was any other source [4] used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_99_05                "Was any other source [5] used for coding Gov Restr and Soc Host Rel?" 
+
+.  label var XSG_S_99_06                "Was any other source [6] used for coding Gov Restr and Soc Host Rel?" 
+
+. 
+end of do-file
+. *******************************************************************************************************************
+. * save dataset
+. local d = subinstr( (c(current_date)) ," ","",.)
+. save  S:\Forum\Database\RestrictionsDataSets\DataWideVersion_`d'_.dta, replace
+file S:\Forum\Database\RestrictionsDataSets\DataWideVersion_4May2016_.dta saved
+. save  S:\Forum\Database\RestrictionsDataSets\DataWideVersion.dta     , replace
+file S:\Forum\Database\RestrictionsDataSets\DataWideVersion.dta saved
+. * clear 
+. clear
+. *******************************************************************************************************************
+. * delete labeling do file
+. erase "S:\Forum\Database\MANAGEMENT\SQL_code\VR_for_RestrictionsData\VarWorkingLabels.do"
+. *******************************************************************************************************************
+. }
+
+. *******************************************************************************************************************
+. {  //   Step 3:  Display final message                                                                           **
+. *******************************************************************************************************************
+. *close log file
+. log close
+      name:  <unnamed>
+       log:  S:\Forum\Database\MANAGEMENT\SQL_code\VR_for_RestrictionsData\Extraction_of_WorkingData.log
+  log type:  text
+ closed on:   4 May 2016, 14:23:03
+-------------------------------------------------------------------------------------------------------------------------------

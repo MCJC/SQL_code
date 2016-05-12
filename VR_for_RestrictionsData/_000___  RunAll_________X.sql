@@ -6,21 +6,20 @@ Print
 /***     >>>>>   This is the master script to run all scripts for re-creating views and tables related to GRSHR                                    <<<<<     ***/
 /***                                                                                                                                                         ***/
 /***        NOTICE:                                                                                                                                          ***/
-/***                All tables are createdfrom their corresponding BASE-VIEW                                                                                 ***/
+/***                All tables are created from their corresponding BASE-VIEW                                                                                ***/
 /***                Views are updated unless there is a change in structure (adding/removing field, etc.)                                                    ***/
 /***                                                                                                                                                         ***/
 /***************************************************************************************************************************************************************/
 USE              [GRSHRcode]
 GO
-
 /***************************************************************************************************************************************************************/
-Print 
-'--- ' + CONVERT (VARCHAR(19), SYSDATETIME()) + ' ==>  sub-script 001    -------------------------------------------------------------------------------------- '
-IF OBJECT_ID  (N'[forum_ResAnal].[dbo].[vr___00a____NationLocalityTOOL]', N'U') IS NOT NULL
-DROP TABLE       [forum_ResAnal].[dbo].[vr___00a____NationLocalityTOOL]
-SELECT * 	INTO [forum_ResAnal].[dbo].[vr___00a____NationLocalityTOOL]
-            FROM                 [dbo].[vr___00a]
-GO
+--	Print 
+--	'--- ' + CONVERT (VARCHAR(19), SYSDATETIME()) + ' ==>  sub-script 001    ---------------------------------------------------------------------------------- '
+--	IF OBJECT_ID  (N'[forum_ResAnal].[dbo].[vr___00a____NationLocalityTOOL]', N'U') IS NOT NULL
+--	DROP TABLE       [forum_ResAnal].[dbo].[vr___00a____NationLocalityTOOL]
+--	SELECT * 	INTO [forum_ResAnal].[dbo].[vr___00a____NationLocalityTOOL]
+--	            FROM                 [dbo].[vr___00a]
+--	GO
 /***************************************************************************************************************************************************************/
 Print 
 '--- ' + CONVERT (VARCHAR(19), SYSDATETIME()) + ' ==>  script 002    ------------------------------------------------------------------------------------------ '
@@ -65,28 +64,32 @@ GO
 /***************************************************************************************************************************************************************/
 /***************************************************************************************************************************************************************/
 /***  This code (once SQLCMD scripting mode is enabled) lists scripts in folder (to check if they are coinsistent to the script)                             ***/
---	  !!dir/B /O "S:\Forum\Database\MANAGEMENT\common\ForumResAnal_&_Intridea\VR_for_RestrictionsData" 
+	  !!dir/B /O "S:\Forum\Database\MANAGEMENT\SQL_code\VR_for_RestrictionsData"
 /***************************************************************************************************************************************************************/
 /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 /*  store working directory (path) in a variable:                                                                                                              */
 /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/--
---	:setvar path "S:\Forum\Database\MANAGEMENT\common\ForumResAnal_&_Intridea\VR_for_RestrictionsData"
+--	:setvar path "S:\Forum\Database\MANAGEMENT\SQL_code\VR_for_RestrictionsData"
 /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 /*  execute scripts                                                                                                                                            */
 /*                  (list can be updated from the files listed for the directory)                                                                              */
 /*                  (notice some scripts are NOT necessary, since views get autolmatically updated if code doesn't change                                      */
 /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
---	   :r  $(path)\create_vr00a__vr___LongCoded_in_DB_____.sql     /*this is not for working data, should be fr step 6 in final data  */
---	   :r  $(path)\create_vr00b__vr___Set_of_QLabels_______R.sql
---	   :r  $(path)\create_vr00c__vr___Set_of_Q&A__________R.sql
---	   :r  $(path)\create_vr01___vrf__DB_Long_NoAggr______.sql
---	   :r  $(path)\create_vr01w_vrw_DB_Long_NoAggr_____R.sql
---	   :r  $(path)\create_vr02w_vrw_W_byC&Y_____________R.sql
---	   :r  $(path)\create_vr03w_vrw_XW_byC&Y___________R.sql
---	   :r  $(path)\create_vr04w_vrw_RIndex_by_CRY________R.sql
---	   :r  $(path)\create_vr05w_vrw_SemiWd_byC&Yr_____R.sql
---	   :r  $(path)\create_vr06w_vrw_LongData_ALL________R.sql
---	   :r  $(path)\create_vr99w_trw____AFTER__ALL________R.sql
+	   :r  $(path)\_001_lt__NatLocTOOL_____R.sql
+	   :r  $(path)\_002_lt__QstRelTOOL_____R.sql
+	   :r  $(path)\_003_lt__DBLongNoAggr___R.sql
+	   :r  $(path)\_004_lt__DBWide_byCnY___R.sql
+	   :r  $(path)\_005_lt__DBWnXt_byCnY___R.sql
+	   :r  $(path)\_006_lt__DBSemiW_byCY___R.sql
+	   :r  $(path)\_007_lt__DBSemiW_VLab___R.sql
+	   :r  $(path)\_008_lt__PubSelVarDat___R.sql
+	   :r  $(path)\_009_lt__PubSelVarLab___R.sql
+	   :r  $(path)\_010_lt__DBIndexbyCRY___R.sql
+	   :r  $(path)\_011_lt__LongData_ALL___R.sql
+	   :r  $(path)\_012_lt__LD_forRTeam____R.sql
+	   :r  $(path)\_013_lt__weighted_LD____R.sql
+	   :r  $(path)\_014_lt__BTopLines_W____R.sql
+	   :r  $(path)\_015_lt__PubTopLines____R.sql
 /***************************************************************************************************************************************************************/
 /***************************************************************************************************************************************************************/
 

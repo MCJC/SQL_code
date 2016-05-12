@@ -20,7 +20,6 @@ SELECT
       ,[Question_abbreviation_std]
       ,[Question_wording_std]
       ,[Question_short_wording_std]
-      ,[Question_Label_80Chars]
       ,[Answer_value_std]
       ,[Answer_Wording_std]
       ,[Display]

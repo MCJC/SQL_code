@@ -43,7 +43,7 @@ SELECT
       ,[Question_abbreviation]
       ,[Question_wording_std]
       ,[Question_short_wording_std]
-      ,[Question_Label_80Chars]          --  added Dec2015
+--    ,[Question_Label_80Chars]          --  added Dec2015  --   removed Apr2016
       ,[Question_wording]
       ,[Question_Year]
       ,[Notes]
