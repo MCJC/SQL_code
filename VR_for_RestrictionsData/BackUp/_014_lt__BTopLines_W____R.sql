@@ -225,7 +225,7 @@ AS
                                    ((CHARINDEX('_ny',  [QA_std])) + 3) , 1, '')
                                    ELSE                [QA_std]
                                END
-                ,[Q_Wording] =                         [Question_wording_std]
+                ,[Q_Wording] =                         [QW_std]
                 ,[Value]     = CASE
                                    WHEN
                                          (CAST((ISNULL([Answer_value], 0)) AS decimal(12,2)) > 1)
@@ -249,13 +249,9 @@ AS
                                END
                 ,[CntWg]
                 ,[WTWg]
----select *
             FROM [vr___06_cDB_LongData_ALL_byCYQ] D
                , [vr___08_cDB_Weights_f_TopLines] W
-               , [forum]..[Pew_Question_Std]      Q
-           WHERE          D.[QSk]
-                        = Q.[Question_Std_pk]
-             AND          D.[Nation_fk]
+           WHERE          D.[Nation_fk]
                         = W.[Nation_fk]
              AND          D.[Question_Year]
                         = W.[Question_Year]
