@@ -10,7 +10,7 @@ USE master;
 -- Detaching a database requires exclusive access to the database
 -- Set the database to SINGLE_USER mode to obtain exclusive access
 -- (after all current users disconnect from the database)
-ALTER DATABASE                            for_d
+ALTER DATABASE                            forum
 SET SINGLE_USER
 WITH ROLLBACK IMMEDIATE;                              -- force current users out of the database immediately
 GO
@@ -18,7 +18,7 @@ GO
 -----------------------------------------------------------------------------------------------------------------------------------------------
 -- Syntax
 EXEC 
-sp_detach_db   @dbname                 = 'for_d'      -- (is a sysname value) name of the database to be detached
+sp_detach_db   @dbname                 = 'forum'      -- (is a sysname value) name of the database to be detached
              , @skipchecks             = 'true'       -- skip UPDATE STATISTIC
 --           , @keepfulltextindexfile  = 'true'       -- default 'true' and can be set to 'false' (removed in future version of SQL Server)
 -----------------------------------------------------------------------------------------------------------------------------------------------
