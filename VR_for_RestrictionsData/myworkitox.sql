@@ -13,14 +13,6 @@ Print
 /***************************************************************************************************************************************************************/
 USE [forum_ResAnal]
 GO
-/***************************************************************************************************************************************************************/
-  IF (SELECT COUNT(*) FROM [INFORMATION_SCHEMA].[VIEWS] WHERE [TABLE_NAME] = 'TT_03') > 0
-  DROP VIEW                                                                  [TT_03]
-  GO
-  IF (SELECT COUNT(*) FROM [INFORMATION_SCHEMA].[VIEWS] WHERE [TABLE_NAME] = 'TT_04') > 0
-  DROP VIEW                                                                  [TT_04]
-  GO
-/***************************************************************************************************************************************************************/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -52,6 +44,15 @@ declare @ALLCODE nvarchar(max)
 /***************************************************************************************************************************************************************/
 /*           - + -           - + -           - + -           - + -          - - + - -          - + -           - + -           - + -           - + -           */
 /***************************************************************************************************************************************************************/
+IF (SELECT COUNT(*) FROM [INFORMATION_SCHEMA].[VIEWS] WHERE [TABLE_NAME] = 'CTE03') > 0
+DROP VIEW                                                                  [CTE03]
+IF (SELECT COUNT(*) FROM [INFORMATION_SCHEMA].[VIEWS] WHERE [TABLE_NAME] = 'CTE04') > 0
+DROP VIEW                                                                  [CTE04]
+
+
+
+
+/***************************************************************************************************************************************************************/
 set @VCODE00 = 
 /***************************************************************************************************************************************************************/
 /*   >    00    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>     ***/
@@ -74,7 +75,7 @@ set @VCODEC3 =
 /*--->   SC31   -----------------------------------------------------------------------------------------------------------------------------------------------*/
 N'
 
-CREATE VIEW [dbo].[TT_03] AS
+CREATE VIEW [dbo].[CTE03] AS
 
 '
 /*---<   SC31   -----------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -89,7 +90,7 @@ set @VCODEC4 =
 /*--->   SC41   -----------------------------------------------------------------------------------------------------------------------------------------------*/
 N'
 
-CREATE VIEW [dbo].[TT_04] AS
+CREATE VIEW [dbo].[CTE04] AS
 
 '
 /*---<   SC41   -----------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -481,7 +482,7 @@ AS
 set @VCODE_3 = 
 /***************************************************************************************************************************************************************/
 /*   >  CTE3    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>    >>>     ***/
-                      (@vCODEC3)                                    /***        ... partial excecution ...                                                   ***/
+                      (@vCODEC4)                                    /***        ... partial excecution ...                                                   ***/
                    +  (@vCODE01)                                    /***        ... partial excecution ...                                                   ***/
                    +  (@vCODE02)                                    /***        ... partial excecution ...                                                   ***/
                    +  (@vCODE03)                                    /***        ... partial excecution ...                                                   ***/
@@ -541,7 +542,7 @@ AS
 /*---<   S101    ----------------------------------------------------------------------------------------------------------------------------------------------*/
 +
 /*--->   S102   -- "value (pct/count) & year" headings nested in XML string cell in parentesis ----------------------------------------------------------------*/
- (   SELECT ',' + [v] FROM /*e>*/ [TT_04] /*<e*/ ORDER BY [s] for xml path('')   )
+ (   SELECT ',' + [v] FROM /*e>*/ [CTE04] /*<e*/ ORDER BY [s] for xml path('')   )
 /*---<   S102   -- "value (pct/count) & year" headings nested in XML string cell in parentesis ----------------------------------------------------------------*/
 +
 /*--->   S103   -----------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -563,7 +564,7 @@ N'
 /*---<   S104.1 -- part 1 of X of subquery M ------------------------------------------------------------------------------------------------------------------*/
 +
 /*--->   S104.2 -- part 2 of X of subquery M: other row of headings nested in XML string cell in parentesis ---------------------------------------------------*/
- (   SELECT ',' + [x] FROM /*e>*/ [TT_04] /*<e*/ ORDER BY [s] for xml path('')   )
+ (   SELECT ',' + [x] FROM /*e>*/ [CTE04] /*<e*/ ORDER BY [s] for xml path('')   )
 /*---<   S104.2 -- part 2 of X of subquery M: other row of headings nested in XML string cell in parentesis ---------------------------------------------------*/
 +
 /*--->   S104.3 -- part 3 of X of subquery M ------------------------------------------------------------------------------------------------------------------*/
@@ -586,7 +587,7 @@ STUFF(
           (
                SELECT   DISTINCT
                         ', [' + [RYPCT] + ']'
-                 FROM   [TT_03]
+                 FROM   [CTE03]
              ORDER BY
                         ', [' + [RYPCT] + ']'
                                                for xml path('')
@@ -611,7 +612,7 @@ STUFF(
           (
                SELECT   DISTINCT
                         ', [' + [RYCNT] + ']'
-                 FROM   [TT_03]
+                 FROM   [CTE03]
              ORDER BY
                         ', [' + [RYCNT] + ']'
                                                for xml path('')
@@ -669,7 +670,7 @@ AS
 /*---<   S11x   -----------------------------------------------------------------------------------------------------------------------------------------------*/
 +
 /*--->   S11x   -- "value (pct/count) & year" headings nested in XML string cell in parentesis ----------------------------------------------------------------*/
- (   SELECT ',' + [v] FROM /*e>*/ [TT_04] /*<e*/ ORDER BY [s] for xml path('')   )
+ (   SELECT ',' + [v] FROM /*e>*/ [CTE04] /*<e*/ ORDER BY [s] for xml path('')   )
 /*---<   S11x   -- "value (pct/count) & year" headings nested in XML string cell in parentesis ----------------------------------------------------------------*/
 +
 /*--->   S11x   -----------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -686,7 +687,7 @@ N'
 /*---<   S11x   -----------------------------------------------------------------------------------------------------------------------------------------------*/
 +
 /*--->   S11x   -- "value (pct/count) & year" headings nested in XML string cell in parentesis (1st comma removed) --------------------------------------------*/
-STUFF((   SELECT ',' + [v] FROM /*e>*/ [TT_04] /*<e*/ ORDER BY [s] for xml path('')   ),1, 1,'')
+STUFF((   SELECT ',' + [v] FROM /*e>*/ [CTE04] /*<e*/ ORDER BY [s] for xml path('')   ),1, 1,'')
 /*---<   S11x   -- "value (pct/count) & year" headings nested in XML string cell in parentesis (1st comma removed) --------------------------------------------*/
 +
 /*--->   S11x   -----------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -702,7 +703,7 @@ N'
 '
 +
 /*--->   S11x   -- "value (pct/count) & year" headings nested in XML string cell in parentesis (1st comma removed) --------------------------------------------*/
-STUFF((   SELECT ',' + [v] FROM /*e>*/ [TT_04] /*<e*/ ORDER BY [s] for xml path('')   ),1, 1,'')
+STUFF((   SELECT ',' + [v] FROM /*e>*/ [CTE04] /*<e*/ ORDER BY [s] for xml path('')   ),1, 1,'')
 /*---<   S11x   -- "value (pct/count) & year" headings nested in XML string cell in parentesis (1st comma removed) --------------------------------------------*/
 +
 /*--->   S11x   -----------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -718,7 +719,7 @@ N'
 '
 +
 /*--->   S11x   -- "value (pct/count) & year" headings nested in XML string cell in parentesis (1st comma removed) --------------------------------------------*/
-STUFF((   SELECT ',' + [v] FROM /*e>*/ [TT_04] /*<e*/ ORDER BY [s] for xml path('')   ),1, 1,'')
+STUFF((   SELECT ',' + [v] FROM /*e>*/ [CTE04] /*<e*/ ORDER BY [s] for xml path('')   ),1, 1,'')
 /*---<   S11x   -- "value (pct/count) & year" headings nested in XML string cell in parentesis (1st comma removed) --------------------------------------------*/
 +
 /*--->   S11x   -----------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -738,7 +739,7 @@ N'
 '
 +
 /*--->   S11x   -- "value (pct/count) & year" headings nested in XML string cell in parentesis (1st comma removed) --------------------------------------------*/
-STUFF((   SELECT ',' + [v] FROM /*e>*/ [TT_04] /*<e*/ ORDER BY [s] for xml path('')   ),1, 1,'')
+STUFF((   SELECT ',' + [v] FROM /*e>*/ [CTE04] /*<e*/ ORDER BY [s] for xml path('')   ),1, 1,'')
 /*---<   S11x   -- "value (pct/count) & year" headings nested in XML string cell in parentesis (1st comma removed) --------------------------------------------*/
 +
 /*--->   S11x   -----------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -754,7 +755,7 @@ N'
 '
 +
 /*--->   S11x   -- "value (pct/count) & year" headings nested in XML string cell in parentesis (1st comma removed) --------------------------------------------*/
-STUFF((   SELECT ',' + [v] FROM /*e>*/ [TT_04] /*<e*/ ORDER BY [s] for xml path('')   ),1, 1,'')
+STUFF((   SELECT ',' + [v] FROM /*e>*/ [CTE04] /*<e*/ ORDER BY [s] for xml path('')   ),1, 1,'')
 /*---<   S11x   -- "value (pct/count) & year" headings nested in XML string cell in parentesis (1st comma removed) --------------------------------------------*/
 +
 /*--->   S11x   -----------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -770,7 +771,7 @@ N'
 '
 +
 /*--->   S11x   -- "value (pct/count) & year" headings nested in XML string cell in parentesis (1st comma removed) --------------------------------------------*/
-STUFF((   SELECT ',' + [v] FROM /*e>*/ [TT_04] /*<e*/ ORDER BY [s] for xml path('')   ),1, 1,'')
+STUFF((   SELECT ',' + [v] FROM /*e>*/ [CTE04] /*<e*/ ORDER BY [s] for xml path('')   ),1, 1,'')
 /*---<   S11x   -- "value (pct/count) & year" headings nested in XML string cell in parentesis (1st comma removed) --------------------------------------------*/
 +
 /*--->   S11x   -----------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -810,7 +811,7 @@ AS
 /*---<   S11x   -----------------------------------------------------------------------------------------------------------------------------------------------*/
 +
 /*--->   S11x   -- "value (pct/count) & year" headings nested in XML string cell in parentesis ----------------------------------------------------------------*/
- (   SELECT ',' + [v] FROM /*e>*/ [TT_04] /*<e*/ ORDER BY [s] for xml path('')   )
+ (   SELECT ',' + [v] FROM /*e>*/ [CTE04] /*<e*/ ORDER BY [s] for xml path('')   )
 /*---<   S11x   -- "value (pct/count) & year" headings nested in XML string cell in parentesis ----------------------------------------------------------------*/
 +
 /*--->   S11x   -----------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -830,7 +831,7 @@ N'
 /*---<   S11x   -----------------------------------------------------------------------------------------------------------------------------------------------*/
 +
 /*--->   S11x   -- "value (pct/count) & year" headings nested in XML string cell in parentesis (1st comma removed) --------------------------------------------*/
-STUFF((   SELECT ',' + [v] FROM /*e>*/ [TT_04] /*<e*/ ORDER BY [s] for xml path('')   ),1, 1,'')
+STUFF((   SELECT ',' + [v] FROM /*e>*/ [CTE04] /*<e*/ ORDER BY [s] for xml path('')   ),1, 1,'')
 /*---<   S11x   -- "value (pct/count) & year" headings nested in XML string cell in parentesis (1st comma removed) --------------------------------------------*/
 +
 /*--->   S11x   -----------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -868,7 +869,7 @@ AS
 '
 +
 
- (   SELECT ',' + [v] FROM [TT_04] /* heading */ ORDER BY [s] for xml path('')   )         /*** SELECT region/year headings nested in XML string cell in parentesis     ***/
+ (   SELECT ',' + [v] FROM [CTE04] /* heading */ ORDER BY [s] for xml path('')   )         /*** SELECT region/year headings nested in XML string cell in parentesis     ***/
 
 +
 N'
@@ -885,7 +886,7 @@ FROM
 '
 +
 
-STUFF((SELECT ',' + [v] FROM [TT_04] /* heading */ ORDER BY [s] for xml path('')),1, 1,'') /*** STUFFED region/year headings nested in XML string cell in parentesis    ***/
+STUFF((SELECT ',' + [v] FROM [CTE04] /* heading */ ORDER BY [s] for xml path('')),1, 1,'') /*** STUFFED region/year headings nested in XML string cell in parentesis    ***/
 
 +
 N'                                                     ) ) tpivoted )  F
@@ -918,7 +919,7 @@ AS
 '
 +
 
- (   SELECT ',' + [v] FROM [TT_04] /* heading */ ORDER BY [s] for xml path('')   )         /*** SELECT region/year headings nested in XML string cell in parentesis     ***/
+ (   SELECT ',' + [v] FROM [CTE04] /* heading */ ORDER BY [s] for xml path('')   )         /*** SELECT region/year headings nested in XML string cell in parentesis     ***/
 
 +
 
@@ -936,7 +937,7 @@ JOIN
 '
 +
 
-STUFF((SELECT ',' + [v] FROM [TT_04] /* heading */ ORDER BY [s] for xml path('')),1, 1,'') /*** STUFFED region/year headings nested in XML string cell in parentesis    ***/
+STUFF((SELECT ',' + [v] FROM [CTE04] /* heading */ ORDER BY [s] for xml path('')),1, 1,'') /*** STUFFED region/year headings nested in XML string cell in parentesis    ***/
 
 +
 N'
@@ -973,7 +974,7 @@ SELECT
         , Wording
 '
 +   -----------------------------------------------------------------------------------------------------------------------------------------------------------------
- (   SELECT ',' + [v] FROM [TT_04] /* heading */ ORDER BY [s] for xml path('')   )         /*** SELECT region/year headings nested in XML string cell in parentesis     ***/
+ (   SELECT ',' + [v] FROM [CTE04] /* heading */ ORDER BY [s] for xml path('')   )         /*** SELECT region/year headings nested in XML string cell in parentesis     ***/
 +   -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 N'
 FROM

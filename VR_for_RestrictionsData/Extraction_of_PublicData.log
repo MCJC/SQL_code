@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  S:\Forum\Database\MANAGEMENT\SQL_code\VR_for_RestrictionsData\Extraction_of_PublicData.log
   log type:  text
- opened on:   4 May 2016, 14:33:05
+ opened on:  31 May 2016, 14:18:01
 . * context:
 . clear all
 . version 14
@@ -15,7 +15,7 @@
 . scalar cxd=(c(current_date))
 . scalar cxt=(c(current_time))
 . di cxd "   " cxt
- 4 May 2016   14:33:05
+31 May 2016   14:18:01
 . *******************************************************************************************************************
 . }
 
@@ -83,7 +83,7 @@ delimiter now cr
 . do PubDS_VarLabels.do
 
 . ***   Script created from [forum_ResAnal]..[vrp__02_lab_SelDataBYCtry&Year] 
-. ***   on  4 May 2016 at 14:33:20. 
+. ***   on 31 May 2016 at 14:18:17. 
 . 
 . 
 . label var  GRI_Q_1                         "Does the constitution protect freedom of religion?"  
@@ -243,7 +243,6 @@ end of do-file
 . *******************************************************************************************************************
 . * save dataset
 . save  S:\Forum\Database\RestrictionsDataSets\PublicDataSet.dta, replace
-(note: file S:\Forum\Database\RestrictionsDataSets\PublicDataSet.dta not found)
 file S:\Forum\Database\RestrictionsDataSets\PublicDataSet.dta saved
 . * clear 
 . clear
@@ -261,5 +260,5 @@ file S:\Forum\Database\RestrictionsDataSets\PublicDataSet.dta saved
       name:  <unnamed>
        log:  S:\Forum\Database\MANAGEMENT\SQL_code\VR_for_RestrictionsData\Extraction_of_PublicData.log
   log type:  text
- closed on:   4 May 2016, 14:33:35
+ closed on:  31 May 2016, 14:18:33
 -------------------------------------------------------------------------------------------------------------------------------
