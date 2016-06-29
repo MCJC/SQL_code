@@ -115,8 +115,8 @@ DROP   TABLE    [forum_ResAnal].[dbo].[vi_Restrictions_Tables_by_region&world]  
                , [fr]        = [CntWg]
                , [pcr]       = [R6Wg]
                , [pcw]       = [WTWg]
-            FROM [vr___06_cDB_LongData_ALL_byCYQ]      D
-               , [vr___08_cDB_Weights_f_TopLines]      W
+            FROM [vr_06w_LongData_ALL] D
+               , [vr_07w_weights]      W
            WHERE          D.[Nation_fk]
                         = W.[Nation_fk]
              AND          D.[Question_Year]

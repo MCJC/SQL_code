@@ -4,4 +4,5 @@
                           + name
        , Table_Number   = object_id
   FROM
-       sys.Tables
+    -- sys.Tables
+       sys.views

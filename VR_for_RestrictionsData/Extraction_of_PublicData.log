@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  S:\Forum\Database\MANAGEMENT\SQL_code\VR_for_RestrictionsData\Extraction_of_PublicData.log
   log type:  text
- opened on:  31 May 2016, 14:18:01
+ opened on:  29 Jun 2016, 12:31:05
 . * context:
 . clear all
 . version 14
@@ -15,7 +15,7 @@
 . scalar cxd=(c(current_date))
 . scalar cxt=(c(current_time))
 . di cxd "   " cxt
-31 May 2016   14:18:01
+29 Jun 2016   12:31:06
 . *******************************************************************************************************************
 . }
 
@@ -83,9 +83,13 @@ delimiter now cr
 . do PubDS_VarLabels.do
 
 . ***   Script created from [forum_ResAnal]..[vrp__02_lab_SelDataBYCtry&Year] 
-. ***   on 31 May 2016 at 14:18:17. 
+. ***   on 29 Jun 2016 at 12:31:22. 
 . 
 . 
+. label var  GRI                           "Government Restrictions Index"  
+
+. label var  SHI                           "Social Hostilities Index"  
+
 . label var  GRI_Q_1                         "Does the constitution protect freedom of religion?"  
 
 . label var  GRI_Q_2                         "Are there limits to the constitution's protection of freedom of religion?"  
@@ -118,9 +122,9 @@ delimiter now cr
 
 . label var  GRI_Q_11_Judaism                "Government harassment of Judaism"  
 
-. label var  GRI_Q_11_Other_Religions        "Government harassment of Other (New or Ancient Rels/Sikhs/Zoroastrians)"  
-
 . label var  GRI_Q_11_Folk_Religions         "Government harassment of Ethnic or Tribal Religions"  
+
+. label var  GRI_Q_11_Other_Religions        "Government harassment of Other (New or Ancient Rels/Sikhs/Zoroastrians)"  
 
 . label var  GRI_Q_12                        "Did the government use physical violence against minority religious groups?"  
 
@@ -130,32 +134,34 @@ delimiter now cr
 
 . label var  GRI_Q_15                        "Did the government denounce any religious groups as 'cults' or 'sects'?"  
 
-. label var  GRI_Q_16_reasons                "Does the government formally ban any religious group?"  
-
 . label var  GRI_Q_16                        "Does the government formally ban any religious group? (N/Y options)"  
+
+. label var  GRI_Q_16_reasons                "Does the government formally ban any religious group?"  
 
 . label var  GRI_Q_17                        "Did the government attempt to remove a religious group from the country?"  
 
 . label var  GRI_Q_18                        "Are religious groups asked to register with the government?"  
 
+. label var  GRI_Q_19                        "Gov causing Deaths/PhysAbuse/Detent/Displac/PropDamg for R? (N/Y optns)"  
+
 . label var  GRI_Q_19_extent                 "Did Gov action or policy result Deaths/PhysAbuse/Detent/Displac/PropDamg for R?" 
 >  
-
-. label var  GRI_Q_19_Property_Damage        "Did  government action or policy result in damaged property due to religion?"  
-
-. label var  GRI_Q_19_Detentions             "Did Gov action or policy result in detentions or abductions due to religion?"  
-
-. label var  GRI_Q_19_Displacements          "Did Gov action or policy displace people from their homes due to religion?"  
 
 . label var  GRI_Q_19_Abuse                  "Did government action or policy result in physical assaults due to religion?"  
 
 . label var  GRI_Q_19_Deaths                 "Did government action or policy result in death due to religion?"  
 
-. label var  GRI_Q_19                        "Gov causing Deaths/PhysAbuse/Detent/Displac/PropDamg for R? (N/Y optns)"  
+. label var  GRI_Q_19_Displacements          "Did Gov action or policy displace people from their homes due to religion?"  
+
+. label var  GRI_Q_19_Detentions             "Did Gov action or policy result in detentions or abductions due to religion?"  
+
+. label var  GRI_Q_19_Property_Damage        "Did  government action or policy result in damaged property due to religion?"  
 
 . label var  GRI_Q_20_1                      "Does the governement recognize a favored religion or religions?"  
 
 . label var  GRI_Q_20_2                      "Do all RelGps receive the same level of Gov access and privileges?"  
+
+. label var  GRI_Q_20_3                      "Does Gov provide funds or other resources to religious groups? (scaled 0/.5/1)"  
 
 . label var  GRI_Q_20_3_a                    "Does the Gov provide funds for religious education or religious schools?"  
 
@@ -163,24 +169,10 @@ delimiter now cr
 
 . label var  GRI_Q_20_3_c                    "Does the Gov provide funds for religious activities (no education/property)?"  
 
-. label var  GRI_Q_20_3                      "Does Gov provide funds or other resources to religious groups? (scaled 0/.5/1)"  
-
 . label var  GRI_Q_20_4                      "Is religious education required in public schools?"  
 
 . label var  GRI_Q_20_5                      "Does the Nat Gov defer to religious authorities/texts/doctrines on legal issues?"
 >   
-
-. label var  GRX_22_blasphemy                "Does the government penalize blasphemy? (N/Y options)"  
-
-. label var  GRX_22_apostasy                 "Does the government penalize apostasy? (N/Y options)"  
-
-. label var  GRX_22_hate_speech              "Does Gov penalize hate speech about religion/religions? (N/Y options)"  
-
-. label var  GRX_22_criticism_of_religion    "Does Gov penalize criticism of a religion or religions? (N/Y options)"  
-
-. label var  GRX_30                          "Is there a police force that enforces religious norms?"  
-
-. label var  SHI_Q_1_Extent                  "Were there crimes/malicious acts/violence for Rel hatred/bias?"  
 
 . label var  SHI_Q_1_Harassment              "Have social groups harassed religious groups? (Y or N)"  
 
@@ -195,6 +187,8 @@ delimiter now cr
 
 . label var  SHI_Q_1_Deaths                  "Were there deaths motivated by religious bias? (Y or N)"  
 
+. label var  SHI_Q_1_Extent                  "Were there crimes/malicious acts/violence for Rel hatred/bias?"  
+
 . label var  SHI_Q_1_harass_Christianity     "Social harassment of Christianity"  
 
 . label var  SHI_Q_1_harass_Islam            "Social harassment of Islam"  
@@ -205,21 +199,21 @@ delimiter now cr
 
 . label var  SHI_Q_1_harass_Judaism          "Social harassment of Judaism"  
 
-. label var  SHI_Q_1_harass_Other_Religions  "Social harassment of Other (New or Ancient Rels/Sikhs/Zoroastrians)"  
-
 . label var  SHI_Q_1_harass_Folk_Religions   "Social harassment of Ethnic or Tribal Religions"  
+
+. label var  SHI_Q_1_harass_Other_Religions  "Social harassment of Other (New or Ancient Rels/Sikhs/Zoroastrians)"  
 
 . label var  SHI_Q_2                         "Was there mob violence related to religion?"  
 
 . label var  SHI_Q_3                         "Was there sectarian violence between religious groups?"  
 
-. label var  SHI_Q_4_extent                  "Were religion-related terrorist groups active in the country?"  
-
 . label var  SHI_Q_4                         "Were Rel-related terrorist groups active in the country? (N/Y options)"  
 
-. label var  SHI_Q_5_extent                  "Was there a religion-related war or armed conflict in the country?"  
+. label var  SHI_Q_4_extent                  "Were religion-related terrorist groups active in the country?"  
 
 . label var  SHI_Q_5                         "Was there Rel-related war/armed conflict in the country? (N/Y options)"  
+
+. label var  SHI_Q_5_extent                  "Was there a religion-related war or armed conflict in the country?"  
 
 . label var  SHI_Q_6                         "Did violence result from tensions between religious groups?"  
 
@@ -237,6 +231,523 @@ delimiter now cr
 
 . label var  SHI_Q_13                        "Were there incidents of hostility over conversions from one religion to another?"
 >   
+
+. label var  GRX_22_blasphemy                "Does the government penalize blasphemy? (N/Y options)"  
+
+. label var  GRX_22_apostasy                 "Does the government penalize apostasy? (N/Y options)"  
+
+. label var  GRX_22_hate_speech              "Does Gov penalize hate speech about religion/religions? (N/Y options)"  
+
+. label var  GRX_22_criticism_of_religion    "Does Gov penalize criticism of a religion or religions? (N/Y options)"  
+
+. label var  GRX_30                          "Is there a police force that enforces religious norms?"  
+
+. note:  Variable Notes in this dataset list decoded values for each variable
+
+. note Nation_fk:  Principal code key (numeric) for 198 countries
+
+. note Region5:  Five regions: Americas, Asia-Pacific, Europe, Middle East-North Africa, Sub-Saharan Africa
+
+. note Region6:  Six regions: Asia-Pacific, Europe, Latin America-Caribbean, Middle East-North Africa, North America, Sub-Sahar
+> an Africa
+
+. note Ctry_EditorialName:  198 countries
+
+. note Question_Year:  Years od data included, from 2007 to 2014
+
+. note GRI:   0.00   scale 0.0 - [+.] - 10.0
+
+. note GRI_Q_1:   0.00   Yes
+
+. note GRI_Q_1:   0.50   The constitution or basic law does not specifically provide for freedom of religion but does protect s
+> ome religious practices
+
+. note GRI_Q_1:   1.00   No
+
+. note GRI_Q_10:   0.00   No
+
+. note GRI_Q_10:   1.00   Yes
+
+. note GRI_Q_11:   0.00   No
+
+. note GRI_Q_11:   0.50   Yes, there was limited intimidation
+
+. note GRI_Q_11:   1.00   Yes, there was widespread intimidation
+
+. note GRI_Q_11_Buddhism:   0.00   No
+
+. note GRI_Q_11_Buddhism:   1.00   Yes
+
+. note GRI_Q_11_Christianity:   0.00   No
+
+. note GRI_Q_11_Christianity:   1.00   Yes
+
+. note GRI_Q_11_Folk_Religions:   0.00   No
+
+. note GRI_Q_11_Folk_Religions:   1.00   Yes
+
+. note GRI_Q_11_Hinduism:   0.00   No
+
+. note GRI_Q_11_Hinduism:   1.00   Yes
+
+. note GRI_Q_11_Islam:   0.00   No
+
+. note GRI_Q_11_Islam:   1.00   Yes
+
+. note GRI_Q_11_Judaism:   0.00   No
+
+. note GRI_Q_11_Judaism:   1.00   Yes
+
+. note GRI_Q_11_Other_Religions:   0.00   No
+
+. note GRI_Q_11_Other_Religions:   1.00   Yes
+
+. note GRI_Q_12:   0.00   No
+
+. note GRI_Q_12:   1.00   Yes
+
+. note GRI_Q_13:   0.00   No
+
+. note GRI_Q_13:   1.00   Yes
+
+. note GRI_Q_14:   0.00   No
+
+. note GRI_Q_14:   0.33   No, but the government consults a nongovernmental advisory board
+
+. note GRI_Q_14:   0.67   Yes, but the organization is noncoercive toward religious groups
+
+. note GRI_Q_14:   1.00   Yes, and the organization is coercive toward religious groups
+
+. note GRI_Q_15:   0.00   No
+
+. note GRI_Q_15:   1.00   Yes
+
+. note GRI_Q_16:   0.00   No
+
+. note GRI_Q_16:   0.01   Yes
+
+. note GRI_Q_16:   0.33   Security reasons stated as rationale
+
+. note GRI_Q_16:   0.67   Nonsecurity reasons stated as rationale
+
+. note GRI_Q_16:   1.00   Both security and nonsecurity reasons stated as rationale
+
+. note GRI_Q_16_reasons:   0.00   No
+
+. note GRI_Q_16_reasons:   0.33   Yes, security reasons stated as rationale
+
+. note GRI_Q_16_reasons:   0.67   Yes, nonsecurity reasons stated as rationale
+
+. note GRI_Q_16_reasons:   1.00   Yes, both security and nonsecurity reasons stated as rationale
+
+. note GRI_Q_17:   0.00   No
+
+. note GRI_Q_17:   1.00   Yes
+
+. note GRI_Q_18:   0.00   No
+
+. note GRI_Q_18:   0.33   Yes, but in a nondiscriminatory way
+
+. note GRI_Q_18:   0.67   Yes, the process adversely affects the ability of some religious groups to operate
+
+. note GRI_Q_18:   1.00   Yes, and the process clearly discriminates against some religious groups
+
+. note GRI_Q_19:   0.00   No
+
+. note GRI_Q_19:   0.01   Yes
+
+. note GRI_Q_19:   0.20   1-9 cases of government force
+
+. note GRI_Q_19:   0.40   10-200 cases of government force
+
+. note GRI_Q_19:   0.60   201-1,000 cases of government force
+
+. note GRI_Q_19:   0.80   1,001-9,999 cases of government force
+
+. note GRI_Q_19:   1.00   10,000+ cases of government force
+
+. note GRI_Q_19_Abuse:   0.00   No
+
+. note GRI_Q_19_Abuse:   0.20   Yes, 1-9 cases of government force
+
+. note GRI_Q_19_Abuse:   0.40   Yes, 10-200 cases of government force
+
+. note GRI_Q_19_Abuse:   0.60   Yes, 201-1,000 cases of government force
+
+. note GRI_Q_19_Abuse:   0.80   Yes, 1,001-9,999 cases of government force
+
+. note GRI_Q_19_Abuse:   1.00   Yes, 10,000+ cases of government force
+
+. note GRI_Q_19_Deaths:   0.00   No
+
+. note GRI_Q_19_Deaths:   0.20   Yes, 1-9 cases of government force
+
+. note GRI_Q_19_Deaths:   0.40   Yes, 10-200 cases of government force
+
+. note GRI_Q_19_Deaths:   0.60   Yes, 201-1,000 cases of government force
+
+. note GRI_Q_19_Deaths:   0.80   Yes, 1,001-9,999 cases of government force
+
+. note GRI_Q_19_Deaths:   1.00   Yes, 10,000+ cases of government force
+
+. note GRI_Q_19_Detentions:   0.00   No
+
+. note GRI_Q_19_Detentions:   0.20   Yes, 1-9 cases of government force
+
+. note GRI_Q_19_Detentions:   0.40   Yes, 10-200 cases of government force
+
+. note GRI_Q_19_Detentions:   0.60   Yes, 201-1,000 cases of government force
+
+. note GRI_Q_19_Detentions:   0.80   Yes, 1,001-9,999 cases of government force
+
+. note GRI_Q_19_Detentions:   1.00   Yes, 10,000+ cases of government force
+
+. note GRI_Q_19_Displacements:   0.00   No
+
+. note GRI_Q_19_Displacements:   0.20   Yes, 1-9 cases of government force
+
+. note GRI_Q_19_Displacements:   0.40   Yes, 10-200 cases of government force
+
+. note GRI_Q_19_Displacements:   0.60   Yes, 201-1,000 cases of government force
+
+. note GRI_Q_19_Displacements:   0.80   Yes, 1,001-9,999 cases of government force
+
+. note GRI_Q_19_Displacements:   1.00   Yes, 10,000+ cases of government force
+
+. note GRI_Q_19_extent:   0.00   No
+
+. note GRI_Q_19_extent:   0.20   Yes, 1-9 cases of government force
+
+. note GRI_Q_19_extent:   0.40   Yes, 10-200 cases of government force
+
+. note GRI_Q_19_extent:   0.60   Yes, 201-1,000 cases of government force
+
+. note GRI_Q_19_extent:   0.80   Yes, 1,001-9,999 cases of government force
+
+. note GRI_Q_19_extent:   1.00   Yes, 10,000+ cases of government force
+
+. note GRI_Q_19_Property_Damage:   0.00   No
+
+. note GRI_Q_19_Property_Damage:   0.20   Yes, 1-9 cases of government force
+
+. note GRI_Q_19_Property_Damage:   0.40   Yes, 10-200 cases of government force
+
+. note GRI_Q_19_Property_Damage:   0.60   Yes, 201-1,000 cases of government force
+
+. note GRI_Q_19_Property_Damage:   0.80   Yes, 1,001-9,999 cases of government force
+
+. note GRI_Q_19_Property_Damage:   1.00   Yes, 10,000+ cases of government force
+
+. note GRI_Q_2:   0.00   No
+
+. note GRI_Q_2:   0.33   Yes, there is a qualification
+
+. note GRI_Q_2:   0.67   Yes, there is a substantial contradiction and only some religious practices are protected
+
+. note GRI_Q_2:   1.00   Religious freedom is not provided in the first place
+
+. note GRI_Q_20_1:   0.00   No
+
+. note GRI_Q_20_1:   1.00   Yes
+
+. note GRI_Q_20_2:   0.00   All religious groups are generally treated the same
+
+. note GRI_Q_20_2:   0.25   Some religious groups have minimal privileges unavailable to other religious groups, limited to thi
+> ngs such as inheriting buildings or properties
+
+. note GRI_Q_20_2:   0.50   Some religious groups have general privileges or government access unavailable to other religious g
+> roups
+
+. note GRI_Q_20_2:   0.75   One religious group has privileges or government access unavailable to other religious groups, but 
+> it is not recognized as the country's official religion
+
+. note GRI_Q_20_2:   1.00   One religious group has privileges or government access unavailable to other religious groups, and 
+> it is recognized by the national government as the official religion
+
+. note GRI_Q_20_3:   0.00   No
+
+. note GRI_Q_20_3:   0.50   Yes, but with no obvious favoritism to a particular group or groups
+
+. note GRI_Q_20_3:   1.00   Yes, and with obvious favoritism to a particular group or groups
+
+. note GRI_Q_20_3_a:   0.00   No
+
+. note GRI_Q_20_3_a:   0.50   Yes, but with no obvious favoritism to a particular group or groups
+
+. note GRI_Q_20_3_a:   1.00   Yes, and with obvious favoritism to a particular group or groups
+
+. note GRI_Q_20_3_b:   0.00   No
+
+. note GRI_Q_20_3_b:   0.50   Yes, but with no obvious favoritism to a particular group or groups
+
+. note GRI_Q_20_3_b:   1.00   Yes, and with obvious favoritism to a particular group or groups
+
+. note GRI_Q_20_3_c:   0.00   No
+
+. note GRI_Q_20_3_c:   0.50   Yes, but with no obvious favoritism to a particular group or groups
+
+. note GRI_Q_20_3_c:   1.00   Yes, and with obvious favoritism to a particular group or groups
+
+. note GRI_Q_20_4:   0.00   No
+
+. note GRI_Q_20_4:   0.50   Yes, by at least some local governments
+
+. note GRI_Q_20_4:   1.00   Yes, by the national government
+
+. note GRI_Q_20_5:   0.00   No
+
+. note GRI_Q_20_5:   1.00   Yes
+
+. note GRI_Q_3:   0.00   National laws and policies provide for religious freedom, and the national government respects religio
+> us freedom in practice
+
+. note GRI_Q_3:   0.33   National laws and policies provide for religious freedom, and the national government generally respec
+> ts religious freedom in practice; but there are some instances (e.g., in certain localities) where religious freedom is not r
+> espected in practice
+
+. note GRI_Q_3:   0.67   There are limited national legal protections for religious freedom, but the national government does n
+> ot generally respect religious freedom in practice
+
+. note GRI_Q_3:   1.00   National laws and policies do not provide for religious freedom and the national government does not r
+> espect religious freedom in practice
+
+. note GRI_Q_4:   0.00   No
+
+. note GRI_Q_4:   0.33   Yes, in a few cases
+
+. note GRI_Q_4:   0.67   Yes, in many cases
+
+. note GRI_Q_4:   1.00   Government prohibits worship or religious practices of one or more religious groups as a general polic
+> y
+
+. note GRI_Q_5:   0.00   No
+
+. note GRI_Q_5:   0.50   Yes, for some religious groups
+
+. note GRI_Q_5:   1.00   Yes, for all religious groups
+
+. note GRI_Q_6:   0.00   No
+
+. note GRI_Q_6:   0.50   Yes, for some religious groups
+
+. note GRI_Q_6:   1.00   Yes, for all religious groups
+
+. note GRI_Q_7:   0.00   No
+
+. note GRI_Q_7:   1.00   Yes
+
+. note GRI_Q_8:   0.00   No
+
+. note GRI_Q_8:   1.00   Yes
+
+. note GRI_Q_9:   0.00   Yes
+
+. note GRI_Q_9:   0.50   Yes, but with restrictions
+
+. note GRI_Q_9:   1.00   No
+
+. note GRX_22_apostasy:   0.00   No
+
+. note GRX_22_apostasy:   0.01   Yes
+
+. note GRX_22_apostasy:   0.67   Yes, but penalties are not enforced
+
+. note GRX_22_apostasy:   1.00   Yes, and penalties are enforced
+
+. note GRX_22_blasphemy:   0.00   No
+
+. note GRX_22_blasphemy:   0.01   Yes
+
+. note GRX_22_blasphemy:   0.67   Yes, but penalties are not enforced
+
+. note GRX_22_blasphemy:   1.00   Yes, and penalties are enforced
+
+. note GRX_22_criticism_of_religion:   0.00   No
+
+. note GRX_22_criticism_of_religion:   0.01   Yes
+
+. note GRX_22_criticism_of_religion:   0.67   Yes, but penalties are not enforced
+
+. note GRX_22_criticism_of_religion:   1.00   Yes, and penalties are enforced
+
+. note GRX_22_hate_speech:   0.00   No
+
+. note GRX_22_hate_speech:   0.01   Yes
+
+. note GRX_22_hate_speech:   0.67   Yes, but penalties are not enforced
+
+. note GRX_22_hate_speech:   1.00   Yes, and penalties are enforced
+
+. note GRX_30:   0.00   No
+
+. note GRX_30:   1.00   Yes
+
+. note SHI:   0.00   scale 0.0 - [+.] - 10.0
+
+. note SHI_Q_1_Assaults:   0.00   No
+
+. note SHI_Q_1_Assaults:   1.00   Yes
+
+. note SHI_Q_1_Deaths:   0.00   No
+
+. note SHI_Q_1_Deaths:   1.00   Yes
+
+. note SHI_Q_1_Detentions:   0.00   No
+
+. note SHI_Q_1_Detentions:   1.00   Yes
+
+. note SHI_Q_1_Displacements:   0.00   No
+
+. note SHI_Q_1_Displacements:   1.00   Yes
+
+. note SHI_Q_1_Extent:   0.00   scale 0 - [+.1667] - 1
+
+. note SHI_Q_1_Extent:   0.17   scale 0 - [+.1667] - 1
+
+. note SHI_Q_1_Extent:   0.33   scale 0 - [+.1667] - 1
+
+. note SHI_Q_1_Extent:   0.50   scale 0 - [+.1667] - 1
+
+. note SHI_Q_1_Extent:   0.67   scale 0 - [+.1667] - 1
+
+. note SHI_Q_1_Extent:   0.83   scale 0 - [+.1667] - 1
+
+. note SHI_Q_1_Extent:   1.00   scale 0 - [+.1667] - 1
+
+. note SHI_Q_1_harass_Buddhism:   0.00   No
+
+. note SHI_Q_1_harass_Buddhism:   1.00   Yes
+
+. note SHI_Q_1_harass_Christianity:   0.00   No
+
+. note SHI_Q_1_harass_Christianity:   1.00   Yes
+
+. note SHI_Q_1_harass_Folk_Religions:   0.00   No
+
+. note SHI_Q_1_harass_Folk_Religions:   1.00   Yes
+
+. note SHI_Q_1_harass_Hinduism:   0.00   No
+
+. note SHI_Q_1_harass_Hinduism:   1.00   Yes
+
+. note SHI_Q_1_harass_Islam:   0.00   No
+
+. note SHI_Q_1_harass_Islam:   1.00   Yes
+
+. note SHI_Q_1_harass_Judaism:   0.00   No
+
+. note SHI_Q_1_harass_Judaism:   1.00   Yes
+
+. note SHI_Q_1_harass_Other_Religions:   0.00   No
+
+. note SHI_Q_1_harass_Other_Religions:   1.00   Yes
+
+. note SHI_Q_1_Harassment:   0.00   No
+
+. note SHI_Q_1_Harassment:   1.00   Yes
+
+. note SHI_Q_1_PropertyDamage:   0.00   No
+
+. note SHI_Q_1_PropertyDamage:   1.00   Yes
+
+. note SHI_Q_10:   0.00   No
+
+. note SHI_Q_10:   1.00   Yes
+
+. note SHI_Q_11:   0.00   No
+
+. note SHI_Q_11:   1.00   Yes
+
+. note SHI_Q_12:   0.00   No
+
+. note SHI_Q_12:   0.50   Yes, but they fell short of physical violence
+
+. note SHI_Q_12:   1.00   Yes, and they included physical violence
+
+. note SHI_Q_13:   0.00   No
+
+. note SHI_Q_13:   0.50   Yes, but they fell short of physical violence
+
+. note SHI_Q_13:   1.00   Yes, and they included physical violence
+
+. note SHI_Q_2:   0.00   No
+
+. note SHI_Q_2:   0.50   Yes, but there were no deaths reported
+
+. note SHI_Q_2:   1.00   Yes, and there were deaths reported
+
+. note SHI_Q_3:   0.00   No
+
+. note SHI_Q_3:   1.00   Yes
+
+. note SHI_Q_4:   0.00   No
+
+. note SHI_Q_4:   0.01   Yes
+
+. note SHI_Q_4:   0.25   Yes, but their activity was limited to recruitment/fundraising
+
+. note SHI_Q_4:   0.50   Yes, with violence that resulted in some casualties (1-9 injuries or deaths)
+
+. note SHI_Q_4:   0.75   Yes, with violence that resulted in multiple casualties (10-50 injuries or deaths)
+
+. note SHI_Q_4:   1.00   Yes, with violence that resulted in many casualties (more than 50 injuries or deaths)
+
+. note SHI_Q_4_extent:   0.00   No
+
+. note SHI_Q_4_extent:   0.25   Yes, but their activity was limited to recruitment and fundraising
+
+. note SHI_Q_4_extent:   0.50   Yes, with violence that resulted in some casualties (1-9 injuries or deaths)
+
+. note SHI_Q_4_extent:   0.75   Yes, with violence that resulted in multiple casualties (10-50 injuries or deaths)
+
+. note SHI_Q_4_extent:   1.00   Yes, with violence that resulted in many casualties (more than 50 injuries or deaths)
+
+. note SHI_Q_5:   0.00   No
+
+. note SHI_Q_5:   0.01   Yes
+
+. note SHI_Q_5:   0.25   Yes, with fewer than 10,000 casualties or people displaced
+
+. note SHI_Q_5:   0.50   Yes, with tens of thousands of casualties or people displaced
+
+. note SHI_Q_5:   0.75   Yes, with hundreds of thousands of casualties or people displaced
+
+. note SHI_Q_5:   1.00   Yes, with millions of casualties or people displaced
+
+. note SHI_Q_5_extent:   0.00   No
+
+. note SHI_Q_5_extent:   0.25   Yes, with fewer than 10,000 casualties or people displaced
+
+. note SHI_Q_5_extent:   0.50   Yes, with tens of thousands of casualties or people displaced
+
+. note SHI_Q_5_extent:   0.75   Yes, with hundreds of thousands of casualties or people displaced
+
+. note SHI_Q_5_extent:   1.00   Yes, with millions of casualties or people displaced
+
+. note SHI_Q_6:   0.00   No
+
+. note SHI_Q_6:   0.33   There were public tensions between religious groups, but they fell short of hostilities involving phys
+> ical violence
+
+. note SHI_Q_6:   0.67   Yes, with physical violence in a few cases
+
+. note SHI_Q_6:   1.00   Yes, with physical violence in numerous cases
+
+. note SHI_Q_7:   0.00   No
+
+. note SHI_Q_7:   0.33   Yes, at the local level
+
+. note SHI_Q_7:   0.67   Yes, at the regional level
+
+. note SHI_Q_7:   1.00   Yes, at the national level
+
+. note SHI_Q_8:   0.00   No
+
+. note SHI_Q_8:   1.00   Yes
+
+. note SHI_Q_9:   0.00   No
+
+. note SHI_Q_9:   1.00   Yes
 
 . 
 end of do-file
@@ -260,5 +771,5 @@ file S:\Forum\Database\RestrictionsDataSets\PublicDataSet.dta saved
       name:  <unnamed>
        log:  S:\Forum\Database\MANAGEMENT\SQL_code\VR_for_RestrictionsData\Extraction_of_PublicData.log
   log type:  text
- closed on:  31 May 2016, 14:18:33
+ closed on:  29 Jun 2016, 12:31:38
 -------------------------------------------------------------------------------------------------------------------------------

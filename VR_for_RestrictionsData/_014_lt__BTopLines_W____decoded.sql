@@ -220,7 +220,7 @@ AS
         JOIN 
                    ( SELECT * FROM [forum]..[Pew_Question_Attributes]
                              WHERE [attk]
-                                 = 'XNote01'                           )  ATT8
+                                 = 'TLC label'                           )  ATT8
               ON   [QS_fk]
                  = [Question_Std_fk]
       )
