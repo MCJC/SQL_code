@@ -4,6 +4,54 @@ Print
 /**************************************************************************************************************************************************/
 /***                                                                                                                                            ***/
 
+
+--   should we finally add [QA_std] LIKE 'GRI_0[1-2]_yBe'
+
+-- ad std questions fom this coding period
+/**************************************************************************************************************************/
+USE [forum]
+GO
+/**************************************************************************************************************************/
+/*****                                                    STEP 000                                                    *****/
+/*****                                           BackUp  current Table(s)                                             *****/
+/**************************************************************************************************************************/
+  DECLARE @CrDt    varchar( 8)
+  SET     @CrDt = (CONVERT(VARCHAR(8),GETDATE(),112))
+/*------------------------------------------------------------------------------------------------------------------------*/
+EXEC ( ' SELECT * INTO  [_bk_forum].[dbo].[Pew_Question_Std' + '_' + @CrDt + 'b]
+                  FROM      [forum].[dbo].[Pew_Question_Std]'                      )
+/**************************************************************************************************************************/
+/**************************************************************************************************************************/
+/*****                                                    STEP 001                                                    *****/
+/**************************************************************************************************************************/
+/*------------------------------------------------------------------------------------------------------------------------*/
+--	INSERT INTO                                                                /* insert statement                        */
+--	              [Pew_Question_Std]                                           /* target table in current database        */
+/*------------------------------------------------------------------------------------------------------------------------*/
+SELECT                                                                         /* select statement...                     */
+/*------------------------------------------------------------------------------------------------------------------------*/
+       [Question_Std_pk]            =    ROW_NUMBER()OVER(
+                                         ORDER BY[Question_Std_pk])            /* number all rows                         */
+                                      + (SELECT MAX([Question_Std_pk])         /* add currently max pk                    */
+                                           FROM [Pew_Question_Std])            /* from StdQuestions                       */
+/*------------------------------------------------------------------------------------------------------------------------*/
+      ,[Question_abbreviation_std]  =   [Question_abbreviation_std] + '_yBe'
+      ,[Question_wording_std]       =   [Question_abbreviation_std] + 'from past year - (BkUp vaue)'
+      ,[Question_short_wording_std] =   [Question_abbreviation_std] + 'from past year - (BkUp vaue)'
+      ,[Display]                    =   0
+      ,[AnswerSet_num]              =   [AnswerSet_num]
+      ,[Editorially_Checked]        = 'NO!'                                    /* label as not editorially checked        */
+  FROM [forum].[dbo].[Pew_Question_Std]
+WHERE [Question_abbreviation_std] LIKE 'GRI_0[1-2]'
+/**************************************************************************************************************************/
+SELECT * FROM [Pew_Question_Std]                                               /* check results in modified table         */
+/**************************************************************************************************************************/
+
+
+
+
+
+
 -- ADD STD ANSWERS
 
 /**************************************************************************************************************************/
@@ -303,7 +351,7 @@ FROM
                                                            ELSE 30
           END
     FROM (
-             SELECT TOP 42 *
+             SELECT TOP 44 *
                FROM [forum].[dbo].[Pew_Question_Std]
            ORDER BY [Question_Std_pk]   DESC                          ) ND
  /*- New added questions --------------------------------------------------------------*/
@@ -353,7 +401,21 @@ FROM
 /**************************************************************************************************************************/
 SELECT * FROM [Pew_Question_NoStd]                                             /* check results in modified table         */
 /**************************************************************************************************************************/
-
+/* add to year variables te following toool variables:
+GRI_01_filter
+GRI_01_yBe
+GRI_02_filter
+GRI_02_yBe
+GRI_19_filter
+GRI_19_x
+SHI_01_x
+SHI_01_summary_b
+SHI_04_filter
+SHI_04_x
+SHI_05_filter
+SHI_05_x
+XSG_S_99_filter
+*/
 
 
 -- UPDATE SORTING ORDER IN [Pew_Question_Attributes]
@@ -370,7 +432,8 @@ GO
 EXEC ( ' SELECT * INTO  [_bk_forum].[dbo].[Pew_Question_Attributes' + '_' + @CrDt + ']
                   FROM      [forum].[dbo].[Pew_Question_Attributes]'                      )
 /**************************************************************************************************************************/
-
+--DELETE            FROM      [forum].[dbo].[Pew_Question_Attributes]
+--WHERE                                     [attk]                     =  'Access_sort'
 /**************************************************************************************************************************/
 /**************************************************************************************************************************/
 /*****                                                    STEP 001                                                    *****/
@@ -378,218 +441,220 @@ EXEC ( ' SELECT * INTO  [_bk_forum].[dbo].[Pew_Question_Attributes' + '_' + @CrD
 WITH NSV AS                                                                    /* NewSet of Vals -common table expression */
 (                                                                              /* >   Set of Values begins...             */
 --
-            SELECT [K] =     3, [N] = 1
-  UNION ALL SELECT [K] =   967, [N] = 2
-  UNION ALL SELECT [K] =     1, [N] = 3
-  UNION ALL SELECT [K] =   968, [N] = 4
-  UNION ALL SELECT [K] =     7, [N] = 5
-  UNION ALL SELECT [K] =     9, [N] = 6
-  UNION ALL SELECT [K] =    76, [N] = 7
-  UNION ALL SELECT [K] =    78, [N] = 8
-  UNION ALL SELECT [K] =    79, [N] = 9
-  UNION ALL SELECT [K] =    80, [N] = 10
-  UNION ALL SELECT [K] =    81, [N] = 11
-  UNION ALL SELECT [K] =    82, [N] = 12
-  UNION ALL SELECT [K] =    83, [N] = 13
-  UNION ALL SELECT [K] =    84, [N] = 14
-  UNION ALL SELECT [K] =    85, [N] = 15
-  UNION ALL SELECT [K] =    86, [N] = 16
-  UNION ALL SELECT [K] =    87, [N] = 17
-  UNION ALL SELECT [K] =   997, [N] = 18
-  UNION ALL SELECT [K] =    88, [N] = 19
-  UNION ALL SELECT [K] =   995, [N] = 20
-  UNION ALL SELECT [K] =   996, [N] = 21
-  UNION ALL SELECT [K] =    89, [N] = 22
-  UNION ALL SELECT [K] =    91, [N] = 23
-  UNION ALL SELECT [K] =  1034, [N] = 24
-  UNION ALL SELECT [K] =    93, [N] = 25
-  UNION ALL SELECT [K] =  1035, [N] = 26
-  UNION ALL SELECT [K] =    95, [N] = 27
-  UNION ALL SELECT [K] =  1036, [N] = 28
-  UNION ALL SELECT [K] =   100, [N] = 29
-  UNION ALL SELECT [K] =    98, [N] = 30
-  UNION ALL SELECT [K] =   101, [N] = 31
-  UNION ALL SELECT [K] =   103, [N] = 32
-  UNION ALL SELECT [K] =    23, [N] = 33
-  UNION ALL SELECT [K] =    24, [N] = 34
-  UNION ALL SELECT [K] =    25, [N] = 35
-  UNION ALL SELECT [K] =    26, [N] = 36
-  UNION ALL SELECT [K] =    13, [N] = 37
-  UNION ALL SELECT [K] =    15, [N] = 38
-  UNION ALL SELECT [K] =    19, [N] = 39
-  UNION ALL SELECT [K] =   910, [N] = 40
-  UNION ALL SELECT [K] =    21, [N] = 41
-  UNION ALL SELECT [K] =    17, [N] = 42
-  UNION ALL SELECT [K] =    11, [N] = 43
-  UNION ALL SELECT [K] =    61, [N] = 44
-  UNION ALL SELECT [K] =    56, [N] = 45
-  UNION ALL SELECT [K] =    57, [N] = 46
-  UNION ALL SELECT [K] =    54, [N] = 47
-  UNION ALL SELECT [K] =    28, [N] = 48
-  UNION ALL SELECT [K] =    29, [N] = 49
-  UNION ALL SELECT [K] =    30, [N] = 50
-  UNION ALL SELECT [K] =    31, [N] = 51
-  UNION ALL SELECT [K] =    32, [N] = 52
-  UNION ALL SELECT [K] =    33, [N] = 53
-  UNION ALL SELECT [K] =    34, [N] = 54
-  UNION ALL SELECT [K] =    35, [N] = 55
-  UNION ALL SELECT [K] =    36, [N] = 56
-  UNION ALL SELECT [K] =    37, [N] = 57
-  UNION ALL SELECT [K] =    38, [N] = 58
-  UNION ALL SELECT [K] =    39, [N] = 59
-  UNION ALL SELECT [K] =    40, [N] = 60
-  UNION ALL SELECT [K] =    41, [N] = 61
-  UNION ALL SELECT [K] =    42, [N] = 62
-  UNION ALL SELECT [K] =    45, [N] = 63
-  UNION ALL SELECT [K] =    44, [N] = 64
-  UNION ALL SELECT [K] =   636, [N] = 65
-  UNION ALL SELECT [K] =    59, [N] = 66
-  UNION ALL SELECT [K] =    48, [N] = 67
-  UNION ALL SELECT [K] =    50, [N] = 68
-  UNION ALL SELECT [K] =    52, [N] = 69
-  UNION ALL SELECT [K] =   111, [N] = 70
-  UNION ALL SELECT [K] =   112, [N] = 71
-  UNION ALL SELECT [K] =   113, [N] = 72
-  UNION ALL SELECT [K] =   114, [N] = 73
-  UNION ALL SELECT [K] =   998, [N] = 74
-  UNION ALL SELECT [K] =   999, [N] = 75
-  UNION ALL SELECT [K] =  1000, [N] = 76
-  UNION ALL SELECT [K] =  1001, [N] = 77
-  UNION ALL SELECT [K] =  1002, [N] = 78
-  UNION ALL SELECT [K] =   637, [N] = 79
-  UNION ALL SELECT [K] =   638, [N] = 80
-  UNION ALL SELECT [K] =   639, [N] = 81
-  UNION ALL SELECT [K] =   640, [N] = 82
-  UNION ALL SELECT [K] =   641, [N] = 83
-  UNION ALL SELECT [K] =   794, [N] = 84
-  UNION ALL SELECT [K] =   795, [N] = 85
-  UNION ALL SELECT [K] =   796, [N] = 86
-  UNION ALL SELECT [K] =  1003, [N] = 87
-  UNION ALL SELECT [K] =   969, [N] = 88
-  UNION ALL SELECT [K] =    64, [N] = 89
-  UNION ALL SELECT [K] =    66, [N] = 90
-  UNION ALL SELECT [K] =    68, [N] = 91
-  UNION ALL SELECT [K] =    72, [N] = 92
-  UNION ALL SELECT [K] =    74, [N] = 93
-  UNION ALL SELECT [K] =   924, [N] = 94
-  UNION ALL SELECT [K] =    63, [N] = 95
-  UNION ALL SELECT [K] =   153, [N] = 96
-  UNION ALL SELECT [K] =   170, [N] = 97
-  UNION ALL SELECT [K] =   171, [N] = 98
-  UNION ALL SELECT [K] =   172, [N] = 99
-  UNION ALL SELECT [K] =   173, [N] = 100
-  UNION ALL SELECT [K] =   174, [N] = 101
-  UNION ALL SELECT [K] =   175, [N] = 102
-  UNION ALL SELECT [K] =   176, [N] = 103
-  UNION ALL SELECT [K] =   177, [N] = 104
-  UNION ALL SELECT [K] =   178, [N] = 105
-  UNION ALL SELECT [K] =   179, [N] = 106
-  UNION ALL SELECT [K] =   180, [N] = 107
-  UNION ALL SELECT [K] =   181, [N] = 108
-  UNION ALL SELECT [K] =   182, [N] = 109
-  UNION ALL SELECT [K] =   183, [N] = 110
-  UNION ALL SELECT [K] =   186, [N] = 111
-  UNION ALL SELECT [K] =   185, [N] = 112
-  UNION ALL SELECT [K] =   761, [N] = 113
-  UNION ALL SELECT [K] =   155, [N] = 114
-  UNION ALL SELECT [K] =   157, [N] = 115
-  UNION ALL SELECT [K] =   159, [N] = 116
-  UNION ALL SELECT [K] =   163, [N] = 117
-  UNION ALL SELECT [K] =   165, [N] = 118
-  UNION ALL SELECT [K] =   169, [N] = 119
-  UNION ALL SELECT [K] =   168, [N] = 120
-  UNION ALL SELECT [K] =   187, [N] = 121
-  UNION ALL SELECT [K] =   188, [N] = 122
-  UNION ALL SELECT [K] =   190, [N] = 123
-  UNION ALL SELECT [K] =   982, [N] = 124
-  UNION ALL SELECT [K] =   206, [N] = 125
-  UNION ALL SELECT [K] =   193, [N] = 126
-  UNION ALL SELECT [K] =   195, [N] = 127
-  UNION ALL SELECT [K] =   197, [N] = 128
-  UNION ALL SELECT [K] =  1004, [N] = 129
-  UNION ALL SELECT [K] =  1005, [N] = 130
-  UNION ALL SELECT [K] =   202, [N] = 131
-  UNION ALL SELECT [K] =   204, [N] = 132
-  UNION ALL SELECT [K] =  1006, [N] = 133
-  UNION ALL SELECT [K] =  1007, [N] = 134
-  UNION ALL SELECT [K] =  1008, [N] = 135
-  UNION ALL SELECT [K] =  1009, [N] = 136
-  UNION ALL SELECT [K] =  1010, [N] = 137
-  UNION ALL SELECT [K] =  1011, [N] = 138
-  UNION ALL SELECT [K] =  1012, [N] = 139
-  UNION ALL SELECT [K] =  1013, [N] = 140
-  UNION ALL SELECT [K] =  1014, [N] = 141
-  UNION ALL SELECT [K] =  1015, [N] = 142
-  UNION ALL SELECT [K] =  1016, [N] = 143
-  UNION ALL SELECT [K] =  1017, [N] = 144
-  UNION ALL SELECT [K] =  1018, [N] = 145
-  UNION ALL SELECT [K] =  1019, [N] = 146
-  UNION ALL SELECT [K] =  1021, [N] = 147
-  UNION ALL SELECT [K] =  1020, [N] = 148
-  UNION ALL SELECT [K] =  1022, [N] = 149
-  UNION ALL SELECT [K] =   965, [N] = 150
-  UNION ALL SELECT [K] =   192, [N] = 151
-  UNION ALL SELECT [K] =   983, [N] = 152
-  UNION ALL SELECT [K] =   210, [N] = 153
-  UNION ALL SELECT [K] =   212, [N] = 154
-  UNION ALL SELECT [K] =  1024, [N] = 155
-  UNION ALL SELECT [K] =  1025, [N] = 156
-  UNION ALL SELECT [K] =   216, [N] = 157
-  UNION ALL SELECT [K] =   218, [N] = 158
-  UNION ALL SELECT [K] =  1023, [N] = 159
-  UNION ALL SELECT [K] =   966, [N] = 160
-  UNION ALL SELECT [K] =   207, [N] = 161
-  UNION ALL SELECT [K] =   220, [N] = 162
-  UNION ALL SELECT [K] =  1026, [N] = 163
-  UNION ALL SELECT [K] =   235, [N] = 164
-  UNION ALL SELECT [K] =  1033, [N] = 165
-  UNION ALL SELECT [K] =   233, [N] = 166
-  UNION ALL SELECT [K] =  1032, [N] = 167
-  UNION ALL SELECT [K] =   224, [N] = 168
-  UNION ALL SELECT [K] =  1028, [N] = 169
-  UNION ALL SELECT [K] =   222, [N] = 170
-  UNION ALL SELECT [K] =  1027, [N] = 171
-  UNION ALL SELECT [K] =   994, [N] = 172
-  UNION ALL SELECT [K] =  1031, [N] = 173
-  UNION ALL SELECT [K] =   987, [N] = 174
-  UNION ALL SELECT [K] =   912, [N] = 175
-  UNION ALL SELECT [K] =   986, [N] = 176
-  UNION ALL SELECT [K] =   226, [N] = 177
-  UNION ALL SELECT [K] =  1029, [N] = 178
-  UNION ALL SELECT [K] =   984, [N] = 179
-  UNION ALL SELECT [K] =   228, [N] = 180
-  UNION ALL SELECT [K] =  1030, [N] = 181
-  UNION ALL SELECT [K] =   985, [N] = 182
-  UNION ALL SELECT [K] =   762, [N] = 183
-  UNION ALL SELECT [K] =   763, [N] = 184
-  UNION ALL SELECT [K] =   764, [N] = 185
-  UNION ALL SELECT [K] =   765, [N] = 186
-  UNION ALL SELECT [K] =   766, [N] = 187
-  UNION ALL SELECT [K] =   767, [N] = 188
-  UNION ALL SELECT [K] =   768, [N] = 189
-  UNION ALL SELECT [K] =   769, [N] = 190
-  UNION ALL SELECT [K] =   770, [N] = 191
-  UNION ALL SELECT [K] =   771, [N] = 192
-  UNION ALL SELECT [K] =   772, [N] = 193
-  UNION ALL SELECT [K] =   773, [N] = 194
-  UNION ALL SELECT [K] =   774, [N] = 195
-  UNION ALL SELECT [K] =   775, [N] = 196
-  UNION ALL SELECT [K] =   776, [N] = 197
-  UNION ALL SELECT [K] =   777, [N] = 198
-  UNION ALL SELECT [K] =   778, [N] = 199
-  UNION ALL SELECT [K] =   779, [N] = 200
-  UNION ALL SELECT [K] =   780, [N] = 201
-  UNION ALL SELECT [K] =   781, [N] = 202
-  UNION ALL SELECT [K] =   782, [N] = 203
-  UNION ALL SELECT [K] =   783, [N] = 204
-  UNION ALL SELECT [K] =   784, [N] = 205
-  UNION ALL SELECT [K] =   988, [N] = 206
-  UNION ALL SELECT [K] =   785, [N] = 207
-  UNION ALL SELECT [K] =   786, [N] = 208
-  UNION ALL SELECT [K] =   787, [N] = 209
-  UNION ALL SELECT [K] =   788, [N] = 210
-  UNION ALL SELECT [K] =   789, [N] = 211
-  UNION ALL SELECT [K] =   790, [N] = 212
+            SELECT [K] =     3, [N] =  '001'
+  UNION ALL SELECT [K] =   967, [N] =  '002'
+  UNION ALL SELECT [K] =     1, [N] =  '003'
+  UNION ALL SELECT [K] =  1037, [N] =  '004'
+  UNION ALL SELECT [K] =   968, [N] =  '005'
+  UNION ALL SELECT [K] =     7, [N] =  '006'
+  UNION ALL SELECT [K] =  1038, [N] =  '007'
+  UNION ALL SELECT [K] =     9, [N] =  '008'
+  UNION ALL SELECT [K] =    76, [N] =  '009'
+  UNION ALL SELECT [K] =    78, [N] =  '010'
+  UNION ALL SELECT [K] =    79, [N] =  '011'
+  UNION ALL SELECT [K] =    80, [N] =  '012'
+  UNION ALL SELECT [K] =    81, [N] =  '013'
+  UNION ALL SELECT [K] =    82, [N] =  '014'
+  UNION ALL SELECT [K] =    83, [N] =  '015'
+  UNION ALL SELECT [K] =    84, [N] =  '016'
+  UNION ALL SELECT [K] =    85, [N] =  '017'
+  UNION ALL SELECT [K] =    86, [N] =  '018'
+  UNION ALL SELECT [K] =    87, [N] =  '019'
+  UNION ALL SELECT [K] =   997, [N] =  '020'
+  UNION ALL SELECT [K] =    88, [N] =  '021'
+  UNION ALL SELECT [K] =   995, [N] =  '022'
+  UNION ALL SELECT [K] =   996, [N] =  '023'
+  UNION ALL SELECT [K] =    89, [N] =  '024'
+  UNION ALL SELECT [K] =    91, [N] =  '025'
+  UNION ALL SELECT [K] =  1034, [N] =  '026'
+  UNION ALL SELECT [K] =    93, [N] =  '027'
+  UNION ALL SELECT [K] =  1035, [N] =  '028'
+  UNION ALL SELECT [K] =    95, [N] =  '029'
+  UNION ALL SELECT [K] =  1036, [N] =  '030'
+  UNION ALL SELECT [K] =   100, [N] =  '031'
+  UNION ALL SELECT [K] =    98, [N] =  '032'
+  UNION ALL SELECT [K] =   101, [N] =  '033'
+  UNION ALL SELECT [K] =   103, [N] =  '034'
+  UNION ALL SELECT [K] =    23, [N] =  '035'
+  UNION ALL SELECT [K] =    24, [N] =  '036'
+  UNION ALL SELECT [K] =    25, [N] =  '037'
+  UNION ALL SELECT [K] =    26, [N] =  '038'
+  UNION ALL SELECT [K] =    13, [N] =  '039'
+  UNION ALL SELECT [K] =    15, [N] =  '040'
+  UNION ALL SELECT [K] =    19, [N] =  '041'
+  UNION ALL SELECT [K] =   910, [N] =  '042'
+  UNION ALL SELECT [K] =    21, [N] =  '043'
+  UNION ALL SELECT [K] =    17, [N] =  '044'
+  UNION ALL SELECT [K] =    11, [N] =  '045'
+  UNION ALL SELECT [K] =    61, [N] =  '046'
+  UNION ALL SELECT [K] =    56, [N] =  '047'
+  UNION ALL SELECT [K] =    57, [N] =  '048'
+  UNION ALL SELECT [K] =    54, [N] =  '049'
+  UNION ALL SELECT [K] =    28, [N] =  '050'
+  UNION ALL SELECT [K] =    29, [N] =  '051'
+  UNION ALL SELECT [K] =    30, [N] =  '052'
+  UNION ALL SELECT [K] =    31, [N] =  '053'
+  UNION ALL SELECT [K] =    32, [N] =  '054'
+  UNION ALL SELECT [K] =    33, [N] =  '055'
+  UNION ALL SELECT [K] =    34, [N] =  '056'
+  UNION ALL SELECT [K] =    35, [N] =  '057'
+  UNION ALL SELECT [K] =    36, [N] =  '058'
+  UNION ALL SELECT [K] =    37, [N] =  '059'
+  UNION ALL SELECT [K] =    38, [N] =  '060'
+  UNION ALL SELECT [K] =    39, [N] =  '061'
+  UNION ALL SELECT [K] =    40, [N] =  '062'
+  UNION ALL SELECT [K] =    41, [N] =  '063'
+  UNION ALL SELECT [K] =    42, [N] =  '064'
+  UNION ALL SELECT [K] =    45, [N] =  '065'
+  UNION ALL SELECT [K] =    44, [N] =  '066'
+  UNION ALL SELECT [K] =   636, [N] =  '067'
+  UNION ALL SELECT [K] =    59, [N] =  '068'
+  UNION ALL SELECT [K] =    48, [N] =  '069'
+  UNION ALL SELECT [K] =    50, [N] =  '070'
+  UNION ALL SELECT [K] =    52, [N] =  '071'
+  UNION ALL SELECT [K] =   111, [N] =  '072'
+  UNION ALL SELECT [K] =   112, [N] =  '073'
+  UNION ALL SELECT [K] =   113, [N] =  '074'
+  UNION ALL SELECT [K] =   114, [N] =  '075'
+  UNION ALL SELECT [K] =   998, [N] =  '076'
+  UNION ALL SELECT [K] =   999, [N] =  '077'
+  UNION ALL SELECT [K] =  1000, [N] =  '078'
+  UNION ALL SELECT [K] =  1001, [N] =  '079'
+  UNION ALL SELECT [K] =  1002, [N] =  '080'
+  UNION ALL SELECT [K] =   637, [N] =  '081'
+  UNION ALL SELECT [K] =   638, [N] =  '082'
+  UNION ALL SELECT [K] =   639, [N] =  '083'
+  UNION ALL SELECT [K] =   640, [N] =  '084'
+  UNION ALL SELECT [K] =   641, [N] =  '085'
+  UNION ALL SELECT [K] =   794, [N] =  '086'
+  UNION ALL SELECT [K] =   795, [N] =  '087'
+  UNION ALL SELECT [K] =   796, [N] =  '088'
+  UNION ALL SELECT [K] =  1003, [N] =  '089'
+  UNION ALL SELECT [K] =   969, [N] =  '090'
+  UNION ALL SELECT [K] =    64, [N] =  '091'
+  UNION ALL SELECT [K] =    66, [N] =  '092'
+  UNION ALL SELECT [K] =    68, [N] =  '093'
+  UNION ALL SELECT [K] =    72, [N] =  '094'
+  UNION ALL SELECT [K] =    74, [N] =  '095'
+  UNION ALL SELECT [K] =   924, [N] =  '096'
+  UNION ALL SELECT [K] =    63, [N] =  '097'
+  UNION ALL SELECT [K] =   153, [N] =  '098'
+  UNION ALL SELECT [K] =   170, [N] =  '099'
+  UNION ALL SELECT [K] =   171, [N] =  '100'
+  UNION ALL SELECT [K] =   172, [N] =  '101'
+  UNION ALL SELECT [K] =   173, [N] =  '102'
+  UNION ALL SELECT [K] =   174, [N] =  '103'
+  UNION ALL SELECT [K] =   175, [N] =  '104'
+  UNION ALL SELECT [K] =   176, [N] =  '105'
+  UNION ALL SELECT [K] =   177, [N] =  '106'
+  UNION ALL SELECT [K] =   178, [N] =  '107'
+  UNION ALL SELECT [K] =   179, [N] =  '108'
+  UNION ALL SELECT [K] =   180, [N] =  '109'
+  UNION ALL SELECT [K] =   181, [N] =  '110'
+  UNION ALL SELECT [K] =   182, [N] =  '111'
+  UNION ALL SELECT [K] =   183, [N] =  '112'
+  UNION ALL SELECT [K] =   186, [N] =  '113'
+  UNION ALL SELECT [K] =   185, [N] =  '114'
+  UNION ALL SELECT [K] =   761, [N] =  '115'
+  UNION ALL SELECT [K] =   155, [N] =  '116'
+  UNION ALL SELECT [K] =   157, [N] =  '117'
+  UNION ALL SELECT [K] =   159, [N] =  '118'
+  UNION ALL SELECT [K] =   163, [N] =  '119'
+  UNION ALL SELECT [K] =   165, [N] =  '120'
+  UNION ALL SELECT [K] =   169, [N] =  '121'
+  UNION ALL SELECT [K] =   168, [N] =  '122'
+  UNION ALL SELECT [K] =   187, [N] =  '123'
+  UNION ALL SELECT [K] =   188, [N] =  '124'
+  UNION ALL SELECT [K] =   190, [N] =  '125'
+  UNION ALL SELECT [K] =   982, [N] =  '126'
+  UNION ALL SELECT [K] =   206, [N] =  '127'
+  UNION ALL SELECT [K] =   193, [N] =  '128'
+  UNION ALL SELECT [K] =   195, [N] =  '129'
+  UNION ALL SELECT [K] =   197, [N] =  '130'
+  UNION ALL SELECT [K] =  1004, [N] =  '131'
+  UNION ALL SELECT [K] =  1005, [N] =  '132'
+  UNION ALL SELECT [K] =   202, [N] =  '133'
+  UNION ALL SELECT [K] =   204, [N] =  '134'
+  UNION ALL SELECT [K] =  1006, [N] =  '135'
+  UNION ALL SELECT [K] =  1007, [N] =  '136'
+  UNION ALL SELECT [K] =  1008, [N] =  '137'
+  UNION ALL SELECT [K] =  1009, [N] =  '138'
+  UNION ALL SELECT [K] =  1010, [N] =  '139'
+  UNION ALL SELECT [K] =  1011, [N] =  '140'
+  UNION ALL SELECT [K] =  1012, [N] =  '141'
+  UNION ALL SELECT [K] =  1013, [N] =  '142'
+  UNION ALL SELECT [K] =  1014, [N] =  '143'
+  UNION ALL SELECT [K] =  1015, [N] =  '144'
+  UNION ALL SELECT [K] =  1016, [N] =  '145'
+  UNION ALL SELECT [K] =  1017, [N] =  '146'
+  UNION ALL SELECT [K] =  1018, [N] =  '147'
+  UNION ALL SELECT [K] =  1019, [N] =  '148'
+  UNION ALL SELECT [K] =  1021, [N] =  '149'
+  UNION ALL SELECT [K] =  1020, [N] =  '150'
+  UNION ALL SELECT [K] =  1022, [N] =  '151'
+  UNION ALL SELECT [K] =   965, [N] =  '152'
+  UNION ALL SELECT [K] =   192, [N] =  '153'
+  UNION ALL SELECT [K] =   983, [N] =  '154'
+  UNION ALL SELECT [K] =   210, [N] =  '155'
+  UNION ALL SELECT [K] =   212, [N] =  '156'
+  UNION ALL SELECT [K] =  1024, [N] =  '157'
+  UNION ALL SELECT [K] =  1025, [N] =  '158'
+  UNION ALL SELECT [K] =   216, [N] =  '159'
+  UNION ALL SELECT [K] =   218, [N] =  '160'
+  UNION ALL SELECT [K] =  1023, [N] =  '161'
+  UNION ALL SELECT [K] =   966, [N] =  '162'
+  UNION ALL SELECT [K] =   207, [N] =  '163'
+  UNION ALL SELECT [K] =   220, [N] =  '164'
+  UNION ALL SELECT [K] =  1026, [N] =  '165'
+  UNION ALL SELECT [K] =   235, [N] =  '166'
+  UNION ALL SELECT [K] =  1033, [N] =  '167'
+  UNION ALL SELECT [K] =   233, [N] =  '168'
+  UNION ALL SELECT [K] =  1032, [N] =  '169'
+  UNION ALL SELECT [K] =   224, [N] =  '170'
+  UNION ALL SELECT [K] =  1028, [N] =  '171'
+  UNION ALL SELECT [K] =   222, [N] =  '172'
+  UNION ALL SELECT [K] =  1027, [N] =  '173'
+  UNION ALL SELECT [K] =   994, [N] =  '174'
+  UNION ALL SELECT [K] =  1031, [N] =  '175'
+  UNION ALL SELECT [K] =   987, [N] =  '176'
+  UNION ALL SELECT [K] =   912, [N] =  '177'
+  UNION ALL SELECT [K] =   986, [N] =  '178'
+  UNION ALL SELECT [K] =   226, [N] =  '179'
+  UNION ALL SELECT [K] =  1029, [N] =  '180'
+  UNION ALL SELECT [K] =   984, [N] =  '181'
+  UNION ALL SELECT [K] =   228, [N] =  '182'
+  UNION ALL SELECT [K] =  1030, [N] =  '183'
+  UNION ALL SELECT [K] =   985, [N] =  '184'
+  UNION ALL SELECT [K] =   762, [N] =  '185'
+  UNION ALL SELECT [K] =   763, [N] =  '186'
+  UNION ALL SELECT [K] =   764, [N] =  '187'
+  UNION ALL SELECT [K] =   765, [N] =  '188'
+  UNION ALL SELECT [K] =   766, [N] =  '189'
+  UNION ALL SELECT [K] =   767, [N] =  '190'
+  UNION ALL SELECT [K] =   768, [N] =  '191'
+  UNION ALL SELECT [K] =   769, [N] =  '192'
+  UNION ALL SELECT [K] =   770, [N] =  '193'
+  UNION ALL SELECT [K] =   771, [N] =  '194'
+  UNION ALL SELECT [K] =   772, [N] =  '195'
+  UNION ALL SELECT [K] =   773, [N] =  '196'
+  UNION ALL SELECT [K] =   774, [N] =  '197'
+  UNION ALL SELECT [K] =   775, [N] =  '198'
+  UNION ALL SELECT [K] =   776, [N] =  '199'
+  UNION ALL SELECT [K] =   777, [N] =  '200'
+  UNION ALL SELECT [K] =   778, [N] =  '201'
+  UNION ALL SELECT [K] =   779, [N] =  '202'
+  UNION ALL SELECT [K] =   780, [N] =  '203'
+  UNION ALL SELECT [K] =   781, [N] =  '204'
+  UNION ALL SELECT [K] =   782, [N] =  '205'
+  UNION ALL SELECT [K] =   783, [N] =  '206'
+  UNION ALL SELECT [K] =   784, [N] =  '207'
+  UNION ALL SELECT [K] =   988, [N] =  '208'
+  UNION ALL SELECT [K] =   785, [N] =  '209'
+  UNION ALL SELECT [K] =   786, [N] =  '210'
+  UNION ALL SELECT [K] =   787, [N] =  '211'
+  UNION ALL SELECT [K] =   788, [N] =  '212'
+  UNION ALL SELECT [K] =   789, [N] =  '213'
+  UNION ALL SELECT [K] =   790, [N] =  '214'
   --
 )                                                                              /* <   Set of Values ends!                 */
 /*------------------------------------------------------------------------------------------------------------------------*/
@@ -612,6 +677,116 @@ SELECT                                                                         /
 
 
 
+/*------------------------------------------------------------------------------------------------------------------------*/
+--	INSERT INTO                                                                /* insert statement                        */
+--	              [Pew_Question_Attributes]                                    /* target table in current database        */
+/*------------------------------------------------------------------------------------------------------------------------*/
+SELECT                                                                         /* select statement...                     */
+/*------------------------------------------------------------------------------------------------------------------------*/
+       [Question_Attributes_pk] =  ROW_NUMBER()OVER(ORDER BY[Question_Std_pk]) /* number all rows                         */
+                                 + (SELECT MAX([Question_Attributes_pk])       /* add currently max pk                    */
+                                      FROM [Pew_Question_Attributes])          /* from Pew_Question_Attributes            */
+/*------------------------------------------------------------------------------------------------------------------------*/
+      ,[Question_Std_fk]        =  [Question_Std_pk]
+      ,[attk]                   =  'Access_DESC'
+      ,[attr]                   =  '[N]'
+/*------------------------------------------------------------------------------------------------------------------------*/
+----select *
+  FROM
+       [forum]..[Pew_Question_Std]                   Q
+WHERE
+[Question_Std_pk]
+IN 
+(
+
+1,
+3,
+7,
+9,
+11,
+13,
+15,
+17,
+19,
+21,
+23,
+28,
+48,
+50,
+52,
+54,
+56,
+57,
+59,
+61,
+64,
+66,
+68,
+72,
+74,
+76,
+89,
+91,
+93,
+95,
+98,
+100,
+101,
+111,
+112,
+113,
+114,
+153,
+155,
+157,
+159,
+163,
+165,
+187,
+190,
+193,
+195,
+197,
+202,
+204,
+206,
+210,
+212,
+216,
+218,
+220,
+222,
+224,
+226,
+228,
+233,
+235,
+638,
+639,
+640,
+641,
+785,
+786,
+787,
+788,
+789,
+790,
+794,
+795,
+796,
+912,
+982,
+994,
+995,
+996,
+1003,
+1023,
+1037,
+1038
+
+)
+
+/*------------------------------------------------------------------------------------------------------------------------*/
 
 
 
@@ -621,6 +796,9 @@ SELECT                                                                         /
 
 
 
+/*------------------------------------------------------------------------------------------------------------------------*/
+SELECT * FROM     [Pew_Question_Attributes]                                    /* target table in current database        */
+/*------------------------------------------------------------------------------------------------------------------------*/
 
 
 
@@ -630,144 +808,275 @@ SELECT                                                                         /
 
 
 
-
-select *
+/***     >>>>>   This is the script used to create the tables:                                                                        <<<<<     ***/
+/***                                                           [GRSHRYYYY].[dbo].[Countries]                                                    ***/
+USE              [GRSHRcode]
+GO
 /**************************************************************************************************************************************************/
-FROM      [forum_ResAnal].[dbo].[vr_06w_LongData_ALL]                        /* NOTICE THIS IS 2014 WORKING DATA => DATA FROM DB AFTER RLS REMOVED*/ 
+
+/**************************************************************************************************************************/
+/***                                                          *************************************************************/
+/***     [Countries]                                          *************************************************************/
+/***                                                          *************************************************************/
+/**************************************************************************************************************************/
+IF (SELECT COUNT([TABLE_NAME]) FROM [INFORMATION_SCHEMA].[TABLES]
+     WHERE       [TABLE_NAME] = 'Countries'                          ) = 1
+DROP              TABLE         [Countries]
+/**************************************************************************************************************************/
+SELECT 
+----------------------------------------------------------------------------------------------------------------------------
+        [Nation_fk]
+      , [Region5]             = [Region]
+      , [Region6]             = [SubRegion6]
+      , [Ctry_EditorialName]
+
+----------------------------------------------------------------------------------------------------------------------------
+INTO
+          [Countries]
+----------------------------------------------------------------------------------------------------------------------------
+  FROM  
+       [forum_ResAnal]..[vr___00a____NationLocalityTOOL]
+      ,[forum].        .[Pew_Nation]
+----------------------------------------------------------------------------------------------------------------------------
+  WHERE
+         [Nation_fk]
+       = [Nation_pk]
+----------------------------------------------------------------------------------------------------------------------------
+ORDER BY [Nation_fk]
+/**************************************************************************************************************************/
+/**************************************************************************************************************************/
+SELECT * FROM [GRSHRcode]..[Countries]
+/**************************************************************************************************************************/
 
 
-SELECT DISTINCT
-       [QA_std]
-      ,[QW_std]
-      --,[Answer_value]
-      --,[Answer_value_Std]
-      --,[Answer_value_NoStd]
-      --,[answer_wording]
-      --,[answer_wording_std]
-      ,[Data_source_name]
-      ,[Question_Std_fk]
-      ,[Question_fk]
-      --,[Answer_Std_fk]
-      --,[Answer_fk]
-      --,[AnswerSet_number]
-      ,[Question_wording_std]
-      ,[Question_wording]
-      ,[Question_abbreviation]
-  FROM [forum_ResAnal].[dbo].[vr___01_cDB_Long__NoAggregated]
-
-where
-       [Question_Year] = 2014
-
-
-SELECT max( [Question_Std_pk])
-  FROM [forum].[dbo].[Pew_Question_Std]
-\
-
-994
 
 
 
 
-SELECT
-       [Question_Std_pk]             = ROW_NUMBER()OVER(ORDER BY [A])
-                                       + 1000
-      ,[Question_abbreviation_std]   =                           [A]
-      ,[Question_wording_std]        =                 'Does ' + [A] + '?'
-      ,[Question_short_wording_std]  =                 'Does ' + [A] + '?'
-      ,[Display]                     = 0
-      ,[AnswerSet_num]               = 47
-      ,[Editorially_Checked]         = 'NO!'
+
+USE              [GRSHRcode]
+GO
+/**************************************************************************************************************************************************/
+/***                                                          *************************************************************/
+/***     [All_Answers]                                        *************************************************************/
+/***                                                          *************************************************************/
+/**************************************************************************************************************************/
+IF (SELECT COUNT([TABLE_NAME]) FROM [INFORMATION_SCHEMA].[TABLES]
+     WHERE       [TABLE_NAME] = 'All_Answers'                     ) = 1
+DROP              TABLE         [All_Answers]
+/**************************************************************************************************************************/
+/*****                                                    STEP 000                                                    *****/
+/*****                                                    STEP 001                                                    *****/
+/**************************************************************************************************************************/
+WITH NSV AS                                                                    /* NewSet of Vals -common table expression */
+(                                                                              /* >   Set of Values begins...             */
+SELECT 
+        [Q]               = [Question_abbreviation_std]
+      , [V]               = [Answer_value_std]
+      , [W]               = [Answer_Wording_std]
+      , [N]               = [attr]
+FROM
+       [forum]..[Pew_Q&A_Std]                   Q
+      ,[forum]..[Pew_Question_Attributes]       T
+WHERE 
+       Q.[Question_Std_fk]
+      =T.[Question_Std_fk]
+  AND
+       T.[attk]
+      =  'Access_sort' 
+
+--ORDER BY [attr]
+--
+)                                                                              /* <   Set of Values ends!                 */
+/*------------------------------------------------------------------------------------------------------------------------*/
+SELECT                                                                         /* select statement...                     */
+/*------------------------------------------------------------------------------------------------------------------------*/
+        [A_row]                      =  ROW_NUMBER()
+                                        OVER(ORDER BY [N], [V], [W]   )
+/*------------------------------------------------------------------------------------------------------------------------*/
+      , [Question_abbreviation_std]  = [Q]
+      , [Answer_value]               = [V]
+      , [Answer_wording_std]         = [W]
+/*------------------------------------------------------------------------------------------------------------------------*/
+INTO
+          [All_Answers]
+/*------------------------------------------------------------------------------------------------------------------------*/
 FROM
 (
-          SELECT [A] = 'GRI_20_01x_11'
-UNION ALL SELECT [A] = 'GRI_20_01x_n'
-UNION ALL SELECT [A] = 'GRI_20_03_a_n'
-UNION ALL SELECT [A] = 'GRI_20_03_b_n'
-UNION ALL SELECT [A] = 'GRI_20_03_c_n'
-UNION ALL SELECT [A] = 'GRI_20_04_n'
-UNION ALL SELECT [A] = 'GRX_22_01_a'
-UNION ALL SELECT [A] = 'GRX_22_02_a'
-UNION ALL SELECT [A] = 'GRX_22_03_a'
-UNION ALL SELECT [A] = 'GRX_22_04_a'
-UNION ALL SELECT [A] = 'SHI_04_d1'
-UNION ALL SELECT [A] = 'SHI_04_d2'
-UNION ALL SELECT [A] = 'SHI_04_x_01a'
-UNION ALL SELECT [A] = 'SHI_04_x_01b'
-UNION ALL SELECT [A] = 'SHI_04_x_02'
-UNION ALL SELECT [A] = 'SHI_04_x_03'
-UNION ALL SELECT [A] = 'SHI_04_x_04'
-UNION ALL SELECT [A] = 'SHI_04_x_05'
-UNION ALL SELECT [A] = 'SHI_04_x_06'
-UNION ALL SELECT [A] = 'SHI_04_x_07'
-UNION ALL SELECT [A] = 'SHI_04_x_08'
-UNION ALL SELECT [A] = 'SHI_04_x_09'
-UNION ALL SELECT [A] = 'SHI_04_x_10'
-UNION ALL SELECT [A] = 'SHI_04_x_11'
-UNION ALL SELECT [A] = 'SHI_04_x_12'
-UNION ALL SELECT [A] = 'SHI_04_x_13'
-UNION ALL SELECT [A] = 'SHI_04_x_15'
-UNION ALL SELECT [A] = 'SHI_04_x_16'
-UNION ALL SELECT [A] = 'SHI_04_x_17'
-UNION ALL SELECT [A] = 'SHI_05_d1'
-UNION ALL SELECT [A] = 'SHI_05_d2'
-UNION ALL SELECT [A] = 'SHI_05_01'
+/*------------------------------------------------------------------------------------------------------------------------*/
+   SELECT                                                                      /* select statement...                     */
+/*------------------------------------------------------------------------------------------------------------------------*/
+             [Q]
+           , [V]
+           , [W]
+           , [N]
+     FROM
+             NSV
+    WHERE NOT (  [V] = 0.00
+                AND  (
+                          [Q] LIKE 'GRI_11%'
+                       OR [Q] LIKE 'GRI_19_filter'
+                       OR [Q] LIKE 'GRI_19_[b-f]'
+                       OR [Q] LIKE 'SHI_01_a'
+                       OR [Q] LIKE 'SHI_01_x_%'
+                       OR [Q] LIKE 'SHI_01_[b-f]'
+                       OR [Q] LIKE 'SHI_03%'
+                       OR [Q] LIKE 'SHI_04_filter'
+                       OR [Q] LIKE 'SHI_04_x01'
+                       OR [Q] LIKE 'SHI_04_[b-f]'
+                       OR [Q] LIKE 'SHI_04_f_x_%'
+                       OR [Q] LIKE 'SHI_05_filter'
+                       OR [Q] LIKE 'SHI_05_[c-f]'
+                       OR [Q] LIKE 'SHI_05_01'
+                       OR [Q] LIKE 'SHI_06'
+                       OR [Q] LIKE 'SHI_07'
+                       OR [Q] LIKE 'SHI_08'
+                       OR [Q] LIKE 'SHI_09'
+                       OR [Q] LIKE 'SHI_10'
+                       OR [Q] LIKE 'SHI_11_[a-b]'
+                       OR [Q] LIKE 'SHI_12'
+                       OR [Q] LIKE 'SHI_13'
+                                                                  ) )
+/*------------------------------------------------------------------------------------------------------------------------*/
+UNION ALL
+/*------------------------------------------------------------------------------------------------------------------------*/
+   SELECT                                                                      /* select statement...                     */
+/*------------------------------------------------------------------------------------------------------------------------*/
+             [Q]
+           , [V]
+           , [W] = CASE
+                   WHEN [Q] LIKE 'GRI_11'        THEN 'No (and there are no data about this)'           ----  'No (but there is evidence of this)'
+                   WHEN [Q] LIKE 'GRI_11_%'      THEN 'No (and there are no data about this group)'     ----  'No (but there is evidence on this group)'
+                   WHEN [Q] LIKE 'GRI_19_filter' THEN 'No (and there are no data about this)'           ----  'No (but there is evidence of cero incidents)'
+                   WHEN [Q] LIKE 'GRI_19_[b-f]'  THEN 'No (and there are no data about this incident)'  ----  'No (but there is evidence of cero incidents)'
+                   WHEN [Q] LIKE 'SHI_01_a'      THEN 'No (and there are no data about this)'           ----  'No (but there is evidence of this)'
+                   WHEN [Q] LIKE 'SHI_01_x_%'    THEN 'No (and there are no data about this group)'     ----  'No (but there is evidence on this group)'
+                   WHEN [Q] LIKE 'SHI_01_[b-f]'  THEN 'No (and there are no data about this incident)'  ----  'No (but there is evidence of cero incidents)'
+                   WHEN [Q] LIKE 'SHI_03'        THEN 'No (and there are no data about this)'           ----  'No (but there is evidence of this)'
+                   WHEN [Q] LIKE 'SHI_04_filter' THEN 'No (and there are no data about this)'           ----  'No (but there is evidence of this)'
+                   WHEN [Q] LIKE 'SHI_04_x01'    THEN 'No (and there are no data about this)'           ----  'No (but there is evidence of cero groups)'
+                   WHEN [Q] LIKE 'SHI_04_[b-f]'  THEN 'No (and there are no data about this incident)'  ----  'No (but there is evidence of cero incidents)'
+                   WHEN [Q] LIKE 'SHI_04_f_x_%'  THEN 'No (and there are no data about this group)'     ----  'No (but there is evidence on this group)'
+                   WHEN [Q] LIKE 'SHI_05_filter' THEN 'No (and there are no data about this)'           ----  'No (but there is evidence of cero incidents)'
+                   WHEN [Q] LIKE 'SHI_05_[c-f]'  THEN 'No (and there are no data about this incident)'  ----  'No (but there is evidence of cero incidents)'
+                   WHEN [Q] LIKE 'SHI_05_01'     THEN 'No (and there are no data about this)'           ----  'No (but there is evidence of cero groups)'
+                   WHEN [Q] LIKE 'SHI_06'        THEN 'No (and there are no data about this)'           ----  'No (but there is evidence of this)'
+                   WHEN [Q] LIKE 'SHI_07'        THEN 'No (and there are no data about this)'           ----  'No (but there is evidence of this)'
+                   WHEN [Q] LIKE 'SHI_08'        THEN 'No (and there are no data about this)'           ----  'No (but there is evidence of this)'
+                   WHEN [Q] LIKE 'SHI_09'        THEN 'No (and there are no data about this)'           ----  'No (but there is evidence of this)'
+                   WHEN [Q] LIKE 'SHI_10'        THEN 'No (and there are no data about this)'           ----  'No (but there is evidence of this)'
+                   WHEN [Q] LIKE 'SHI_11_[a-b]'  THEN 'No (and there are no data about this)'           ----  'No (but there is evidence of this)'
+                   WHEN [Q] LIKE 'SHI_12'        THEN 'No (and there are no data about this)'           ----  'No (but there is evidence of this)'
+                   WHEN [Q] LIKE 'SHI_13'        THEN 'No (and there are no data about this)'           ----  'No (but there is evidence of this)'
+             END
+           , [N]
+     FROM
+             NSV
+    WHERE       [V] = 0.00
+      AND  (
+                [Q] LIKE 'GRI_11%'
+             OR [Q] LIKE 'GRI_19_filter'
+             OR [Q] LIKE 'GRI_19_[b-f]'
+             OR [Q] LIKE 'SHI_01_a'
+             OR [Q] LIKE 'SHI_01_x_%'
+             OR [Q] LIKE 'SHI_01_[b-f]'
+             OR [Q] LIKE 'SHI_03%'
+             OR [Q] LIKE 'SHI_04_filter'
+             OR [Q] LIKE 'SHI_04_x01'
+             OR [Q] LIKE 'SHI_04_[b-f]'
+             OR [Q] LIKE 'SHI_04_f_x_%'
+             OR [Q] LIKE 'SHI_05_filter'
+             OR [Q] LIKE 'SHI_05_[c-f]'
+             OR [Q] LIKE 'SHI_05_01'
+             OR [Q] LIKE 'SHI_06'
+             OR [Q] LIKE 'SHI_07'
+             OR [Q] LIKE 'SHI_08'
+             OR [Q] LIKE 'SHI_09'
+             OR [Q] LIKE 'SHI_10'
+             OR [Q] LIKE 'SHI_11_[a-b]'
+             OR [Q] LIKE 'SHI_12'
+             OR [Q] LIKE 'SHI_13'
+                                                                  )
+/*------------------------------------------------------------------------------------------------------------------------*/
+UNION ALL
+/*------------------------------------------------------------------------------------------------------------------------*/
+   SELECT                                                                      /* select statement...                     */
+/*------------------------------------------------------------------------------------------------------------------------*/
+             [Q]
+           , [V]
+           , [W] = CASE
+                   WHEN [Q] LIKE 'GRI_11'        THEN 'No (but there is evidence of this)'              ----  'No (and there are no data about this)'
+                   WHEN [Q] LIKE 'GRI_11_%'      THEN 'No (but there is evidence on this group)'        ----  'No (and there are no data about this group)'
+                   WHEN [Q] LIKE 'GRI_19_filter' THEN 'No (but there is evidence of cero incidents)'    ----  'No (and there are no data about this)'
+                   WHEN [Q] LIKE 'GRI_19_[b-f]'  THEN 'No (but there is evidence of cero incidents)'    ----  'No (and there are no data about this incident)'
+                   WHEN [Q] LIKE 'SHI_01_a'      THEN 'No (but there is evidence of this)'              ----  'No (and there are no data about this)'
+                   WHEN [Q] LIKE 'SHI_01_x_%'    THEN 'No (but there is evidence on this group)'        ----  'No (and there are no data about this group)'
+                   WHEN [Q] LIKE 'SHI_01_[b-f]'  THEN 'No (but there is evidence of cero incidents)'    ----  'No (and there are no data about this incident)'
+                   WHEN [Q] LIKE 'SHI_03'        THEN 'No (but there is evidence of this)'              ----  'No (and there are no data about this)'
+                   WHEN [Q] LIKE 'SHI_04_filter' THEN 'No (but there is evidence of this)'              ----  'No (and there are no data about this)'
+                   WHEN [Q] LIKE 'SHI_04_x01'    THEN 'No (but there is evidence of cero groups)'       ----  'No (and there are no data about this)'
+                   WHEN [Q] LIKE 'SHI_04_[b-f]'  THEN 'No (but there is evidence of cero incidents)'    ----  'No (and there are no data about this incident)'
+                   WHEN [Q] LIKE 'SHI_04_f_x_%'  THEN 'No (but there is evidence on this group)'        ----  'No (and there are no data about this group)'
+                   WHEN [Q] LIKE 'SHI_05_filter' THEN 'No (but there is evidence of cero incidents)'    ----  'No (and there are no data about this)'
+                   WHEN [Q] LIKE 'SHI_05_[c-f]'  THEN 'No (but there is evidence of cero incidents)'    ----  'No (and there are no data about this incident)'
+                   WHEN [Q] LIKE 'SHI_05_01'     THEN 'No (but there is evidence of cero groups)'       ----  'No (and there are no data about this)'
+                   WHEN [Q] LIKE 'SHI_06'        THEN 'No (but there is evidence of this)'              ----  'No (and there are no data about this)'
+                   WHEN [Q] LIKE 'SHI_07'        THEN 'No (but there is evidence of this)'              ----  'No (and there are no data about this)'
+                   WHEN [Q] LIKE 'SHI_08'        THEN 'No (but there is evidence of this)'              ----  'No (and there are no data about this)'
+                   WHEN [Q] LIKE 'SHI_09'        THEN 'No (but there is evidence of this)'              ----  'No (and there are no data about this)'
+                   WHEN [Q] LIKE 'SHI_10'        THEN 'No (but there is evidence of this)'              ----  'No (and there are no data about this)'
+                   WHEN [Q] LIKE 'SHI_11_[a-b]'  THEN 'No (but there is evidence of this)'              ----  'No (and there are no data about this)'
+                   WHEN [Q] LIKE 'SHI_12'        THEN 'No (but there is evidence of this)'              ----  'No (and there are no data about this)'
+                   WHEN [Q] LIKE 'SHI_13'        THEN 'No (but there is evidence of this)'              ----  'No (and there are no data about this)'
+             END
+           , [N]
+     FROM
+             NSV
+    WHERE       [V] = 0.00
+      AND  (
+                [Q] LIKE 'GRI_11%'
+             OR [Q] LIKE 'GRI_19_filter'
+             OR [Q] LIKE 'GRI_19_[b-f]'
+             OR [Q] LIKE 'SHI_01_a'
+             OR [Q] LIKE 'SHI_01_x_%'
+             OR [Q] LIKE 'SHI_01_[b-f]'
+             OR [Q] LIKE 'SHI_03%'
+             OR [Q] LIKE 'SHI_04_filter'
+             OR [Q] LIKE 'SHI_04_x01'
+             OR [Q] LIKE 'SHI_04_[b-f]'
+             OR [Q] LIKE 'SHI_04_f_x_%'
+             OR [Q] LIKE 'SHI_05_filter'
+             OR [Q] LIKE 'SHI_05_[c-f]'
+             OR [Q] LIKE 'SHI_05_01'
+             OR [Q] LIKE 'SHI_06'
+             OR [Q] LIKE 'SHI_07'
+             OR [Q] LIKE 'SHI_08'
+             OR [Q] LIKE 'SHI_09'
+             OR [Q] LIKE 'SHI_10'
+             OR [Q] LIKE 'SHI_11_[a-b]'
+             OR [Q] LIKE 'SHI_12'
+             OR [Q] LIKE 'SHI_13'
+                                                                  )
+/*------------------------------------------------------------------------------------------------------------------------*/
+) data
+/*------------------------------------------------------------------------------------------------------------------------*/
+/**************************************************************************************************************************************************/
+SELECT * FROM [GRSHRcode]..[All_Answers]
+/**************************************************************************************************************************************************/
 
-)  GGG
 
 
 
-
-
-
-
-
-
-SELECT
-       [Question_Std_pk]             = ROW_NUMBER() OVER( ORDER BY [A])
-      ,[Question_abbreviation_std]   =                   [A]
-      ,[Question_wording_std]        =         'Does ' + [A] + '?'
-      --,[Question_short_wording_std]
-      --,[Display]
-      --,[AnswerSet_num]
-      --,[Editorially_Checked]
-  FROM
-
-
-(
-          SELECT [A] = 'GRI_20_01x_11'
-UNION ALL SELECT [A] = 'GRI_20_01x_n'
-UNION ALL SELECT [A] = 'GRI_20_03_a_n'
-UNION ALL SELECT [A] = 'GRI_20_03_b_n'
-UNION ALL SELECT [A] = 'GRI_20_03_c_n'
-UNION ALL SELECT [A] = 'GRI_20_04_n'
-UNION ALL SELECT [A] = 'GRX_22_01_a'
-UNION ALL SELECT [A] = 'GRX_22_02_a'
-UNION ALL SELECT [A] = 'GRX_22_03_a'
-UNION ALL SELECT [A] = 'GRX_22_04_a'
-UNION ALL SELECT [A] = 'SHI_04_d1'
-UNION ALL SELECT [A] = 'SHI_04_d2'
-UNION ALL SELECT [A] = 'SHI_04_x_01a'
-UNION ALL SELECT [A] = 'SHI_04_x_01b'
-UNION ALL SELECT [A] = 'SHI_04_x_02'
-UNION ALL SELECT [A] = 'SHI_04_x_03'
-UNION ALL SELECT [A] = 'SHI_04_x_04'
-UNION ALL SELECT [A] = 'SHI_04_x_05'
-UNION ALL SELECT [A] = 'SHI_04_x_06'
-UNION ALL SELECT [A] = 'SHI_04_x_07'
-UNION ALL SELECT [A] = 'SHI_04_x_08'
-UNION ALL SELECT [A] = 'SHI_04_x_09'
-UNION ALL SELECT [A] = 'SHI_04_x_10'
-UNION ALL SELECT [A] = 'SHI_04_x_11'
-UNION ALL SELECT [A] = 'SHI_04_x_12'
-UNION ALL SELECT [A] = 'SHI_04_x_13'
-UNION ALL SELECT [A] = 'SHI_04_x_15'
-UNION ALL SELECT [A] = 'SHI_04_x_16'
-UNION ALL SELECT [A] = 'SHI_04_x_17'
-UNION ALL SELECT [A] = 'SHI_05_d1'
-UNION ALL SELECT [A] = 'SHI_05_d2'
-UNION ALL SELECT [A] = 'SHI_05_01'
-
-)  GGG
+/***                                                           [GRSHRYYYY].[dbo].[All_Questions]                                                ***/
+/***             (working tables for being used by the Access coding tool)                                                                      ***/
+/**************************************************************************************************************************************************/
+/***     [All_Questions]                                      *************************************************************/
+/***                                                          *************************************************************/
+/**************************************************************************************************************************/
+IF (SELECT COUNT([TABLE_NAME]) FROM [INFORMATION_SCHEMA].[TABLES]
+     WHERE       [TABLE_NAME] = 'All_Questions'                          ) = 1
+DROP              TABLE         [All_Questions]
+/**************************************************************************************************************************/
 
 
 
@@ -791,6 +1100,107 @@ UNION ALL SELECT [A] = 'SHI_05_01'
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***                                                           [GRSHRYYYY].[dbo].[Values]                                                       ***/
+/***                                                                                                                                            ***/
+/**************************************************************************************************************************************************/
+/*                                                                                                                                                */
+
+/**************************************************************************************************************************/
+/***                                                          *************************************************************/
+/***     [Values]                                             *************************************************************/
+/***                                                          *************************************************************/
+IF (SELECT COUNT([TABLE_NAME]) FROM [INFORMATION_SCHEMA].[TABLES]
+     WHERE       [TABLE_NAME] = 'Values'                          ) = 1
+DROP              TABLE         [Values]
+/**************************************************************************************************************************/
+/**************************************************************************************************************************/
+SELECT 
+----------------------------------------------------------------------------------------------------------------------------
+         DISTINCT
+        [V_row]     =  ROW_NUMBER()
+                       OVER(ORDER BY  [A_row] )
+----------------------------------------------------------------------------------------------------------------------------
+      , [VarName] = [Question_abbreviation_std]
+      , [Answer]  = STR((
+                    CAST([Answer_value] as decimal (4,2))) , 4,2 ) + '   - ' + [Answer_wording_std]
+----------------------------------------------------------------------------------------------------------------------------
+  INTO
+          [Values]
+----------------------------------------------------------------------------------------------------------------------------
+  FROM 
+----------------------------------------------------------------------------------------------------------------------------
+         [All_Answers]
+----------------------------------------------------------------------------------------------------------------------------
+WHERE    [Question_abbreviation_std] IN ( SELECT [Question_abbreviation_std]
+                                            FROM [All_Questions]
+                                           WHERE [QClass] = 'CODED'           )
+/**************************************************************************************************************************/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***                                                           [GRSHRYYYY].[dbo].[WT_VNs] WideT: Var Names&Values                               ***/
+/***                                                           [GRSHRYYYY].[dbo].[CQ]     Curr Questions to be CODED                            ***/
+
+---- finalmente
 
 /***     >>>>>   This is the script used to create the table view [GRSHRcode].[dbo].[AllLongData]                                     <<<<<     ***/
 /***             (extracted data from [forum] and filter fields)                                                                                ***/
@@ -818,273 +1228,45 @@ IF OBJECT_ID  ('tempdb..#LCD_DB')                        IS NOT NULL
 DROP TABLE              #LCD_DB
 /**************************************************************************************************************************************************/
 /* >   1st long SET: current data in database *****************************************************************************************************/
-SELECT
-          [entity]
-      ,   [link_fk]
-      ,   [Nation_fk]
-      ,   [Locality_fk]
-      ,   [Religion_fk]
-      ,   [Region5]
-      ,   [Region6]
-      ,   [Ctry_EditorialName]
-      ,   [Locality]
-      ,   [Religion]
-      ,   [Question_Year]
-      ,   [QS_fk]            =           [Question_Std_pk]
-      ,   [QA_std]           =
-                                /* [QA_std] is provisionally recoded here...       */
-                                CASE
-                                    WHEN [QA_std]       =    'SHI_11'
-                                    THEN                     'SHI_11_b'
-                                    ELSE [QA_std]
-                                END
-      ,   [QW_std]           =
-                                /* [QA_std] is provisionally recoded here...       */
-                                CASE
-                                    WHEN [QA_std] = 'GRI_19_x'
-                                    THEN            '0 - Total N of incidents resulting from government force'
-                                    WHEN [QA_std] = 'SHI_11_a'
-                                    THEN            'Were religious women harassed for violating secular dress norms?'
-                                    ELSE [QW_std]
-                                END
-      ,   [Answer_value]     =
-                                /* [Answer_value] is provisionally recoded here, 
-                                   before we actually recode it in the database
-                                   inorder to have just a consistent distridution
-                                   Other variable will be added, if needed, for
-                                   catching nuances.                               */
-                                CASE
-                                    WHEN       [QA_std]                       IN ( 'GRI_08' )
-                                     AND CAST( [Answer_value] as decimal (38,2)) = '0.50'
-                                    THEN CAST( [Answer_value] as decimal (38,2)) +  0.50
-                                    WHEN       [QA_std]                       IN ( 'SHI_11' )
-                                     AND CAST( [Answer_value] as decimal (38,2)) = '0.50'
-                                    THEN CAST( [Answer_value] as decimal (38,2)) -  0.50
-                                    ELSE CAST( [Answer_value] as decimal (38,2))
-                                END
-      ,   [answer_wording]
-      ,   [answer_wording_std] =
-                                /* [AW_std] is provisionally recoded here...       */
-                                CASE
-                                    WHEN       [QA_std]                          = 'SHI_11'
-                                     AND CAST( [Answer_value] as decimal (38,2)) = '0.50'
-                                    THEN                                           'No'
-                                    ELSE       [answer_wording_std]
-                                END
-      ,   [Question_fk]
-      ,   [Answer_fk]
-      ,   [Notes]
-      ,   [DB]                 =  1
+/****** Script for SelectTopNRows command from SSMS  ******/
+SELECT 
+       [entity]
+      --,[v_Basic_row]
+      --,[ValSource]
+      --,[note]
+      ,[link_fk]
+      ,[Nation_fk]
+      ,[Locality_fk]
+      ,[Religion_fk]
+      ,[Region5]
+      ,[Region6]
+      ,[Ctry_EditorialName]
+      ,[Locality]
+      ,[Religion]
+      ,[Question_Year]
+      ,[QS_fk]                       = [QSk]
+      --,[QAS]
+      ,[QA_std]
+      ,[QW_std]
+      ,[Answer_value]
+      ,[answer_wording]
+      ,[answer_wording_std]
+      ,[Question_fk]
+      ,[Answer_fk]
+      ,[Notes]
+      --,[editable]
+      --,[CntWg]
+      ,[DB]                          =  1
 /**************************************************************************************************************************************************/
 INTO      [#LCD_DB]
 /**************************************************************************************************************************************************/
-FROM      [forum_ResAnal].[dbo].[vr_06w_LongData_ALL]                        /* NOTICE THIS IS 2014 WORKING DATA => DATA FROM DB AFTER RLS REMOVED*/ 
+FROM
+          [forum_ResAnal].[dbo].[vr___06_cDB_LongData_ALL_byCYQ]             /* NOTICE THIS IS 2014 WORKING DATA => DATA FROM DB AFTER RLS REMOVED*/ 
+        , [forum].[dbo].[Pew_Question_Attributes]
 /*------------------------------------------------------------------------------------------------------------------------------------------------*/
-LEFT JOIN [forum].[dbo].[Pew_Question_Std]                                   /* NOTICE WE'LL INCLUDE QS_fk IN FUTURE VERSION OF [...LongData_ALL] */ 
-       ON
-          [QA_std]
-        = [Question_abbreviation_std]
-/*------------------------------------------------------------------------------------------------------------------------------------------------*/
-/**************************************************************************************************************************************************/
-WHERE
-          [Ctry_EditorialName] NOT LIKE 'All count%'
-      AND 
-          [QA_std]
-           NOT IN   (   
-                         'GFI'                                                          --  aggregated/calculated
-                       , 'GFI_rd_1d'                                                    --  aggregated/calculated
-                       , 'GFI_scaled'                                                   --  aggregated/calculated
-                       , 'GRI'                                                          --  aggregated/calculated
-                       , 'GRI_01_x2'                                                    --  never used
-                       , 'GRI_08_for_index'                                             --  will be calculated
-                       , 'GRI_11_14'                                                    --  no longer used
-                       , 'GRI_11_xG1'                                                   --  aggregated/calculated
-                       , 'GRI_11_xG2'                                                   --  aggregated/calculated
-                       , 'GRI_11_xG3'                                                   --  aggregated/calculated
-                       , 'GRI_11_xG4'                                                   --  aggregated/calculated
-                       , 'GRI_11_xG5'                                                   --  aggregated/calculated
-                       , 'GRI_11_xG6'                                                   --  aggregated/calculated
-                       , 'GRI_11_xG7'                                                   --  aggregated/calculated
-                       , 'GRI_16_ny1'                                                   --  aggregated/calculated
-                       , 'GRI_16_ny2'                                                   --  aggregated/calculated
-                       , 'GRI_19_b__p'                                                  --  provincial data no longer coded
-                       , 'GRI_19_c__p'                                                  --  provincial data no longer coded
-                       , 'GRI_19_d__p'                                                  --  provincial data no longer coded
-                       , 'GRI_19_da'                                                    --  no longer used
-                       , 'GRI_19_da__p'                                                 --  no longer used
-                       , 'GRI_19_db'                                                    --  no longer used
-                       , 'GRI_19_db__p'                                                 --  no longer used
-                       , 'GRI_19_e__p'                                                  --  provincial data no longer coded
-                       , 'GRI_19_f__p'                                                  --  provincial data no longer coded
-                       , 'GRI_19_filter'                                                --  aggregated/calculated & DIFFERRENT WORDING
-                       , 'GRI_19_ny1'                                                   --  aggregated/calculated
-                       , 'GRI_19_ny2'                                                   --  aggregated/calculated
-                       , 'GRI_19_summ_ny1'                                              --  aggregated/calculated
-                       , 'GRI_19_summ_ny2'                                              --  aggregated/calculated
-                       , 'GRI_19_summ_ny3'                                              --  aggregated/calculated
-                       , 'GRI_19_summ_ny4'                                              --  aggregated/calculated
-                       , 'GRI_19_summ_ny5'                                              --  aggregated/calculated
-                       , 'GRI_19_summ_ny6'                                              --  aggregated/calculated
-                       , 'GRI_20'                                                       --  aggregated/calculated
-                       , 'GRI_20_03_top'                                                --  aggregated/calculated
-                       , 'GRI_20_05_x1'                                                 --  no longer used
-                       , 'GRI_20_05_x1__p'                                              --  no longer used
-                       , 'GRI_20_top'                                                   --  aggregated/calculated
-                       , 'GRI_rd_1d'                                                    --  aggregated/calculated
-                       , 'GRI_scaled'                                                   --  aggregated/calculated
-                       , 'GRX_21_01'                                                    --  no longer used
-                       , 'GRX_21_02'                                                    --  no longer used
-                       , 'GRX_21_03'                                                    --  no longer used
-                       , 'GRX_22'                                                       --  no longer used
-                       , 'GRX_22_01_ny1'                                                --  aggregated/calculated
-                       , 'GRX_22_01_ny2'                                                --  aggregated/calculated
-                       , 'GRX_22_02_ny1'                                                --  aggregated/calculated
-                       , 'GRX_22_02_ny2'                                                --  aggregated/calculated
-                       , 'GRX_22_03_ny1'                                                --  aggregated/calculated
-                       , 'GRX_22_03_ny2'                                                --  aggregated/calculated
-                       , 'GRX_22_04_ny1'                                                --  aggregated/calculated
-                       , 'GRX_22_04_ny2'                                                --  aggregated/calculated
-                       , 'GRX_22_ny1'                                                   --  no longer used
-                       , 'GRX_23'                                                       --  no longer used
-                       , 'GRX_24'                                                       --  no longer used
-                       , 'GRX_24_ny1'                                                   --  no longer used
-                       , 'GRX_24_ny2'                                                   --  no longer used
-                       , 'GRX_25_01'                                                    --  no longer used
-                       , 'GRX_25_02'                                                    --  no longer used
-                       , 'GRX_25_03'                                                    --  no longer used
-                       , 'GRX_25_ny1'                                                   --  no longer used
-                       , 'GRX_25_ny2'                                                   --  no longer used
-                       , 'GRX_25_ny3'                                                   --  no longer used
-                       , 'GRX_26_01'                                                    --  no longer used
-                       , 'GRX_26_02'                                                    --  no longer used
-                       , 'GRX_26_03'                                                    --  no longer used
-                       , 'GRX_26_04'                                                    --  no longer used
-                       , 'GRX_26_05'                                                    --  no longer used
-                       , 'GRX_26_06'                                                    --  no longer used
-                       , 'GRX_26_07'                                                    --  no longer used
-                       , 'GRX_26_08'                                                    --  no longer used
-                       , 'GRX_27_01'                                                    --  no longer used
-                       , 'GRX_27_02'                                                    --  no longer used
-                       , 'GRX_27_03'                                                    --  no longer used
-                       , 'GRX_28_01'                                                    --  no longer used
-                       , 'GRX_28_02'                                                    --  no longer used
-                       , 'GRX_28_03'                                                    --  no longer used
-                       , 'GRX_33'                                                       --  no longer used (summer 2015)
-                       , 'SHI'                                                          --  aggregated/calculated
-                       , 'SHI_01'                                                       --  aggregated/calculated
-                       , 'SHI_01_a_dummy'                                               --  aggregated/calculated
-                       , 'SHI_01_b__p'                                                  --  provincial data no longer coded
-                       , 'SHI_01_b_dummy'                                               --  aggregated/calculated
-                       , 'SHI_01_c__p'                                                  --  provincial data no longer coded
-                       , 'SHI_01_c_dummy'                                               --  aggregated/calculated
-                       , 'SHI_01_d__p'                                                  --  provincial data no longer coded
-                       , 'SHI_01_d_dummy'                                               --  aggregated/calculated
-                       , 'SHI_01_da'                                                    --  aggregated/calculated
-                       , 'SHI_01_da__p'                                                 --  aggregated/calculated
-                       , 'SHI_01_db'                                                    --  aggregated/calculated
-                       , 'SHI_01_db__p'                                                 --  aggregated/calculated
-                       , 'SHI_01_e__p'                                                  --  provincial data no longer coded
-                       , 'SHI_01_e_dummy'                                               --  aggregated/calculated
-                       , 'SHI_01_f__p'                                                  --  provincial data no longer coded
-                       , 'SHI_01_f_dummy'                                               --  aggregated/calculated
-                       , 'SHI_01_summary_a_ny0'                                         --  aggregated/calculated
-                       , 'SHI_01_summary_a_ny1'                                         --  aggregated/calculated
-                       , 'SHI_01_summary_a_ny2'                                         --  aggregated/calculated
-                       , 'SHI_01_summary_a_ny3'                                         --  aggregated/calculated
-                       , 'SHI_01_summary_a_ny4'                                         --  aggregated/calculated
-                       , 'SHI_01_summary_a_ny5'                                         --  aggregated/calculated
-                       , 'SHI_01_summary_a_ny6'                                         --  aggregated/calculated
-                       , 'SHI_01_summary_b'                                             --  calculated as persisted
-                       , 'SHI_01_x_14'                                                  --  aggregated/calculated
-                       , 'SHI_01_xG1'                                                   --  aggregated/calculated
-                       , 'SHI_01_xG2'                                                   --  aggregated/calculated
-                       , 'SHI_01_xG3'                                                   --  aggregated/calculated
-                       , 'SHI_01_xG4'                                                   --  aggregated/calculated
-                       , 'SHI_01_xG5'                                                   --  aggregated/calculated
-                       , 'SHI_01_xG6'                                                   --  aggregated/calculated
-                       , 'SHI_01_xG7'                                                   --  aggregated/calculated
-                       , 'SHI_04_b__p'                                                  --  provincial data no longer coded
-                       , 'SHI_04_c__p'                                                  --  provincial data no longer coded
-                       , 'SHI_04_d__p'                                                  --  provincial data no longer coded
-                       , 'SHI_04_da'                                                    --  no longer used
-                       , 'SHI_04_da__p'                                                 --  no longer used
-                       , 'SHI_04_db'                                                    --  no longer used
-                       , 'SHI_04_db__p'                                                 --  no longer used
-                       , 'SHI_04_e__p'                                                  --  provincial data no longer coded
-                       , 'SHI_04_f__p'                                                  --  provincial data no longer coded
-                       , 'SHI_04_ny0'                                                   --  aggregated/calculated
-                       , 'SHI_04_ny1'                                                   --  aggregated/calculated
-                       , 'SHI_05_b'                                                     --  aggregated/calculated
-                       , 'SHI_05_b__p'                                                  --  provincial data no longer coded
-                       , 'SHI_05_c__p'                                                  --  provincial data no longer coded
-                       , 'SHI_05_d__p'                                                  --  provincial data no longer coded
-                       , 'SHI_05_da'                                                    --  aggregated/calculated
-                       , 'SHI_05_da__p'                                                 --  no longer used
-                       , 'SHI_05_db'                                                    --  no longer used
-                       , 'SHI_05_db__p'                                                 --  no longer used
-                       , 'SHI_05_e__p'                                                  --  no longer used
-                       , 'SHI_05_f__p'                                                  --  provincial data no longer coded
-                       , 'SHI_05_ny0'                                                   --  aggregated/calculated
-                       , 'SHI_05_ny1'                                                   --  aggregated/calculated
-                       , 'SHI_07_ny0'                                                   --  aggregated/calculated
-                       , 'SHI_07_ny1'                                                   --  aggregated/calculated
-                --     , 'SHI_11'                                                       --  will be calculated
-                --     , 'SHI_11_a'                                                     --  will be modified later to include DES (summer 2015)
-                       , 'SHI_11_for_index'                                             --  will be calculated
-                       , 'SHI_11_x'                                                     --  no longer used AS IT IS will be modified later to exclude 11_a (summer 2015)
-                       , 'SHI_rd_1d'                                                    --  aggregated/calculated
-                       , 'SHI_scaled'                                                   --  aggregated/calculated
-                       , 'SHX_14_01'                                                    --  no longer used
-                       , 'SHX_14_02'                                                    --  no longer used
-                       , 'SHX_14_03'                                                    --  no longer used
-                       , 'SHX_14_04'                                                    --  no longer used
-                       , 'SHX_15_01'                                                    --  no longer used
-                       , 'SHX_15_02'                                                    --  no longer used
-                       , 'SHX_15_03'                                                    --  no longer used
-                       , 'SHX_15_04'                                                    --  no longer used
-                       , 'SHX_15_05'                                                    --  no longer used
-                       , 'SHX_15_06'                                                    --  no longer used
-                       , 'SHX_15_07'                                                    --  no longer used
-                       , 'SHX_15_08'                                                    --  no longer used
-                       , 'SHX_15_09'                                                    --  no longer used
-                       , 'SHX_15_10'                                                    --  no longer used
-                       , 'SHX_25'                                                       --  no longer used
-                       , 'SHX_25_ny1'                                                   --  no longer used
-                       , 'SHX_25_ny2'                                                   --  no longer used
-                       , 'SHX_26'                                                       --  no longer used
-                       , 'SHX_26_ny1'                                                   --  no longer used
-                       , 'SHX_26_ny2'                                                   --  no longer used
-                       , 'SHX_27_01'                                                    --  no longer used
-                       , 'SHX_27_02'                                                    --  no longer used
-                       , 'SHX_27_03'                                                    --  no longer used
-                       , 'SHX_27_ny1'                                                   --  no longer used
-                       , 'SHX_27_ny2'                                                   --  no longer used
-                       , 'SHX_27_ny3'                                                   --  no longer used
-                       , 'SHX_28_01'                                                    --  no longer used
-                       , 'SHX_28_02'                                                    --  no longer used
-                       , 'SHX_28_03'                                                    --  no longer used
-                       , 'SHX_28_04'                                                    --  no longer used
-                       , 'SHX_28_05'                                                    --  no longer used
-                       , 'SHX_28_06'                                                    --  no longer used
-                       , 'SHX_28_07'                                                    --  no longer used
-                       , 'SHX_28_08'                                                    --  no longer used
-                       , 'XSG_01_xG1'                                                   --  aggregated/calculated
-                       , 'XSG_01_xG2'                                                   --  aggregated/calculated
-                       , 'XSG_01_xG3'                                                   --  aggregated/calculated
-                       , 'XSG_01_xG4'                                                   --  aggregated/calculated
-                       , 'XSG_01_xG5'                                                   --  aggregated/calculated
-                       , 'XSG_01_xG6'                                                   --  aggregated/calculated
-                       , 'XSG_01_xG7'                                                   --  aggregated/calculated
-                       , 'XSG_24'                                                       --  no longer used
-                       , 'XSG_242526_ny0'                                               --  no longer used
-                       , 'XSG_242526_ny1'                                               --  no longer used
-                       , 'XSG_25n27_ny1'                                                --  no longer used
-                       , 'XSG_25n27_ny2'                                                --  no longer used
-                       , 'XSG_25n27_ny3'                                                --  no longer used
-                                                                                                                                  )
+WHERE 
+          [QSk] = [Question_Std_fk]
 /* <   1st long SET: current data in database *****************************************************************************************************/
---select * from [#LCD_DB] where [QA_std]       IN ( 'GRI_08' , 'SHI_11' )  AND [Answer_value]  =   0.50
-/**************************************************************************************************************************************************/
 
 
 
@@ -1092,7 +1274,113 @@ WHERE
 IF OBJECT_ID  ('tempdb..#LND_CC')                        IS NOT NULL
 DROP TABLE              #LND_CC
 /**************************************************************************************************************************************************/
-/* >   2nd long SET: new data to be entered comparable to data in database ************************************************************************/
+/* >   2nd long SET: defaultd and null data  new data to be entered comparable to data in database ************************************************************************/
+SELECT 
+       [entity]
+      --,[v_Basic_row]
+      --,[ValSource]
+      --,[note]
+      ,[link_fk]
+      ,[Nation_fk]
+      ,[Locality_fk]
+      ,[Religion_fk]
+      ,[Region5]
+      ,[Region6]
+      ,[Ctry_EditorialName]
+      ,[Locality]
+      ,[Religion]
+      ,[Question_Year]               = [Question_Year]
+      ,[QS_fk]                       = [Question_Std_fk]
+      ,[QA_std]                      = [Question_abbreviation_std]
+      ,[QW_std]                      = [Question_wording_std]
+
+
+
+
+      ,[Question_pk]
+      ,[Question_abbreviation]
+      ,[Question_short_wording_std]
+      ,[Question_wording]
+      ,
+      ,[AnswerSet_num]
+      ,[Data_source_fk]
+      ,[Editorially_Checked]
+      ,[Display]
+      ,[Display_NoStd]
+
+
+      --,[QAS]
+      ,[Answer_value]
+      ,[answer_wording]
+      ,[answer_wording_std]
+      ,[Question_fk]
+      ,[Answer_fk]                   =  NULL
+      ,[Notes]                       = [Notes]
+      ,[DB]                          =  0
+/**************************************************************************************************************************************************/
+INTO      [#LCD_DB]
+/**************************************************************************************************************************************************/
+
+SELECT * 
+FROM
+       ( SELECT * FROM [forum].[dbo].[Pew_Question]
+                 WHERE [Question_Year] IS NULL
+                    OR [Question_Year] = (SELECT MAX([Question_Year]) 
+                                            FROM [forum]..[Pew_Question_NoStd])  )  Q
+/*------------------------------------------------------------------------------------------------------------------------*/
+INNER
+JOIN
+/*------------------------------------------------------------------------------------------------------------------------*/
+       ( SELECT * FROM [forum].[dbo].[Pew_Question_Attributes]
+                 WHERE [attk]          =  'Access_sort'                          )  A
+/*------------------------------------------------------------------------------------------------------------------------*/
+      ON   A.[Question_Std_fk]
+       =   Q.[Question_Std_fk]
+        
+      ,
+      ,[attr]                   =  [N]
+
+       [Question_Attributes_pk] =  ROW_NUMBER()OVER(ORDER BY[N])               /* number all rows                         */
+                                 + (SELECT MAX([Question_Attributes_pk])       /* add currently max pk                    */
+                                      FROM [Pew_Question_Attributes])          /* from Pew_Question_Attributes            */
+/*------------------------------------------------------------------------------------------------------------------------*/
+      ,[Question_Std_fk]        =  [K]
+      ,[attk]                   =  'Access_sort'
+      ,[attr]                   =  [N]
+       [Question_Attributes_pk] =  ROW_NUMBER()OVER(ORDER BY[N])               /* number all rows                         */
+                                 + (SELECT MAX([Question_Attributes_pk])       /* add currently max pk                    */
+                                      FROM [Pew_Question_Attributes])          /* from Pew_Question_Attributes            */
+/*------------------------------------------------------------------------------------------------------------------------*/
+      ,[Question_Std_fk]        =  [K]
+      ,[attk]                   =  'Access_sort'
+      ,[attr]                   =  [N]
+
+INNER 
+UNION
+                      
+
+
+/****** Script for SelectTopNRows command from SSMS  ******/
+SELECT [Q_pk]
+
+
+  FROM [forum].[dbo].[Pew_Question]
+
+/****** Script for SelectTopNRows command from SSMS  ******/
+SELECT TOP 1000 [Religion_fk]
+      ,[Religion]
+      ,[QA_std]
+      ,[QW_std]
+  FROM [forum_ResAnal].[dbo].[vr___00b____QuestnReligionTOOL]
+
+/****** Script for SelectTopNRows command from SSMS  ******/
+SELECT TOP 1000 [Nation_fk]
+      ,[Locality_fk]
+      ,[Locality]
+  FROM [forum_ResAnal].[dbo].[vr___00a____NationLocalityTOOL]
+
+
+
 SELECT 
           [entity]             = 'Not Yet Stored in DB'
       ,   [link_fk]            = 0
@@ -1185,6 +1473,10 @@ INTO      [#LND_CC]
 FROM      [#LCD_DB]
 
 /**************************************************************************************************************************************************/
+
+
+
+
 WHERE
           [Question_Year] =  (SELECT  DISTINCT
                                  MAX([Question_Year])
