@@ -1,0 +1,29 @@
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  S:\Forum\Database\MANAGEMENT\SQL_code\VR_for_RestrictionsData\Extr
+> action_of_PublicData.log
+  log type:  text
+ opened on:   7 Aug 2016, 22:10:15
+. * context:
+. clear all
+. version 14
+this is version 12.1 of Stata; it cannot run version 14.0 programs
+     You can purchase the latest version of Stata by visiting 
+     http://www.stata.com.
+r(9);
+. set more off
+.   pause off
+. * pause on
+.   set trace off
+. * set trace on
+. * Save & Display date & time to check how long the program takes to run:
+. scalar cxd=(c(current_date))
+. scalar cxt=(c(current_time))
+. di cxd "   " cxt
+. *****************************************************************************
+> **************************************
+. }
+r(9);
+
+end of do-file
+r(9);

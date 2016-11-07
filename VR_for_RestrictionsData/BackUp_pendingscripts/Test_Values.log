@@ -1,0 +1,323 @@
+-------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  S:\Forum\Database\MANAGEMENT\SQL_code\VR_for_RestrictionsData\Test_Values.log
+  log type:  text
+ opened on:  15 Jul 2016, 11:10:10
+. * context:
+. clear all
+. version 12
+. set more off
+.   pause off
+. * pause on
+.   set trace off
+. * set trace on
+. * Save & Display date & time to check how long the program takes to run:
+. scalar cxd=(c(current_date))
+. scalar cxt=(c(current_time))
+. di cxd "   " cxt
+15 Jul 2016   11:10:11
+. *******************************************************************************************************************
+. }
+
+. *******************************************************************************************************************
+. {  //   Step 1:  Compare main variables                                                                          **
+. *******************************************************************************************************************
+. use "S:\Forum\Database\RestrictionsDataSets\DataWideVersion.dta", clear
+. *******************************************************************************************************************
+. * GRI_01        AS CODED
+. * GRI_02        AS CODED
+. * GRI_03        AS CODED
+. * GRI_04        AS CODED
+. * GRI_05        AS CODED
+. * GRI_06        AS CODED
+. * GRI_07        AS CODED
+. * GRI_08
+. *                       Is religious literature or broadcasting limited by any level of government?
+. *               recoded for >= 2010:
+.                 gen     test_GRI_08 = GRI_08
+.                 recode  test_GRI_08 (      0        = 0    ) ///
+>                                     (     .5/1      = 1    ) ///
+>                                     if Question_Year >= 2010
+(test_GRI_08: 171 changes made)
+.                 compare test_GRI_08   GRI_08_for_index
+
+                                        ---------- difference ----------
+                            count       minimum      average     maximum
+------------------------------------------------------------------------
+test_G~08=GRI_08_~x          1580
+                       ----------
+jointly defined              1580             0            0           0
+                       ----------
+total                        1580
+. *               (no need in public dataset - has been improved for last codig period - must be improved in database)
+. * GRI_09        AS CODED
+. * GRI_10        AS CODED
+. * GRI_11        AS CODED
+. * GRI_12        AS CODED
+. * GRI_13        AS CODED
+. * GRI_14        AS CODED
+. * GRI_15        AS CODED
+. * GRI_16        AS CODED
+. * GRI_17        AS CODED
+. * GRI_18        AS CODED
+. * GRI_19
+. *                       Did any level of government use force toward religious groups that resulted in
+. *               individuals being killed, physically abused, imprisoned, detained or displaced from
+. *               their homes, or having their personal or religious properties damaged or destroyed?
+. *               calculated from events:
+.                 egen    test_GRI_19 = rowtotal( GRI_19_b     ///
+>                                                 GRI_19_c     ///
+>                                                 GRI_19_d     ///
+>                                                 GRI_19_e     ///
+>                                                 GRI_19_f  )
+.                 replace test_GRI_19 = 0 if test_GRI_19 == .
+(0 real changes made)
+.                 recode  test_GRI_19 (      0        = 0    ) ///
+>                                     (      1/9      =  .2  ) ///
+>                                     (     10/200    =  .4  ) ///
+>                                     (    201/1000   =  .6  ) ///
+>                                     (   1001/9999   =  .8  ) ///
+>                                     (  10000/max    = 1    )
+(test_GRI_19: 691 changes made)
+.                 compare test_GRI_19   GRI_19
+
+                                        ---------- difference ----------
+                            count       minimum      average     maximum
+------------------------------------------------------------------------
+test_G~19=GRI_19              926
+test_G~19>GRI_19              654      2.98e-09     7.48e-09    2.38e-08
+                       ----------
+jointly defined              1580             0     3.10e-09    2.38e-08
+                       ----------
+total                        1580
+. * GRI_20
+. *                       Do some religious groups receive government support or favors, such as funding,
+. *               official recognition or special access?
+. *               calculated from subvariables:
+.                 gen double test_GRI_20 =                   ///
+>                         (       GRI_20_01                  ///
+>                          +      GRI_20_02                  ///
+>                          + ( (  GRI_20_03_a                ///
+>                               + GRI_20_03_b                ///
+>                               + GRI_20_03_c ) / 3 )        ///
+>                          +      GRI_20_04                  ///
+>                          +      GRI_20_05            ) / 5
+.                 replace     test_GRI_20 = round(test_GRI_20, .01)
+(949 real changes made)
+.                 compare     test_GRI_20   GRI_20
+
+                                        ---------- difference ----------
+                            count       minimum      average     maximum
+------------------------------------------------------------------------
+test_G~20=GRI_20             1472
+test_G~20>GRI_20              108      5.55e-17     8.58e-17    1.11e-16
+                       ----------
+jointly defined              1580             0     5.87e-18    1.11e-16
+                       ----------
+total                        1580
+. *******************************************************************************************************************
+. * SHI_01
+. *                       Count the number of people who, due to religion, were harassed, imprisoned, detained
+. *               or displaced from their homes, physically abused, killed, or had their personal or
+. *               religious properties damaged or destroyed by nongovernment actors in this country
+. *               calculated from subvariables:
+. *               (aggregate dummies for each element)
+.                 foreach v of varlist                     ///
+>                                       SHI_01_a         ///
+>                                       SHI_01_b         ///
+>                                       SHI_01_c         ///
+>                                       SHI_01_d         ///
+>                                       SHI_01_e         ///
+>                                       SHI_01_f         ///
+>                  {
+  2.                    gen     dummy_`v' = `v'
+  3.                    replace dummy_`v' = 1 if dummy_`v' > 0 & dummy_`v' != .
+  4.                  }
+(464 real changes made)
+(463 real changes made)
+(83 real changes made)
+(125 real changes made)
+(394 real changes made)
+(197 real changes made)
+.                 egen double test_SHI_01 = rowtotal( dummy* )
+.                 replace     test_SHI_01 = test_SHI_01 / 6
+(1,114 real changes made)
+.                 compare     test_SHI_01   SHI_01
+
+                                        ---------- difference ----------
+                            count       minimum      average     maximum
+------------------------------------------------------------------------
+test_S~01<SHI_01              463     -.0033333    -.0033333   -.0033333
+test_S~01=SHI_01              765
+test_S~01>SHI_01              352      .0033333     .0033333    .0033333
+                       ----------
+jointly defined              1580     -.0033333    -.0002342    .0033333
+                       ----------
+total                        1580
+. * SHI_02        AS CODED
+. * SHI_03        AS CODED
+. * SHI_04
+. *               Were religion-related terrorist groups active in the country?
+. *               calculated from subvariables & events:
+. *               .5, .75 & 1 are values calculated from events
+. *               they correspond to: "Yes, with violence that resulted in some casualties ..."
+. *               in the current coding tool: "Yes, and their activities incuded violence"
+.                 egen    test_SHI_04 = rowtotal( SHI_04_b     ///
+>                                                 SHI_04_c     ///
+>                                                 SHI_04_d     ///
+>                                                 SHI_04_e     ///
+>                                                 SHI_04_f  )
+.                 replace test_SHI_04 = 0 if test_SHI_04 == .
+(0 real changes made)
+.                 recode  test_SHI_04 (      0        = 0    ) ///
+>                                     (      1/9      =  .5  ) ///
+>                                     (     10/50     =  .75 ) ///
+>                                     (     51/max    = 1    )
+(test_SHI_04: 284 changes made)
+. *               .25 corresponds to no detailed events
+. *               this corresponds to: "Yes, but their activity was limited to recruitment/fundraising"
+.                 replace test_SHI_04 = .25 if test_SHI_04 == 0 & SHI_04_ny > 0
+(273 real changes made)
+. *               NOTE: the original coded variable (SHI_04_filter, formerly an incomplete version of SHI_04)
+. *                     has ever been stored in the database, so this actually only tests consistency
+.                 compare test_SHI_04   SHI_04
+
+                                        ---------- difference ----------
+                            count       minimum      average     maximum
+------------------------------------------------------------------------
+test_S~04<SHI_04               16          -.75        -.375        -.25
+test_S~04=SHI_04             1558
+test_S~04>SHI_04                6           .25           .5         .75
+                       ----------
+jointly defined              1580          -.75    -.0018987         .75
+                       ----------
+total                        1580
+. * SHI_05
+. *               Was there a religion-related war or armed conflict in the country?
+. *               calculated from events:
+.                 egen    test_SHI_05 = rowtotal( SHI_05_c     ///
+>                                                 SHI_05_d     ///
+>                                                 SHI_05_e     ///
+>                                                 SHI_05_f  )
+.                 replace test_SHI_05 = 0 if test_SHI_05 == .
+(0 real changes made)
+.                 recode  test_SHI_05 (      0        = 0    ) ///
+>                                     (      1/9999   =  .25 ) ///
+>                                     (  10000/99999  =  .5  ) ///
+>                                     ( 100000/999999 =  .75 ) ///
+>                                     (1000000/max    = 1    )
+(test_SHI_05: 204 changes made)
+.                 compare test_SHI_05   SHI_05
+
+                                        ---------- difference ----------
+                            count       minimum      average     maximum
+------------------------------------------------------------------------
+test_S~05=SHI_05             1578
+test_S~05>SHI_05                2           .25          .25         .25
+                       ----------
+jointly defined              1580             0     .0003165         .25
+                       ----------
+total                        1580
+. * SHI_06        AS CODED
+. * SHI_07        AS CODED
+. * SHI_08        AS CODED
+. * SHI_09        AS CODED
+. * SHI_10        AS CODED
+. * SHI_11
+. *                       Were women harassed for violating religious dress codes?
+. *               recoded for >= 2010:
+.                 gen     test_SHI_11 = SHI_11
+.                 recode  test_SHI_11 (      0        = 0    ) ///
+>                                     (     .5/1      = 1    ) ///
+>                                     if Question_Year >= 2010
+(test_SHI_11: 95 changes made)
+.                 compare test_SHI_11   SHI_11_for_index
+
+                                        ---------- difference ----------
+                            count       minimum      average     maximum
+------------------------------------------------------------------------
+test_S~11=SHI_11~ex          1580
+                       ----------
+jointly defined              1580             0            0           0
+                       ----------
+total                        1580
+. *               (no need in public dataset - has been improved for last codig period - must be improved in database)
+. * SHI_12        AS CODED
+. * SHI_13        AS CODED
+. *******************************************************************************************************************
+. }
+
+. *******************************************************************************************************************
+. {  //   Step 2:  Compare indexes                                                                          **
+. *******************************************************************************************************************
+. * GRI
+.                 egen    test_GRI = rowtotal(      GRI_01     ///
+>                                                   GRI_02     ///
+>                                                   GRI_03     ///
+>                                                   GRI_04     ///
+>                                                   GRI_05     ///
+>                                                   GRI_06     ///
+>                                                   GRI_07     ///
+>                                              test_GRI_08     ///
+>                                                   GRI_09     ///
+>                                                   GRI_10     ///
+>                                                   GRI_11     ///
+>                                                   GRI_12     ///
+>                                                   GRI_13     ///
+>                                                   GRI_14     ///
+>                                                   GRI_15     ///
+>                                                   GRI_16     ///
+>                                                   GRI_17     ///
+>                                                   GRI_18     ///
+>                                              test_GRI_19     ///
+>                                              test_GRI_20 )
+.                 replace test_GRI = round(test_GRI, .01)
+(396 real changes made)
+.                 compare test_GRI   GRI
+
+                                        ---------- difference ----------
+                            count       minimum      average     maximum
+------------------------------------------------------------------------
+test_GRI=GRI                    4
+test_GRI>GRI                 1576          .015     2.916894       9.135
+                       ----------
+jointly defined              1580             0     2.909509       9.135
+                       ----------
+total                        1580
+. *
+. * SHI
+. *               calculated from events:
+.                 egen    test_SHI = rowtotal( test_SHI_01     ///
+>                                                   SHI_02     ///
+>                                                   SHI_03     ///
+>                                              test_SHI_04     ///
+>                                              test_SHI_05     ///
+>                                                   SHI_06     ///
+>                                                   SHI_07     ///
+>                                                   SHI_08     ///
+>                                                   SHI_09     ///
+>                                                   SHI_10     ///
+>                                              test_SHI_11     ///
+>                                                   SHI_12     ///
+>                                                   SHI_13 )
+.                 replace test_SHI = round(test_SHI, .01)
+(849 real changes made)
+.                 compare test_SHI   SHI
+
+                                        ---------- difference ----------
+                            count       minimum      average     maximum
+------------------------------------------------------------------------
+test_SHI<SHI                    1      -.058461     -.058461    -.058461
+test_SHI=SHI                  269
+test_SHI>SHI                 1310       .039231     .8241056           3
+                       ----------
+jointly defined              1580      -.058461     .6832404           3
+                       ----------
+total                        1580
+. *******************************************************************************************************************
+. }
+
+. *******************************************************************************************************************
+. 
+end of do-file
+
