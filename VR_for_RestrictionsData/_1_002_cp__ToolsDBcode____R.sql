@@ -38,6 +38,8 @@ FROM (
       , [Region5]             = [Region]
       , [Region6]             = [SubRegion6]
       , [Ctry_EditorialName]
+      , [Locality_fk]
+      , [Locality]
 /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     FROM  
         [forum_ResAnal]..[vr___00a____NationLocalityTOOL]
@@ -308,35 +310,55 @@ FROM (
         , [QTable]                       =  SUBSTRING([Question_abbreviation_std], 1, 2)
         , [QDftlt]                       =          F.[Attr]
 ----------------------------------------------------------------------------------------------------------------------------
-	--INTO
-	--          [All_Questions]
+        , [QbyCRL]                       =       CASE
+                                                 WHEN K.[entity]           IS NOT NULL                        THEN [entity]
+                                                                                                              ELSE  'Ctry' END
 ----------------------------------------------------------------------------------------------------------------------------
+        , [Religion_fk]
+        , [Religion]
+----------------------------------------------------------------------------------------------------------------------------
+
 --  select *
     FROM
 ----------------------------------------------------------------------------------------------------------------------------
-             ( SELECT * FROM [forum]..[Pew_Question]         WHERE [Question_Year] = 2015
-                                                                OR [Question_Year] IS NULL )    Q
+             ( SELECT * FROM [forum]..[Pew_Question]         WHERE [Question_Year] = 2015  /*CORRECT by PARAMETERIZING!!!!*/
+                                                                OR [Question_Year] IS NULL                    )    Q
 ----------------------------------------------------------------------------------------------------------------------------
     INNER JOIN
-             ( SELECT * FROM [forum]..[Pew_Question_Attributes] WHERE [attk]='Access_sort' )    S
+             ( SELECT * FROM [forum]..[Pew_Question_Attributes] WHERE [attk]='Access_sort'                    )    S
                           ON        Q.[Question_Std_fk]
                                  =  S.[Question_Std_fk]
 ----------------------------------------------------------------------------------------------------------------------------
     LEFT  JOIN
-             ( SELECT * FROM [forum]..[Pew_Question_Attributes] WHERE [attk]='Access_DESC' )    D
+             ( SELECT * FROM [forum]..[Pew_Question_Attributes] WHERE [attk]='Access_DESC'                    )    D
                           ON        Q.[Question_Std_fk]
                                  =  D.[Question_Std_fk]
 ----------------------------------------------------------------------------------------------------------------------------
     LEFT  JOIN
-             ( SELECT * FROM [forum]..[Pew_Question_Attributes] WHERE [attk]='Access_TOOL' )    T
+             ( SELECT * FROM [forum]..[Pew_Question_Attributes] WHERE [attk]='Access_TOOL'                    )    T
                           ON        Q.[Question_Std_fk]
                                  =  T.[Question_Std_fk]
 ----------------------------------------------------------------------------------------------------------------------------
     LEFT  JOIN
-             ( SELECT * FROM [forum]..[Pew_Question_Attributes] WHERE [attk]='Access_DFLT' )    F
+             ( SELECT * FROM [forum]..[Pew_Question_Attributes] WHERE [attk]='Access_DFLT'                    )    F
                           ON        Q.[Question_Std_fk]
                                  =  F.[Question_Std_fk]
 ----------------------------------------------------------------------------------------------------------------------------
+    LEFT  JOIN
+             ( SELECT  DISTINCT 
+                       [entity]
+                      ,[Question_Std_fk]
+                      ,[Religion_fk]
+                      ,[Religion]
+                 FROM  [forum_ResAnal]..[vr___01_cDB_Long__NoAggregated]
+                WHERE  [entity]
+				    <> 'Ctry'
+                  AND  [Question_Year]
+				     = (SELECT MAX([Question_Year]) FROM [forum_ResAnal]..[vr___06_cDB_LongData_ALL_byCYQ])   )    K
+                          ON        Q.[Question_Std_fk]
+                                 =  K.[Question_Std_fk]
+----------------------------------------------------------------------------------------------------------------------------
+
 /**************************************************************************************************************************/
 /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
                                                                                                                                                             ) T3

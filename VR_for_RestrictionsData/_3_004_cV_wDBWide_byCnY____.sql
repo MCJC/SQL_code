@@ -1,6 +1,6 @@
 /***************************************************************************************************************************************************************/
 Print 
-'--- ' + CONVERT (VARCHAR(19), SYSDATETIME()) + ' ==>  script 004    ------------------------------------------------------------------------------------------ '
+'--- ' + CONVERT (VARCHAR(19), SYSDATETIME()) + ' ==>  script 3.004    ---------------------------------------------------------------------------------------- '
 /***************************************************************************************************************************************************************/
 /***                                                                                                                                                         ***/
 /***     >>>>>         This script creates semi-WIDE set of STORED data from the 'Global Restriction on Religion Study'                            <<<<<     ***/
@@ -8,7 +8,7 @@ Print
 /***                    -  Any wide/semi-wide set of data includes only numeric values for GR&SH R                                                           ***/
 /***                                                                                                                                                         ***/
 /***************************************************************************************************************************************************************/
-USE [forum_ResAnal]
+USE [GRSHRcode]
 GO
 /***************************************************************************************************************************************************************/
 SET ANSI_NULLS ON
@@ -21,7 +21,7 @@ declare @ALLCODE nvarchar(max)
 set     @ALLCODE = 
 /***************************************************************************************************************************************************************/
 N'
-ALTER  VIEW                      [dbo].[vr___02_]        AS
+ALTER  VIEW                      [dbo].[vr___02_wDB_Wide__by_Ctry&Year]        AS
 SELECT * FROM
 '
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -56,7 +56,7 @@ SELECT
           ELSE ', ' + [QA_std]                                                  /*** else comma delimited field for all other QA Std (StdVarName)            ***/
           END                                                                   /*** end of CASE section, used to include two different wordings             ***/
     FROM                                                                        /*** from...                                                                 ***/
-          [vr___01_cDB_Long__NoAggregated]                                      /*** name of the table which includes all field (var) names as rows          ***/
+          [vr___01_wDB_Long__NoAggregated]                                      /*** name of the table which includes all field (var) names as rows          ***/
                                                                                 /*** NO FILTERS needed                                                       ***/
          ORDER BY                                                               /*** sorting order using exact final field, including:                       ***/
           CASE                                                                  /*** CASE to sort using two different wordings...                            ***/
@@ -95,7 +95,7 @@ SELECT
       ,[QA_std]
       ,[Answer_value]      = SUM([Answer_value])
   FROM
-            [vr___01_cDB_Long__NoAggregated]
+            [vr___01_wDB_Long__NoAggregated]
 GROUP BY
        [Nation_fk]
       ,[Region5]
@@ -137,7 +137,7 @@ STUFF(                                                                          
         +                                                                       /*** concatenated to...                                                      ***/
           [QA_std]                                                              /*** Fiels including all Q Abb Std (StdVarName)                              ***/
     FROM                                                                        /*** from...                                                                 ***/
-          [vr___01_cDB_Long__NoAggregated]                                      /*** name of the table which includes all field (var) names as rows          ***/
+          [vr___01_wDB_Long__NoAggregated]                                      /*** name of the table which includes all field (var) names as rows          ***/
                                                                                 /*** NO FILTERS needed                                                       ***/
          ORDER BY                                                               /*** sorting order using exact final field, including:                       ***/
           ', '                                                                  /*** comma delimiter                                  -> as part of sorting  ***/
@@ -169,21 +169,5 @@ N'
 /***************************************************************************************************************************************************************/
 GO
 /***************************************************************************************************************************************************************/
-
-
-
-
-
-
-
-
-/***************************************************************************************************************************************************************/
-IF OBJECT_ID  (N'[forum_ResAnal].[dbo].[vr___02_cDB_Wide__by_Ctry&Year]', N'U') IS NOT NULL
-DROP TABLE       [forum_ResAnal].[dbo].[vr___02_cDB_Wide__by_Ctry&Year]
-SELECT * INTO    [forum_ResAnal].[dbo].[vr___02_cDB_Wide__by_Ctry&Year]
-            FROM                 [dbo].[vr___02_]
-/***************************************************************************************************************************************************************/
-GO
-/***************************************************************************************************************************************************************/
---	SELECT* FROM [forum_ResAnal].[dbo].[vr___02_cDB_Wide__by_Ctry&Year]
+--	SELECT * FROM [vr___02_wDB_Wide__by_Ctry&Year]
 /***************************************************************************************************************************************************************/
