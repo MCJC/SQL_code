@@ -1,54 +1,88 @@
 The script "schemazen"
 has been the most effctive way found by JCEO to backup databases
 
-Most current version should be at:
-https://github.com/sethreno/schemazen/releases
-
 
 ***************************************************************************************************************
-The script can be found in the repository for Religion Main Research SQL Relational Darabase scripts 
+*  The script can be found in the repository for Religion Main Research SQL Relational Darabase scripts at:   *
+*                                                                                                             *
+*        https://github.com/MCJC/SQL_code/tree/master/SchemaZen                                               *
+*                                                                                                             *
+*  also should be synchronized...                                                                             *
+*                                                                                                             *
+*   - at local disk in windows through parallels:                                                             *
+*        C:\Users\JC\Documents\SQL Server Management Studio\SQL_code_local\SchemaZen                          *
+*                                                                                                             *
+*   - at the shared drive:                                                                                    *
+*        \shared\Forum\Database\MANAGEMENT\SQL_code_in_SharedDrive\SchemaZen                                  *
+*                                                                                                             *
+*   - at iCloud Drive (Mac):                                                                                  *
+*        \\Mac\Home\Documents\SQL_code_in_iCloud\SchemaZen                                                    *
+*                                                                                                             *
+*                                                                                                             *
+*  However, the most current version of the program should be at:                                             *
+*        https://github.com/sethreno/schemazen/releases                                                       *
+*                                                                                                             *
+***************************************************************************************************************
 
 
-C:\Users\JC\Documents\SQL Server Management Studio\SQL_code_local\SchemaZen
+**       SINTAXIS
+**
+**                 C:\> schemazen <command>
+**
+**       Available commands are:
+**
+**                      Script      - Generate scripts for the specified database.
+**                      Create      - Create the specified database from scripts.
+**                      Compare     - Compare two databases.
+**
+**       help <name> - For help with one of the above commands
+**
+**       'Script' - Generates scripts for the specified database.
+**
+**       The expected usage is: SchemaZen.exe Script <options>
+**       <options> available:
+**                             -s, --server=VALUE                 server
+**                             -b, --database=VALUE               database
+**                          (  -u, --user=VALUE                   user                                       )
+**                          (  -p, --pass=VALUE                   password                                   )
+**                             -d, --scriptDir=VALUE              Path to database script directory.
+**                             -o, --overwrite=VALUE              Overwrite existing target without prompt.
+**                             -v, --verbose=VALUE                Enable verbose log messages.
+**                          (      --dataTables=VALUE             A comma separated list of tables to
+**                                                                export data from.                          )
+                                 --dataTablesPattern=VALUE      A regular expression pattern that matches
+                                                                tables to export data from.
 
 
 
-C:\jcp>schemazen help script
+
+STEPS FOLLOWED TO BACKUP THE DATABASE:
+
+- 01.  Connect to [ReligionDB2014] using Remote Desktop App
+
+- 02.  Run SchemaZen from C:\jcp:
 
 
+       SINTAXIS
+
+                 C:\jcp> schemazen script -s FORUMDB -b FORUM -d E:\BkUp\forum -o=1 -v=1 -dataTablesPattern=Pew.*
 
 
+       'Script' - Generates scripts for the specified database.
 
-
-
-
-
-
-SINTAXIS
-
-         C:\jcp> schemazen script -s FORUMDB -b FORUM -d E:\BkUp\jcp -o=1 -v=1 -dataTablesPattern=Pew.*
-
-
-
-
-
-
-'Script' - Generate scripts for the specified database.
-
-Expected usage: SchemaZen.exe Script <options>
-<options> available:
-  -s, --server=VALUE         server
-  -b, --database=VALUE       database
-  -u, --user=VALUE           user
-  -p, --pass=VALUE           pass
-  -d, --scriptDir=VALUE      Path to database script directory.
-  -o, --overwrite=VALUE      Overwrite existing target without prompt.
-  -v, --verbose=VALUE        Enable verbose log messages.
-      --dataTables=VALUE     A comma separated list of tables to export data
-                               from.
-      --dataTablesPattern=VALUE
-                             A regular expression pattern that matches tables
-                               to export data from.
+       The expected usage is: SchemaZen.exe Script <options>
+       <options> available:
+                             -s, --server=VALUE                 server
+                             -b, --database=VALUE               database
+                          (  -u, --user=VALUE                   user                                       )
+                          (  -p, --pass=VALUE                   password                                   )
+                             -d, --scriptDir=VALUE              Path to database script directory.
+                             -o, --overwrite=VALUE              Overwrite existing target without prompt.
+                             -v, --verbose=VALUE                Enable verbose log messages.
+                          (      --dataTables=VALUE             A comma separated list of tables to
+                                                                export data from.                          )
+                                 --dataTablesPattern=VALUE      A regular expression pattern that matches
+                                                                tables to export data from.
 
 
 
@@ -57,6 +91,9 @@ Expected usage: SchemaZen.exe Script <options>
 This script is supported at: https://github.com/sethreno/schemazen
 
 
+
+
+log off
 
 
 
@@ -152,7 +189,7 @@ THEN, open comand Pro,mpt in parallels
 
 SINTAXIS
 
-         Y:\SQL_code\SchemaZen> schemazen create -s WS2008 -b FORUM -d Y:\forum -o=1 -v=1
+         Y:\SQL_code\SchemaZen> schemazen create -s WS2008 -b FORUM -d N:\JCEO_data\shi -o=1 -v=1
 
 
 
@@ -219,7 +256,7 @@ Status
  Blog
  About
  Pricing
-   © 2016 GitHub, Inc.
+   ï¿½ 2016 GitHub, Inc.
  Terms
  Privacy
  Security
@@ -1267,7 +1304,7 @@ Status
  Blog
  About
  Pricing
-   © 2016 GitHub, Inc.
+   ï¿½ 2016 GitHub, Inc.
  Terms
  Privacy
  Security

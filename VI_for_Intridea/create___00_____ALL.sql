@@ -16,7 +16,7 @@ GO
 --  TEST (this TABLE is the selection of counts or rows from the last complete execution and can work to check cionsistency):
 --	SELECT * FROM [forum_ResAnal].[dbo].[vi_xxCountRows_of_AllViews] -- 
 /***************************************************************************************************************************************************************/
-/*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------- ----------------------------------------------------------------------------------------------------------------*/
 /***************************************************************************************************************************************************************/
 /***  This code (once SQLCMD scripting mode is enabled) lists scripts in folder (to check if they are coinsistent to the script)                             ***/
 --	  !!dir/B /O "S:\Forum\Database\MANAGEMENT\common\ForumResAnal_&_Intridea\VI_for_Intridea" 
@@ -24,7 +24,7 @@ GO
 /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 /*  store working directory (path) in a variable:                                                                                                              */
 /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-:setvar path "S:\Forum\Database\MANAGEMENT\SQL_code\VI_for_Intridea"
+:setvar path "C:\Users\JC\Documents\SQL Server Management Studio\SQL_code_local\VI_for_Intridea"
 /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 /*  execute scripts                                                                                                                                            */
 /*                  (list can be updated from the files listed for the directory)                                                                              */

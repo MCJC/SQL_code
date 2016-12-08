@@ -33,8 +33,8 @@ STUFF( (                                              /*** >>     stuff function
             FROM      [AT_Qs]                              /***        from table including var names & classifications as rows             ***/
 
 
-           WHERE (    [Question_fk] IS NOT NULL            /***        include Q with coded, count & perxi answers                            ***/
-                  AND  [QAS]        NOT LIKE '%_x'   /***        and include Q with num answers to complete previous Q  */
+           WHERE (    [Question_fk] IS NOT NULL            /***        exnclude Q with coded, count & perxi answers                            ***/
+                  AND  [QAS]        NOT LIKE 'SHI_01_x'   /***        and include %_xQ with num answers to complete previous Q  */
                   AND  [QAS]        NOT LIKE 'SHI_01_summary_b'      /*       ***/
                   AND [QClass]      NOT IN  ('COUNT')        /***        exclude descriptions                                              ***/
                   AND [QClass]      NOT IN  ('DESCR')  )      /***        exclude descriptions                                              ***/
@@ -236,8 +236,8 @@ ON
 /**************************************************************************************************************************************************/
 /*********************************************************     >>>>>> statements to display/execute code stored in the variable @CODEmain       ***/
 /**************************************************************************************************************************************************/
---	EXEC dbo.LongPrint @CODEmain                          /***        display the currently stored code (to be executed)                        ***/
-	EXEC              (@CODEmain)                         /***        execute the code that has been stored as text                             ***/
+	EXEC dbo.LongPrint @CODEmain                          /***        display the currently stored code (to be executed)                        ***/
+--	EXEC              (@CODEmain)                         /***        execute the code that has been stored as text                             ***/
 /**************************************************************************************************************************************************/
 /*********************************************************     <<<<<< statements to display/execute code stored in the variable @CODEmain       ***/
 /**************************************************************************************************************************************************/
