@@ -81,6 +81,5 @@ UNION ALL
 
 SELECT
        *
-  FROM [forum_ResAnal]..[vr___01_cDB_Long__NoAggregated]
-
+  FROM [GRSHRcode].[dbo].[tr___01_]
 
